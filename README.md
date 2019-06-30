@@ -1,4 +1,6 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Acknowledgments/Prior art
+- [magey](https://github.com/magey) for their work on [itemization.info](https://itemization.info/)
+- [Kruhlmann](https://github.com/Kruhlmann) for their work on [classicdb_bot](https://github.com/Kruhlmann/classicdb_bot)
 
 ## Available Scripts
 

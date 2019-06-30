@@ -1,0 +1,18 @@
+[
+  {
+    "ID": 7720,
+    "Icon": "inv_helmet_12",
+    "Current": {
+      "Name": "Whitemane's Chapeau",
+      "Quality": "Rare"
+    }
+  },
+  {
+    "ID": 5753,
+    "Icon": "inv_helmet_04",
+    "Current": {
+      "Name": "Ruffled Chaplet",
+      "Quality": "Uncommon"
+    }
+  }
+]

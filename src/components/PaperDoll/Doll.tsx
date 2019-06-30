@@ -17,19 +17,19 @@ export const PaperDoll: React.FC = () => {
         <div className="paperDoll">
             <img src={dollBackground} alt="paper doll" />
 
-            {mkIcon("head", { top: '4.3%', left: '3.4%' })}
+            {mkIcon("head", { top: '4.3%', left: '3.7%' })}
             {mkIcon("gloves", { top: '4.3%', left: '83.2%' })}
-            {mkIcon("neck", { top: '14.9%', left: '3.4%' })}
+            {mkIcon("neck", { top: '14.9%', left: '3.7%' })}
             {mkIcon("belt", { top: '14.9%', left: '83.2%' })}
-            {mkIcon("shoulders", { top: '25.2%', left: '3.4%' })}
+            {mkIcon("shoulders", { top: '25.2%', left: '3.7%' })}
             {mkIcon("pants", { top: '25.2%', left: '83.2%' })}
-            {mkIcon("cloak", { top: '35.3%', left: '3.4%' })}
+            {mkIcon("cloak", { top: '35.3%', left: '3.7%' })}
             {mkIcon("boots", { top: '35.3%', left: '83.2%' })}
-            {mkIcon("chest", { top: '46%', left: '3.4%' })}
+            {mkIcon("chest", { top: '46%', left: '3.7%' })}
             {mkIcon("ring1", { top: '46%', left: '83.2%' })}
             {mkIcon("ring2", { top: '56%', left: '83.2%' })}
             {mkIcon("trinket1", { top: '66.4%', left: '83.2%' })}
-            {mkIcon("bracers", { top: '77.2%', left: '3.4%' })}
+            {mkIcon("bracers", { top: '77.2%', left: '3.7%' })}
             {mkIcon("trinket2", { top: '77.2%', left: '83.2%' })}
 
             {mkIcon("mainhand", { top: '82.6%', left: '32%' })}
