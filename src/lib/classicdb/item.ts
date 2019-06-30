@@ -14,7 +14,6 @@ import {
 } from "./lib";
 import { CharacterClass, ItemBinding } from "./types";
 import { Effect } from "./effect";
-import { Quest } from "./quest";
 import { html_tag_regex } from "./consts"
 
 export class Item {
@@ -84,16 +83,6 @@ export class Item {
       return line.startsWith("+") || line.startsWith("-");
     });
 
-    const quest_a = table_contents.find("a").filter((_, a) => {
-      const t = $(a).text();
-      const h = $(a).attr("href");
-      return $(a).attr("href").includes("?quest=")
-        && $(a).text() === "This Item Begins a Quest";
-    });
-    const begins_quest = quest_a.length > 0
-      ? await Quest.from_id($(quest_a[0]).attr("href").replace("?quest=", ""))
-      : null;
-
     // Tables
     const table_count = table_contents.find("table").length;
     const equipment_slot = table_count > 0
@@ -132,7 +121,6 @@ export class Item {
       quality,
       unique,
       binds_on,
-      begins_quest,
       classes,
       level_requirement,
       durability,
@@ -194,7 +182,6 @@ export class Item {
   public binds_on: ItemBinding;
 
   // Optional properties
-  public begins_quest?: Quest;
   public class_restrictions?: CharacterClass[];
   public level_requirement?: number;
   public durability?: number;
@@ -219,7 +206,6 @@ export class Item {
    * @param thumbnail_href - Thumbnail link.
    * @param unique - Whether the item is unique.
    * @param binds_on - Type of binding (pickup, equip, no binding).
-   * @param begins_quest - Quest this item begins if applicable.
    * @param class_restrictions - List of classes, which can equip the item.
    * @param level_requirement - Required level to equip item.
    * @param durability - Maximum durability.
@@ -240,7 +226,6 @@ export class Item {
     quality_color: string,
     unique: boolean,
     binds_on: ItemBinding,
-    begins_quest?: Quest,
     class_restrictions?: CharacterClass[],
     level_requirement?: number,
     durability?: number,
@@ -260,7 +245,6 @@ export class Item {
     this.quality_color = quality_color;
     this.unique = unique;
     this.binds_on = binds_on;
-    this.begins_quest = begins_quest;
     this.class_restrictions = class_restrictions;
     this.level_requirement = level_requirement;
     this.durability = durability;

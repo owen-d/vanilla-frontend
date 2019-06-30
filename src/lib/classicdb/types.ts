@@ -64,11 +64,6 @@ export interface ParserQuery {
   item_version: string;
 }
 
-export interface QuestImplementable {
-  id: string;
-  name: string;
-  href: string;
-}
 
 export interface ItemImplementable {
   // Required properties.
@@ -81,7 +76,6 @@ export interface ItemImplementable {
   binds_on: ItemBinding;
 
   // Optional properties
-  begins_quest?: QuestImplementable;
   class_restrictions?: CharacterClass[];
   level_requirement?: number;
   durability?: number;
