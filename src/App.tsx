@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { PaperDoll } from './PaperDoll/PaperDoll'
+import { PaperDoll } from './components/PaperDoll/Doll'
 
 const App: React.FC = () => {
     return (

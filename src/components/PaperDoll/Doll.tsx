@@ -1,7 +1,7 @@
 import React from 'react'
 import './Doll.css'
-import dollBackground from '../assets/wow/paperdoll/char-background-transparent.png'
-import itemIconEmpty from '../assets/wow/paperdoll/icon-border-large.png'
+import dollBackground from '../../assets/wow/paperdoll/char-background-transparent.png'
+import itemIconEmpty from '../../assets/wow/paperdoll/icon-border-large.png'
 
 export const PaperDoll: React.FC = () => {
     const mkIcon = (cName: string, css: React.CSSProperties) => {
