@@ -4,8 +4,10 @@ import itemIconEmpty from '../../assets/wow/paperdoll/icon-border-large.png'
 import { Parser } from '../../lib/effectParser/parser'
 import { Slot, Equipped } from '../../store/paperDoll/types'
 import { Injections } from '../../store/paperDoll/actions'
+import { ItemPicker } from '../itemPicker/'
 
-export type Handler = (slot: Slot, event: React.SyntheticEvent<any>) => void
+// unused: just for docs so I remember how do do shit with SyntheticEvent
+export type Handler = (slot: Slot, event: React.SyntheticEvent<{ fieldA: string }>) => void
 
 export interface Props {
     equipped: Equipped
@@ -26,7 +28,6 @@ export const PaperDoll: React.FC<Props> = ({ actions, equipped }) => {
         return (
             <div className={slot.toLowerCase()}
                 style={styles}
-
             />
         )
     }
