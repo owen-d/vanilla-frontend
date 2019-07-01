@@ -14,3 +14,13 @@ export function unequipItem(slot: Slot): Action {
     slot,
   }
 }
+
+export type Injections = {
+  equipItem: typeof equipItem
+  unequipItem: typeof unequipItem
+}
+
+export const injections: Injections = {
+  equipItem,
+  unequipItem,
+}
