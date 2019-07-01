@@ -1,11 +1,9 @@
 
 // curl -s https://itemization.info/complete?q=pat%20slot:head | jq '.'
-export interface ItemSearchQuery {
-  slot: Slot,
+export interface ItemSearchQuery<A> {
+  slot: A,
   query: string,
 }
-
-export type Slot = "Head" | "Shoulders"
 
 export interface ItemSearchResult {
   ID: number,
