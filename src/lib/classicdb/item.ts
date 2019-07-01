@@ -13,8 +13,7 @@ import {
   fetch_thumbnail
 } from "./lib";
 import { CharacterClass, ItemBinding } from "./types";
-import { Effect } from "./effect";
-import { html_tag_regex } from "./consts"
+import { Effect, html_lines } from "./effect";
 
 export class Item {
 
@@ -32,11 +31,12 @@ export class Item {
     href: string,
     effects: Effect[],
     table: Cheerio): Promise<Item> {
-    const $ = cheerio.load(table.html());
+    const $ = cheerio.load(table.html() || "");
     const thumbnail = await fetch_thumbnail(id);
     const table_contents = table.find("tr td").first();
-    const html = table.find("tr td").first().html();
-    const html_lines = html.split(html_tag_regex);
+    const html = table.find("tr td").first()
+    const htmlSafe = html.html() || ""
+    const lines = html_lines(html)
     const name_node = table_contents.find("b").first();
     const class_nodes = table_contents.find("font");
 
@@ -49,37 +49,37 @@ export class Item {
       classes.push(required_class);
     });
     const flavor_text = table.find(".q").first().text();
-    const binds_on = html.includes("Binds when picked up")
+    const binds_on = htmlSafe.includes("Binds when picked up")
       ? ItemBinding.ON_PICKUP
-      : html.includes("Binds when equipped")
+      : htmlSafe.includes("Binds when equipped")
         ? ItemBinding.ON_EQUIP
         : ItemBinding.NOBIND;
-    const unique = (html_lines.find((line) => {
+    const unique = (lines.find((line) => {
       const regex = /Unique/g;
       return ((line || "").match(regex) || []).length > 0;
     }) || []).length > 0;
-    const armor_line = (html_lines.find((line) => {
+    const armor_line = (lines.find((line) => {
       const regex = /[0-9]+ Armor/g;
       return ((line || "").match(regex) || []).length > 0;
     }) || "").split(" ");
     const armor = armor_line.length > 1
       ? parseInt(armor_line[0], 10)
-      : null;
-    const level_line = (html_lines.find((line) => {
+      : undefined;
+    const level_line = (lines.find((line) => {
       const regex = /Requires Level [0-9]+/g;
       return ((line || "").match(regex) || []).length > 0;
     }) || "").split(" ");
     const level_requirement = level_line.length > 2
       ? parseInt(level_line[2], 10)
-      : null;
-    const durability_line = (html_lines.find((line) => {
+      : undefined;
+    const durability_line = (lines.find((line) => {
       const regex = /Durability [0-9]+ \/ [0-9]+/g;
       return ((line || "").match(regex) || []).length > 0;
     }) || "").split("/");
     const durability = durability_line.length > 1
       ? parseInt(durability_line[1].trim(), 10)
-      : null;
-    const primary_stats = html_lines.filter((line) => {
+      : undefined;
+    const primary_stats = lines.filter((line) => {
       return line.startsWith("+") || line.startsWith("-");
     });
 
@@ -87,33 +87,33 @@ export class Item {
     const table_count = table_contents.find("table").length;
     const equipment_slot = table_count > 0
       ? $(table_contents.find("table")[0]).find("td").text()
-      : null;
+      : undefined;
     const equipment_type = table_count > 0
       ? $(table_contents.find("table")[0]).find("th").text()
-      : null;
+      : undefined;
     const does_damage = table_count > 1;
     const damage_range_line = does_damage
       ? $(table_contents.find("table")[1]).find("td").text()
-      : null;
+      : undefined;
     const swing_speed_line = does_damage
       ? $(table_contents.find("table")[1]).find("th").text()
-      : null;
+      : undefined;
     const damage_range = damage_range_line
       ? {
         high: parseInt(damage_range_line.split(" ")[2], 10),
         low: parseInt(damage_range_line.split(" ")[0], 10),
-      } : null;
-    const swing_speed = does_damage
+      } : undefined;
+    const swing_speed = (does_damage && swing_speed_line)
       ? parseFloat(swing_speed_line.split("Speed ")[1])
-      : null;
-    const dps_line = html_lines.find((line) => {
+      : undefined;
+    const dps_line = lines.find((line) => {
       return line.startsWith("(") && line.includes("damage per second)");
     }) || "";
     const dps = dps_line !== ""
       ? parseFloat(dps_line.replace("(", "")
         .replace(" damage per second)", "")
         .trim())
-      : null;
+      : undefined;
     return new Item(id,
       name,
       href,
@@ -168,7 +168,7 @@ export class Item {
    */
   public static async from_id(id: string | number): Promise<Item> {
     const url = `${config.host}/?item=${id}`;
-    const html = await request({ uri: url });
+    const html = await request.get({ uri: url });
     return Item.from_tooltip(`${id}`, url, html);
   }
 

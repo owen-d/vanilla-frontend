@@ -19,7 +19,7 @@ export class Effect {
    * @returns - Generated effects.
    */
   public static from_item_table(table: Cheerio): Promise<Effect[]> {
-    const $ = cheerio.load(table.html());
+    const $ = cheerio.load(table.html() || "");
     const effects: Array<Promise<Effect>> = [];
     table.find("span.q2").each((_, node) => {
       const h = $(node).find("a").attr("href");
@@ -51,7 +51,7 @@ export class Effect {
 
     // Stats.
     const stats_td = $(stat_table).find("td").first();
-    const stat_html_lines = stats_td.html().split(html_tag_regex);
+    const stat_html_lines = html_lines(stats_td)
 
     const range_line = (stat_html_lines.find((line) => {
       const r1 = /[0-9]+ yd range/g;
@@ -89,7 +89,7 @@ export class Effect {
    */
   public static async from_id(id: string, trigger: string): Promise<Effect> {
     const url = `${config.host}/?spell=${id}`;
-    const html = await request(url);
+    const html = await request.get(url);
     return Effect.from_effect_html(id, html, trigger);
   }
 
@@ -100,8 +100,8 @@ export class Effect {
   public thumbnail_href: string;
   public trigger_name: string;
   public is_misc: boolean;
-  public cast_time: string;
-  public range: string;
+  public cast_time: string | null;
+  public range: string | null;
 
   /**
    * Constructor
@@ -129,8 +129,8 @@ export class Effect {
     thumbnail_href: string,
     trigger_name: string,
     is_misc: boolean,
-    cast_time: string,
-    range: string) {
+    cast_time: string | null,
+    range: string | null) {
     this.id = id;
     this.name = name;
     this.href = href;
@@ -152,5 +152,14 @@ export class Effect {
     return this.is_misc
       ? `${this.trigger_name}: ${this.description}`
       : `${this.trigger_name}: ${this.name}`;
+  }
+}
+
+export const html_lines = (c: Cheerio): string[] => {
+  const htmlStr = c.html()
+  if (!htmlStr) {
+    return []
+  } else {
+    return htmlStr.split(html_tag_regex)
   }
 }

@@ -5,6 +5,8 @@ export interface ItemSearchQuery {
   query: string,
 }
 
+export type Slot = "Head" | "Shoulders"
+
 export interface ItemSearchResult {
   ID: number,
   Icon: string,

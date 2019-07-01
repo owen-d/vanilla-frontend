@@ -92,7 +92,7 @@ export function find_first_item_index(item_details: number[][]): number {
 export async function fetch_thumbnail(id: string,
   spell = false): Promise<string> {
   const url = `${config.host}/?${spell ? "spell" : "item"}=${id}`;
-  const html = await request(url);
+  const html = await request.get(url);
   // Find the JavaScript line with "Icon.create" in from which the item
   // identifier can be extracted.
   const split_dom = html.split("\n").filter((html_stub: string) => {
