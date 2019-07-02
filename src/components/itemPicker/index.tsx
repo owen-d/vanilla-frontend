@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { Slot } from '../../store/paperDoll/types'
 import { suggest } from '../../lib/itemization/query'
+import { Item } from '../../lib/classicdb/item'
 import { Slot as SlotQuery, ItemSearchQuery, ItemSearchResult } from '../../lib/itemization/typings'
 import './tooltip.css'
+
 
 export interface Props {
     slot: Slot
@@ -18,7 +20,7 @@ const initialState: State = {
     query: "",
     available: [
         {
-            ID: 123,
+            ID: 0,
             Icon: 'some-icon',
             Current: {
                 Name: 'test-item-rare',
@@ -26,7 +28,7 @@ const initialState: State = {
             },
         },
         {
-            ID: 123,
+            ID: 1,
             Icon: 'some-icon',
             Current: {
                 Name: 'test-item-common',
@@ -34,7 +36,7 @@ const initialState: State = {
             },
         },
         {
-            ID: 123,
+            ID: 2,
             Icon: 'some-icon',
             Current: {
                 Name: 'test-item-uncommon',
@@ -51,7 +53,7 @@ export const ItemPicker: React.FC<Props> = ({ slot }) => {
     const [state, setState] = useState(initialState)
 
     const items = state.available.map(
-        x => <li className={x.Current.quality.toLowerCase()}>{x.Current.Name}</li>
+        x => <li key={x.ID} className={x.Current.quality.toLowerCase()}>{x.Current.Name}</li>
     )
 
     return (

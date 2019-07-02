@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import dollBackground from '../../assets/wow/paperdoll/char-background-transparent.png'
 import itemIconEmpty from '../../assets/wow/paperdoll/icon-border-large.png'
 import { Slot, Equipped } from '../../store/paperDoll/types'
 import { Injections } from '../../store/paperDoll/actions'
 import { ItemPicker } from '../itemPicker/'
+import { Tooltip } from '../itemPicker/tooltip'
 
 // unused: just for docs so I remember how do do shit with SyntheticEvent
 export type Handler = (slot: Slot, event: React.SyntheticEvent<{ fieldA: string }>) => void
@@ -41,8 +42,21 @@ const ItemIcon: React.FC<IconProps> = ({ slot, css }) => {
     }, css)
 
 
-    const picker = state.focused ? <ItemPicker slot={slot} /> : undefined
-    return (
+    const ref: React.RefObject<HTMLDivElement> = React.createRef()
+
+    // dont let focus get swallowed by Tooltip wrapper when it disappears
+    useEffect(() => {
+        if (state.focused && ref.current) {
+            ref.current.focus()
+        }
+    }, [state]);
+
+    let contents;
+    if (state.focused) {
+        contents = <ItemPicker slot={slot} />
+    }
+
+    const data = (
         <div className={slot.toLowerCase()}
             tabIndex={-1}
             style={styles}
@@ -50,13 +64,19 @@ const ItemIcon: React.FC<IconProps> = ({ slot, css }) => {
             onFocus={deltaState({ focused: true })}
             onMouseOver={deltaState({ hovered: true })}
             onMouseOut={deltaState({ hovered: false })}
+            ref={ref}
         >
-            {picker}
+            {contents}
         </div>
     )
 
-}
+    if (state.hovered && !state.focused) {
+        return Tooltip({ content: 'tooltip!', children: data })
+    } else {
+        return data
+    }
 
+}
 
 export const PaperDoll: React.FC<Props> = ({ actions, equipped }) => {
 
