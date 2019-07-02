@@ -9,18 +9,59 @@ export interface Props {
 }
 
 interface State {
-    query?: string
+    query: string
     available: ItemSearchResult[]
-    selected?: ItemSearchResult
+    selected?: number // index in available
+}
+
+const initialState: State = {
+    query: "",
+    available: [
+        {
+            ID: 123,
+            Icon: 'some-icon',
+            Current: {
+                Name: 'test-item-rare',
+                quality: 'rare',
+            },
+        },
+        {
+            ID: 123,
+            Icon: 'some-icon',
+            Current: {
+                Name: 'test-item-common',
+                quality: 'common',
+            },
+        },
+        {
+            ID: 123,
+            Icon: 'some-icon',
+            Current: {
+                Name: 'test-item-uncommon',
+                quality: 'uncommon',
+            },
+        }
+    ],
 }
 
 // https://itemization.info/tooltip/19946
 
 export const ItemPicker: React.FC<Props> = ({ slot }) => {
-    // text box, select button (accepts enter or button click), list of selections
+    // text box, list of selections.
+    const [state, setState] = useState(initialState)
+
+    const items = state.available.map(
+        x => <li className={x.Current.quality.toLowerCase()}>{x.Current.Name}</li>
+    )
+
     return (
-        <div>
-        </div>
+        <div
+            style={{ display: 'flex', visibility: 'hidden' }}
+            className={[slot, 'item-select'].join(' ')}
+        >
+            <input type="text" />
+            <ul style={{ padding: 0, marginTop: 0 }}>{items}</ul>
+        </div >
     )
 }
 

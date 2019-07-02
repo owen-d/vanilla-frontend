@@ -67,3 +67,39 @@
 .set-name {
 	color: #ffd100;
 }
+
+
+
+.item-select {
+    border: 1px solid #383838;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-family: 'Open Sans',sans-serif;
+    font-size: 13px;
+    background: #202020;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    flex-direction: column;
+    height: 50%;
+    width: 30%;
+}
+
+.item-select input {
+    background: #202020;
+    border: 1px solid #383838;
+    color: white;
+    height: 3vh;
+    flex-grow: 1;
+}
+
+
+.item-select ul li {
+    justify-content: flex-end;
+    padding: 4px 8px;
+    cursor: pointer;
+    list-style-type: none;
+    user-select: none;
+    border-top: 1px solid #383838;
+    flex: 1;
+}

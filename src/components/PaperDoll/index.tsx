@@ -1,7 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import dollBackground from '../../assets/wow/paperdoll/char-background-transparent.png'
 import itemIconEmpty from '../../assets/wow/paperdoll/icon-border-large.png'
-import { Parser } from '../../lib/effectParser/parser'
 import { Slot, Equipped } from '../../store/paperDoll/types'
 import { Injections } from '../../store/paperDoll/actions'
 import { ItemPicker } from '../itemPicker/'
@@ -14,53 +13,84 @@ export interface Props {
     actions: Injections
 }
 
+interface IconState {
+    focused: boolean
+    hovered: boolean
+}
+
+const initialIconState: IconState = {
+    focused: false,
+    hovered: false,
+}
+
+interface IconProps {
+    slot: Slot
+    css: React.CSSProperties
+}
+
+const ItemIcon: React.FC<IconProps> = ({ slot, css }) => {
+    const deltaState = (deltas: Partial<IconState>) => () => setState({ ...state, ...deltas })
+    const [state, setState] = useState(initialIconState)
+
+    const styles = Object.assign({
+        position: 'absolute',
+        width: '12%',
+        height: '11%',
+        opacity: state.focused || state.hovered ? 1 : 0.5,
+    }, css)
+    styles.backgroundImage = `url(${itemIconEmpty})`
+
+    return (
+        <div className={slot.toLowerCase()}
+            style={styles}
+            onBlur={deltaState({ focused: false })}
+            onFocus={deltaState({ focused: true })}
+            onMouseOver={deltaState({ hovered: true })}
+            onMouseOut={deltaState({ hovered: false })}
+        >
+            <ItemPicker slot={slot} />
+        </div>
+    )
+
+}
+
 
 export const PaperDoll: React.FC<Props> = ({ actions, equipped }) => {
 
-    const mkIcon = (slot: Slot, css: React.CSSProperties) => {
-        const styles = Object.assign({
-            position: 'absolute',
-            backgroundImage: itemIconEmpty,
-            width: '12%',
-            height: '10%',
-        }, css)
-
-        return (
-            <div className={slot.toLowerCase()}
-                style={styles}
-            />
-        )
-    }
-
+    /* 555 x 612 -- default image dims */
+    const widthCoeff = 555 / 612
     const containerStyles: React.CSSProperties = {
         position: 'relative',
+        backgroundImage: `url(${dollBackground})`,
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        width: (widthCoeff * 75) + 'vh',
+        height: '75vh',
     }
-
     return (
         <div className="paperDoll" style={containerStyles}>
-            <img src={dollBackground} alt="paper doll" />
 
-            {mkIcon(Slot.Head, { top: '4.3%', left: '3.7%' })}
-            {mkIcon(Slot.Gloves, { top: '4.3%', left: '83.3%' })}
-            {mkIcon(Slot.Neck, { top: '14.9%', left: '3.7%' })}
-            {mkIcon(Slot.Belt, { top: '14.9%', left: '83.3%' })}
-            {mkIcon(Slot.Shoulders, { top: '25.2%', left: '3.7%' })}
-            {mkIcon(Slot.Pants, { top: '25.2%', left: '83.3%' })}
-            {mkIcon(Slot.Cloak, { top: '35.3%', left: '3.7%' })}
-            {mkIcon(Slot.Boots, { top: '35.3%', left: '83.3%' })}
-            {mkIcon(Slot.Chest, { top: '46%', left: '3.7%' })}
-            {mkIcon(Slot.Ring1, { top: '46%', left: '83.3%' })}
-            {mkIcon(Slot.Ring2, { top: '56%', left: '83.3%' })}
-            {mkIcon(Slot.Trinket1, { top: '66.4%', left: '83.3%' })}
-            {mkIcon(Slot.Bracers, { top: '77.2%', left: '3.7%' })}
-            {mkIcon(Slot.Trinket2, { top: '77.2%', left: '83.3%' })}
+            <ItemIcon slot={Slot.Head} css={{ top: '4.3%', left: '3.7%' }} />
+            <ItemIcon slot={Slot.Gloves} css={{ top: '4.3%', left: '83.3%' }} />
+            <ItemIcon slot={Slot.Neck} css={{ top: '14.9%', left: '3.7%' }} />
+            <ItemIcon slot={Slot.Belt} css={{ top: '14.9%', left: '83.3%' }} />
+            <ItemIcon slot={Slot.Shoulders} css={{ top: '25.2%', left: '3.7%' }} />
+            <ItemIcon slot={Slot.Pants} css={{ top: '25.2%', left: '83.3%' }} />
+            <ItemIcon slot={Slot.Cloak} css={{ top: '35.3%', left: '3.7%' }} />
+            <ItemIcon slot={Slot.Boots} css={{ top: '35.3%', left: '83.3%' }} />
+            <ItemIcon slot={Slot.Chest} css={{ top: '46%', left: '3.7%' }} />
+            <ItemIcon slot={Slot.Ring1} css={{ top: '46%', left: '83.3%' }} />
+            <ItemIcon slot={Slot.Ring2} css={{ top: '56%', left: '83.3%' }} />
+            <ItemIcon slot={Slot.Trinket1} css={{ top: '66.4%', left: '83.3%' }} />
+            <ItemIcon slot={Slot.Bracers} css={{ top: '77.2%', left: '3.7%' }} />
+            <ItemIcon slot={Slot.Trinket2} css={{ top: '77.2%', left: '83.3%' }} />
 
-            {mkIcon(Slot.Mainhand, { top: '82.6%', left: '32%' })}
-            {mkIcon(Slot.Offhand, { top: '82.6%', left: '44%' })}
-            {mkIcon(Slot.Ranged, { top: '82.6%', left: '55.5%' })}
+            <ItemIcon slot={Slot.Mainhand} css={{ top: '82.6%', left: '32%' }} />
+            <ItemIcon slot={Slot.Offhand} css={{ top: '82.6%', left: '44%' }} />
+            <ItemIcon slot={Slot.Ranged} css={{ top: '82.6%', left: '55.5%' }} />
 
         </div>
     )
 }
 
-                        // 23324 max items
+                                                // 23324 max items
