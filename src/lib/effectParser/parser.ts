@@ -1,9 +1,8 @@
 import { AttrIdentifier } from '../vanillaApi/'
-import { Effect } from '../classicdb/effect'
 import { Maybe } from '../util/maybe'
 
 export interface HasParser {
-  parse: (arg0: Effect) => ScaledAttr[]
+  parse: (arg0: string) => ScaledAttr[]
 }
 
 export interface ScaledAttr {
@@ -15,7 +14,7 @@ export const Parser = {
   parse
 }
 
-function parse(eff: Effect): ScaledAttr[] {
+function parse(eff: string): ScaledAttr[] {
   return Array.prototype.concat.call([], ...effectFilters.map(f => f(eff)))
 }
 
@@ -26,10 +25,10 @@ const effectFilters = [
   spellCrit,
 ]
 
-function spellDamageSingleSchool(eff: Effect): ScaledAttr[] {
+function spellDamageSingleSchool(eff: string): ScaledAttr[] {
   const re = /Increases damage done by ([A-Za-z]+) spells and effects by up to ([0-9+])./;
 
-  const res = re.exec(eff.description)
+  const res = re.exec(eff)
   if (res === null) {
     return []
   }
@@ -46,9 +45,9 @@ function spellDamageSingleSchool(eff: Effect): ScaledAttr[] {
 
 }
 
-function spellDamageAllSchools(eff: Effect): ScaledAttr[] {
+function spellDamageAllSchools(eff: string): ScaledAttr[] {
   const re = /Increases damage and healing done by magical spells and effects by up to ([0-9]+)./;
-  const res = re.exec(eff.description)
+  const res = re.exec(eff)
 
   if (res === null) {
     return []
@@ -59,10 +58,10 @@ function spellDamageAllSchools(eff: Effect): ScaledAttr[] {
 
 }
 
-function spellHit(eff: Effect): ScaledAttr[] {
+function spellHit(eff: string): ScaledAttr[] {
   const re = /Improves your chance to hit with spells by ([0-9]+)%./;
 
-  const res = re.exec(eff.description)
+  const res = re.exec(eff)
 
   if (res === null) {
     return []
@@ -72,10 +71,10 @@ function spellHit(eff: Effect): ScaledAttr[] {
   return [{ scale: parseInt(n), attr: AttrIdentifier.SpellHit }]
 }
 
-function spellCrit(eff: Effect): ScaledAttr[] {
+function spellCrit(eff: string): ScaledAttr[] {
   const re = /Improves your chance to get a critical strike with spells by ([0-9]+)%./;
 
-  const res = re.exec(eff.description)
+  const res = re.exec(eff)
 
   if (res === null) {
     return []

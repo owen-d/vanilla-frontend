@@ -1,9 +1,3 @@
-/**
- * @fileoverview Project wide functions.
- * @author Andreas Kruhlmann
- * @since 1.2.0
- */
-
 import * as request from "request-promise"
 import * as config from "./config"
 import {

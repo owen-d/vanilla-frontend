@@ -1,9 +1,3 @@
-/**
- * @fileoverview Application wide constants.
- * @author Andreas Kruhlmann
- * @since 1.2.0
- */
-
 import * as cnf from "./config";
 
 export const html_tag_regex = /\s*(<[^>]*>)/g;

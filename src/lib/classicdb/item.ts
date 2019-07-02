@@ -1,9 +1,3 @@
-/**
- * @fileoverview Class definition for Item.
- * @author Andreask Kruhlmann
- * @since 1.2.0
- */
-
 import * as cheerio from "cheerio";
 import * as request from "request-promise";
 import * as config from './config'
@@ -13,7 +7,7 @@ import {
   fetch_thumbnail
 } from "./lib";
 import { CharacterClass, ItemBinding } from "./types";
-import { Effect, html_lines } from "./effect";
+import { html_lines, parse_effects } from "./effect";
 
 export class Item {
 
@@ -23,14 +17,14 @@ export class Item {
    * @async
    * @param id - Database item id.
    * @param href - Link to item.
-   * @param effects - List of item effects.
    * @param table - Item tooltip table to parse.
    * @returns - Generated item.
    */
   public static async from_table(id: string,
     href: string,
-    effects: Effect[],
-    table: Cheerio): Promise<Item> {
+    table: Cheerio,
+    misc_table: Cheerio,
+  ): Promise<Item> {
     const $ = cheerio.load(table.html() || "");
     const thumbnail = await fetch_thumbnail(id);
     const table_contents = table.find("tr td").first();
@@ -39,6 +33,7 @@ export class Item {
     const lines = html_lines(html)
     const name_node = table_contents.find("b").first();
     const class_nodes = table_contents.find("font");
+    const effects = parse_effects(misc_table);
 
     const name = name_node.text();
     const quality = css_class_to_item_quality(name_node.attr("class"));
@@ -154,9 +149,8 @@ export class Item {
     // effects, set bonuses and flavor text.
     const stat_table = tables.get(0);
     const misc_table = tables.get(1);
-    const effects = Effect.from_item_table($(misc_table));
 
-    return Item.from_table(id, href, await effects, $(stat_table));
+    return Item.from_table(id, href, $(stat_table), $(misc_table));
   }
 
   /**
@@ -186,7 +180,7 @@ export class Item {
   public level_requirement?: number;
   public durability?: number;
   public primary_stats?: string[];
-  public effects?: Effect[];
+  public effects?: string[];
   public armor?: number;
   public equipment_slot?: string;
   public equipment_type?: string;
@@ -230,7 +224,7 @@ export class Item {
     level_requirement?: number,
     durability?: number,
     primary_stats?: string[],
-    effects?: Effect[],
+    effects?: string[],
     armor?: number,
     equipment_slot?: string,
     equipment_type?: string,

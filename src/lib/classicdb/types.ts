@@ -1,15 +1,3 @@
-/**
- * @fileoverview Type definitions.
- * @author Andreas Kruhlmann
- * @since 1.2.0
- */
-
-import { Effect } from "./effect";
-
-export interface ParsedTooltip {
-  effects: Effect[];
-  stats: string[];
-}
 
 export interface SpellDetails {
   desc: string;
@@ -21,11 +9,6 @@ export interface ChannelIdentity {
   guild_id: string;
   name: string;
   owner_id: string;
-}
-
-export interface SetBonus {
-  pieces_required: string;
-  effect: Effect;
 }
 
 export enum CharacterClass {
@@ -80,7 +63,7 @@ export interface ItemImplementable {
   level_requirement?: number;
   durability?: number;
   primary_stats?: string[];
-  effects?: Effect[];
+  effects?: string[];
   armor?: number;
   equipment_slot?: string;
   equipment_type?: string;
@@ -95,10 +78,6 @@ export interface ItemizationQuery {
   patch: string;
 }
 
-export interface ItemizationEffect {
-  Trigger: string;
-  Effect: string;
-}
 
 export interface ItemizationDamageType {
   Min: number;
@@ -137,7 +116,7 @@ export interface ItemizationItem {
   Durability?: number;
   RequiredLevel?: number;
   ItemLevel: number;
-  Effects?: ItemizationEffect[];
+  Effects?: string[];
   Source?: {
     Type?: string;
     Entity?: string;
