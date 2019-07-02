@@ -56,7 +56,9 @@ export const ItemPicker: React.FC<Props> = ({ slot }) => {
 
     return (
         <div
-            style={{ display: 'flex', visibility: 'hidden' }}
+            style={{
+                display: 'flex'
+            }}
             className={[slot, 'item-select'].join(' ')}
         >
             <input type="text" />

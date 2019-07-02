@@ -37,18 +37,21 @@ const ItemIcon: React.FC<IconProps> = ({ slot, css }) => {
         width: '12%',
         height: '11%',
         opacity: state.focused || state.hovered ? 1 : 0.5,
+        backgroundImage: `url(${itemIconEmpty})`,
     }, css)
-    styles.backgroundImage = `url(${itemIconEmpty})`
 
+
+    const picker = state.focused ? <ItemPicker slot={slot} /> : undefined
     return (
         <div className={slot.toLowerCase()}
+            tabIndex={-1}
             style={styles}
             onBlur={deltaState({ focused: false })}
             onFocus={deltaState({ focused: true })}
             onMouseOver={deltaState({ hovered: true })}
             onMouseOut={deltaState({ hovered: false })}
         >
-            <ItemPicker slot={slot} />
+            {picker}
         </div>
     )
 
