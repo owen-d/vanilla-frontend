@@ -3,11 +3,12 @@ import { Slot } from '../../store/paperDoll/types'
 import { suggest } from '../../lib/itemization/query'
 import { Item } from '../../lib/classicdb/item'
 import { Slot as SlotQuery, ItemSearchQuery, ItemSearchResult } from '../../lib/itemization/typings'
-import './tooltip.css'
+import './items.css'
 
 
 export interface Props {
     slot: Slot
+    ref?: React.RefObject<HTMLInputElement>
 }
 
 interface State {
@@ -48,7 +49,7 @@ const initialState: State = {
 
 // https://itemization.info/tooltip/19946
 
-export const ItemPicker: React.FC<Props> = ({ slot }) => {
+export const ItemPicker: React.FC<Props> = ({ slot, ref }) => {
     // text box, list of selections.
     const [state, setState] = useState(initialState)
 
@@ -63,7 +64,7 @@ export const ItemPicker: React.FC<Props> = ({ slot }) => {
             }}
             className={[slot, 'item-select'].join(' ')}
         >
-            <input type="text" />
+            <input type="text" ref={ref} />
             <ul style={{ padding: 0, marginTop: 0 }}>{items}</ul>
         </div >
     )

@@ -1,26 +1,52 @@
 import React, { useState } from 'react'
 import { Item } from '../../lib/classicdb/item'
-import Tippy, { TippyProps } from '@tippy.js/react'
+import TooltipTrigger from 'react-popper-tooltip';
+import { TooltipArg, ChildrenArg } from 'react-popper-tooltip/dist/types'
+import './tooltip.css'
 
-
-const JSXContent = () => (
-    <Tippy content={<span>Tooltip</span>}>
-        <button>My button</button>
-    </Tippy>
-)
-
-export function Tooltip(props: TippyProps) {
-    return (
-        <Tippy
-            animation="fade"
-            theme="translucent"
-            arrow={true}
-            delay={150}
-            boundary="viewport"
-            trigger="mouseenter"
+export const Tooltip = ({
+    children,
+    tooltip,
+    hideArrow,
+    ...props
+}: any) => (
+        <TooltipTrigger
             {...props}
+            tooltip={({
+                arrowRef,
+                tooltipRef,
+                getArrowProps,
+                getTooltipProps,
+                placement
+            }) => (
+                    <div
+                        {...getTooltipProps({
+                            ref: tooltipRef,
+                            className: 'tooltip-container'
+                        })}
+                    >
+                        {!hideArrow && (
+                            <div
+                                {...getArrowProps({
+                                    ref: arrowRef,
+                                    className: 'tooltip-arrow',
+                                    'data-placement': placement
+                                })}
+                            />
+                        )}
+                        {tooltip}
+                    </div>
+                )}
         >
-            {props.children}
-        </Tippy >
-    )
-}
+            {({ getTriggerProps, triggerRef }) => (
+                <span
+                    {...getTriggerProps({
+                        ref: triggerRef,
+                        className: 'trigger'
+                    })}
+                >
+                    {children}
+                </span>
+            )}
+        </TooltipTrigger>
+    );

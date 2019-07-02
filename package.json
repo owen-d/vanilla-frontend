@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@tippy.js/react": "^2.2.2",
     "@types/jest": "24.0.15",
     "@types/react": "16.8.22",
     "@types/react-dom": "16.8.4",
@@ -14,6 +13,7 @@
     "ramda": "^0.26.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-popper-tooltip": "^2.8.3",
     "react-redux": "^7.1.0",
     "react-scripts": "3.0.1",
     "redux": "^4.0.1",

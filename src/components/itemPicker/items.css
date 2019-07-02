@@ -1,0 +1,103 @@
+#tooltips {
+	margin-top: 40px;
+}
+#tooltips img {
+	box-shadow: 0px 0px 4px #000;
+}
+#tooltip {
+	font-family: Verdana, sans-serif;
+	border: thin solid gray;
+	background-color: #080d21;
+	text-align: left;
+	padding: 5px;
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	max-width: 303px;
+	display: inline-block;
+	vertical-align: top;
+}
+#tooltip .weapon {
+	min-width: 235px;
+}
+#tooltip .armor {
+	min-width: 130px;
+}
+#tooltip table {
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+#tooltip td {
+	font-size: 12px;
+	color: white;
+}
+#tooltip th {
+	font-size: 12px;
+	color: white;
+	font-weight: normal;
+	text-align: right
+}
+.name {
+	font-size: 14px;
+}
+.artifact {
+	color: #e5cc80 !important;
+}
+.legendary {
+	color: #ff8000 !important;
+}
+.epic {
+	color: #a335ee !important;
+}
+.rare {
+	color: #0070dd !important;
+}
+.uncommon {
+	color: #1eff00 !important;
+}
+.common {
+	color: white !important;
+}
+.poor {
+	color: #9d9d9d !important;
+}
+.effect {
+	color: #1eff00;
+}
+.set-name {
+	color: #ffd100;
+}
+
+
+
+.item-select {
+    border: 1px solid #383838;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-family: 'Open Sans',sans-serif;
+    font-size: 13px;
+    background: #202020;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    flex-direction: column;
+}
+
+.item-select input {
+    background: #202020;
+    border: 1px solid #383838;
+    color: white;
+    height: 3vh;
+    flex-grow: 1;
+}
+
+
+.item-select ul li {
+    justify-content: flex-end;
+    padding: 4px 8px;
+    cursor: pointer;
+    list-style-type: none;
+    user-select: none;
+    border-top: 1px solid #383838;
+    flex: 1;
+}

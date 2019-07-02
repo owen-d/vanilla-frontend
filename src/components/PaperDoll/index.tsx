@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, createRef } from 'react'
 import dollBackground from '../../assets/wow/paperdoll/char-background-transparent.png'
 import itemIconEmpty from '../../assets/wow/paperdoll/icon-border-large.png'
 import { Slot, Equipped } from '../../store/paperDoll/types'
@@ -30,8 +30,8 @@ interface IconProps {
 }
 
 const ItemIcon: React.FC<IconProps> = ({ slot, css }) => {
-    const deltaState = (deltas: Partial<IconState>) => () => setState({ ...state, ...deltas })
     const [state, setState] = useState(initialIconState)
+    const deltaState = (deltas: Partial<IconState>) => () => setState({ ...state, ...deltas })
 
     const styles = Object.assign({
         position: 'absolute',
@@ -39,43 +39,38 @@ const ItemIcon: React.FC<IconProps> = ({ slot, css }) => {
         height: '11%',
         opacity: state.focused || state.hovered ? 1 : 0.5,
         backgroundImage: `url(${itemIconEmpty})`,
+        zIndex: 10,
     }, css)
 
-
-    const ref: React.RefObject<HTMLDivElement> = React.createRef()
-
-    // dont let focus get swallowed by Tooltip wrapper when it disappears
-    useEffect(() => {
-        if (state.focused && ref.current) {
-            ref.current.focus()
-        }
-    }, [state]);
-
-    let contents;
-    if (state.focused) {
-        contents = <ItemPicker slot={slot} />
-    }
 
     const data = (
         <div className={slot.toLowerCase()}
             tabIndex={-1}
             style={styles}
-            onBlur={deltaState({ focused: false })}
-            onFocus={deltaState({ focused: true })}
-            onMouseOver={deltaState({ hovered: true })}
-            onMouseOut={deltaState({ hovered: false })}
-            ref={ref}
         >
-            {contents}
         </div>
     )
 
-    if (state.hovered && !state.focused) {
-        return Tooltip({ content: 'tooltip!', children: data })
-    } else {
-        return data
-    }
+    const picker = (
+        <ItemPicker slot={slot} />
+    )
 
+    return (
+        <Tooltip placement="top"
+            trigger="click"
+            tooltip={picker}
+            followCursor={true}
+        >
+            <Tooltip
+                placement="top"
+                trigger="hover"
+                tooltip="just hovering"
+                followCursor={true}
+            >
+                {data}
+            </Tooltip>
+        </Tooltip >
+    )
 }
 
 export const PaperDoll: React.FC<Props> = ({ actions, equipped }) => {
@@ -116,4 +111,4 @@ export const PaperDoll: React.FC<Props> = ({ actions, equipped }) => {
     )
 }
 
-                                                // 23324 max items
+                                                            // 23324 max items

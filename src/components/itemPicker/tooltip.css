@@ -1,105 +1,117 @@
-#tooltips {
-	margin-top: 40px;
-}
-#tooltips img {
-	box-shadow: 0px 0px 4px #000;
-}
-#tooltip {
-	font-family: Verdana, sans-serif;
-	border: thin solid gray;
-	background-color: #080d21;
-	text-align: left;
-	padding: 5px;
-	margin-left: 10px;
-	margin-right: 10px;
-	margin-bottom: 10px;
-	max-width: 303px;
-	display: inline-block;
-	vertical-align: top;
-}
-#tooltip .weapon {
-	min-width: 235px;
-}
-#tooltip .armor {
-	min-width: 130px;
-}
-#tooltip table {
-	border-spacing: 0;
-	border-collapse: collapse;
-}
-#tooltip td {
-	font-size: 12px;
-	color: white;
-}
-#tooltip th {
-	font-size: 12px;
-	color: white;
-	font-weight: normal;
-	text-align: right
-}
-.name {
-	font-size: 14px;
-}
-.artifact {
-	color: #e5cc80 !important;
-}
-.legendary {
-	color: #ff8000 !important;
-}
-.epic {
-	color: #a335ee !important;
-}
-.rare {
-	color: #0070dd !important;
-}
-.uncommon {
-	color: #1eff00 !important;
-}
-.common {
-	color: white !important;
-}
-.poor {
-	color: #9d9d9d !important;
-}
-.effect {
-	color: #1eff00;
-}
-.set-name {
-	color: #ffd100;
+
+.tooltip-container {
+  background-color: #202020;
+  border-radius: 3px;
+  border: 1px solid #383838;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  margin: 0.4rem;
+  padding: 0.4rem;
+  transition: opacity 0.3s;
+  z-index: 2147483647;
 }
 
-
-
-.item-select {
-    border: 1px solid #383838;
-    border-radius: 4px;
-    white-space: nowrap;
-    font-family: 'Open Sans',sans-serif;
-    font-size: 13px;
-    background: #202020;
-    padding: 0;
-    margin: 0;
-    overflow: hidden;
-    flex-direction: column;
-    height: 50%;
-    width: 30%;
+.tooltip-arrow {
+  display: none;
+  height: 1rem;
+  position: absolute;
+  width: 1rem;
 }
 
-.item-select input {
-    background: #202020;
-    border: 1px solid #383838;
-    color: white;
-    height: 3vh;
-    flex-grow: 1;
+.tooltip-arrow::before {
+  border-style: solid;
+  content: '';
+  display: block;
+  height: 0;
+  margin: auto;
+  width: 0;
 }
 
+.tooltip-arrow::after {
+  border-style: solid;
+  content: '';
+  display: block;
+  height: 0;
+  margin: auto;
+  position: absolute;
+  width: 0;
+}
 
-.item-select ul li {
-    justify-content: flex-end;
-    padding: 4px 8px;
-    cursor: pointer;
-    list-style-type: none;
-    user-select: none;
-    border-top: 1px solid #383838;
-    flex: 1;
+.tooltip-arrow[data-placement*='bottom'] {
+  height: 1rem;
+  left: 0;
+  margin-top: -0.4rem;
+  top: 0;
+  width: 1rem;
+}
+
+.tooltip-arrow[data-placement*='bottom']::before {
+  border-color: transparent transparent silver transparent;
+  border-width: 0 0.5rem 0.4rem 0.5rem;
+  position: absolute;
+  top: -1px;
+}
+
+.tooltip-arrow[data-placement*='bottom']::after {
+  border-color: transparent transparent white transparent;
+  border-width: 0 0.5rem 0.4rem 0.5rem;
+}
+
+.tooltip-arrow[data-placement*='top'] {
+  bottom: 0;
+  height: 1rem;
+  left: 0;
+  margin-bottom: -1rem;
+  width: 1rem;
+}
+
+.tooltip-arrow[data-placement*='top']::before {
+  border-color: silver transparent transparent transparent;
+  border-width: 0.4rem 0.5rem 0 0.5rem;
+  position: absolute;
+  top: 1px;
+}
+
+.tooltip-arrow[data-placement*='top']::after {
+  border-color: white transparent transparent transparent;
+  border-width: 0.4rem 0.5rem 0 0.5rem;
+}
+
+.tooltip-arrow[data-placement*='right'] {
+  height: 1rem;
+  left: 0;
+  margin-left: -0.7rem;
+  width: 1rem;
+}
+
+.tooltip-arrow[data-placement*='right']::before {
+  border-color: transparent silver transparent transparent;
+  border-width: 0.5rem 0.4rem 0.5rem 0;
+}
+
+.tooltip-arrow[data-placement*='right']::after {
+  border-color: transparent white transparent transparent;
+  border-width: 0.5rem 0.4rem 0.5rem 0;
+  left: 6px;
+  top: 0;
+}
+
+.tooltip-arrow[data-placement*='left'] {
+  height: 1rem;
+  margin-right: -0.7rem;
+  right: 0;
+  width: 1rem;
+}
+
+.tooltip-arrow[data-placement*='left']::before {
+  border-color: transparent transparent transparent silver;
+  border-width: 0.5rem 0 0.5rem 0.4em;
+}
+
+.tooltip-arrow[data-placement*='left']::after {
+  border-color: transparent transparent transparent white;
+  border-width: 0.5rem 0 0.5rem 0.4em;
+  left: 3px;
+  top: 0;
 }
