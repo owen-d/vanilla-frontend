@@ -79,7 +79,6 @@ const ItemIcon: React.FC<IconProps> = ({ item, slot, css, ...props }) => {
 }
 
 export const PaperDoll: React.FC<Props> = ({ actions, equipped }) => {
-    console.log(actions)
 
     /* 555 x 612 -- default image dims */
     const widthCoeff = 555 / 612
@@ -168,4 +167,3 @@ export const PaperDoll: React.FC<Props> = ({ actions, equipped }) => {
     )
 }
 
-                                                            // 23324 max items

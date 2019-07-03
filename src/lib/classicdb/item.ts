@@ -175,7 +175,7 @@ export class Item {
   public id: string;
   public name: string;
   public href: string;
-  public thumbnail_href: string;
+  public thumbnail: string;
   public quality_color: string;
   public unique: boolean;
   public binds_on: ItemBinding;
@@ -202,7 +202,7 @@ export class Item {
    * @param name - In-game name.
    * @param href - Database link.
    * @param quality_color - Color of quality (purple for epic, blue for rare);
-   * @param thumbnail_href - Thumbnail link.
+   * @param thumbnail - Thumbnail base64encoded.
    * @param unique - Whether the item is unique.
    * @param binds_on - Type of binding (pickup, equip, no binding).
    * @param class_restrictions - List of classes, which can equip the item.
@@ -221,7 +221,7 @@ export class Item {
   public constructor(id: string,
     name: string,
     href: string,
-    thumbnail_href: string,
+    thumbnail: string,
     quality_color: string,
     unique: boolean,
     binds_on: ItemBinding,
@@ -240,7 +240,7 @@ export class Item {
     this.id = id;
     this.name = name;
     this.href = href;
-    this.thumbnail_href = thumbnail_href;
+    this.thumbnail = thumbnail;
     this.quality_color = quality_color;
     this.unique = unique;
     this.binds_on = binds_on;
@@ -263,7 +263,7 @@ export class Item {
       id: this.id,
       name: this.name,
       href: this.href,
-      thumbnail_href: this.thumbnail_href,
+      thumbnail: this.thumbnail,
       quality_color: this.quality_color,
       unique: this.unique,
       binds_on: this.binds_on,
@@ -291,7 +291,7 @@ export class Item {
       id,
       name,
       href,
-      thumbnail_href,
+      thumbnail,
       quality_color,
       unique,
       binds_on,
@@ -313,7 +313,7 @@ export class Item {
       id,
       name,
       href,
-      thumbnail_href,
+      thumbnail,
       quality_color,
       unique,
       binds_on,
@@ -342,7 +342,7 @@ export interface JSONRepr {
   id: string
   name: string
   href: string
-  thumbnail_href: string
+  thumbnail: string
   quality_color: string
   unique: boolean
   binds_on: ItemBinding

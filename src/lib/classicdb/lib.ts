@@ -83,7 +83,7 @@ export function find_first_item_index(item_details: number[][]): number {
  * @param spell - If true will look for a spell, else looks
  * for an item.
  */
-export async function fetch_thumbnail(id: string,
+export async function fetch_thumbnail_href(id: string | undefined,
   spell = false): Promise<string> {
   const url = `${config.host}/?${spell ? "spell" : "item"}=${id}`;
   const html = await request.get(url);
@@ -97,7 +97,21 @@ export async function fetch_thumbnail(id: string,
   }
   const split_js = split_dom[0].trim().split("Icon.create");
   const icon = split_js[split_js.length - 1].split("'")[1];
+  if (!icon) {
+    return undefined
+  }
   return get_large_icon_url(icon);
+}
+
+export async function fetch_thumbnail(id: string): Promise<string | undefined> {
+  const href = await fetch_thumbnail_href(id)
+  if (!href) {
+    return undefined
+  }
+  // this is intended to run in nodejs. perhaps that's why the types don't line up
+  // in this project. Therefore we give it explicit any.
+  const data: any = await request.get(href)
+  return Buffer.from(data).toString('base64')
 }
 
 /**
