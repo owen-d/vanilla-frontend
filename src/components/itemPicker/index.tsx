@@ -1,14 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { Slot } from '../../store/paperDoll/types'
 import { suggest } from '../../lib/itemization/query'
 import { Item } from '../../lib/classicdb/item'
-import { Slot as SlotQuery, ItemSearchQuery, ItemSearchResult } from '../../lib/itemization/typings'
+import { Slot as SlotQuery, ItemSearchResult } from '../../lib/itemization/typings'
+import { Injections } from '../../store/paperDoll/actions'
 import './items.css'
 
 
 export interface Props {
     slot: Slot
-    ref?: React.RefObject<HTMLInputElement>
+    actions: Injections
+    inputRef: React.RefObject<HTMLInputElement>
 }
 
 interface State {
@@ -49,13 +51,43 @@ const initialState: State = {
 
 // https://itemization.info/tooltip/19946
 
-export const ItemPicker: React.FC<Props> = ({ slot, ref }) => {
+export const ItemPicker: React.FC<Props> = ({ inputRef, slot, actions }) => {
     // text box, list of selections.
     const [state, setState] = useState(initialState)
 
     const items = state.available.map(
         x => <li key={x.ID} className={x.Current.quality.toLowerCase()}>{x.Current.Name}</li>
     )
+
+
+    const handleKey = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            if (state.selected) {
+                const itemMeta = state.available[state.selected]
+                const item = await Item.from_id(itemMeta.ID, itemMeta.Icon)
+                setState({ ...state, query: '' })
+
+                actions.equipItem({
+                    slot,
+                    item,
+                })
+            }
+
+            if (inputRef.current) {
+                inputRef.current.value = ''
+            }
+        }
+    }
+
+    // should debounce this, but would have to wire it up with hooks I think.
+    const handleChange = async (e: React.FormEvent<HTMLInputElement>) => {
+        const query = e.currentTarget.value
+        /* const available = await suggest({
+         *     slots: toSlotsQuery(slot),
+         *     query,
+         * })
+         * setState({ ...state, available, query }) */
+    }
 
     return (
         <div
@@ -64,7 +96,11 @@ export const ItemPicker: React.FC<Props> = ({ slot, ref }) => {
             }}
             className={[slot, 'item-select'].join(' ')}
         >
-            <input type="text" ref={ref} />
+            <input type="text"
+                ref={inputRef}
+                onChange={handleChange}
+                onKeyPress={handleKey}
+            />
             <ul style={{ padding: 0, marginTop: 0 }}>{items}</ul>
         </div >
     )

@@ -20,13 +20,15 @@ export class Item {
    * @param table - Item tooltip table to parse.
    * @returns - Generated item.
    */
-  public static async from_table(id: string,
+  public static async from_table(
+    id: string,
     href: string,
     table: Cheerio,
     misc_table: Cheerio,
+    icon?: string,
   ): Promise<Item> {
     const $ = cheerio.load(table.html() || "");
-    const thumbnail = await fetch_thumbnail(id);
+    const thumbnail = icon || await fetch_thumbnail(id);
     const table_contents = table.find("tr td").first();
     const html = table.find("tr td").first()
     const htmlSafe = html.html() || ""
@@ -139,9 +141,12 @@ export class Item {
    * @param html - Tooltip HTML.
    * @returns - Generated item.
    */
-  public static async from_tooltip(id: string,
+  public static async from_tooltip(
+    id: string,
     href: string,
-    html: string): Promise<Item> {
+    html: string,
+    icon?: string
+  ): Promise<Item> {
     const $ = cheerio.load(html);
     const tables = $("div.tooltip > table tbody tr td").children("table");
 
@@ -150,7 +155,7 @@ export class Item {
     const stat_table = tables.get(0);
     const misc_table = tables.get(1);
 
-    return Item.from_table(id, href, $(stat_table), $(misc_table));
+    return Item.from_table(id, href, $(stat_table), $(misc_table), icon);
   }
 
   /**
@@ -160,10 +165,10 @@ export class Item {
    * @param id - Database item id.
    * @returns - Generated item.
    */
-  public static async from_id(id: string | number): Promise<Item> {
+  public static async from_id(id: string | number, icon?: string): Promise<Item> {
     const url = `${config.host}/?item=${id}`;
     const html = await request.get({ uri: url });
-    return Item.from_tooltip(`${id}`, url, html);
+    return Item.from_tooltip(`${id}`, url, html, icon);
   }
 
   // Required properties.

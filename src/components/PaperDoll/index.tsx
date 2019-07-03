@@ -1,12 +1,13 @@
-import React, { useState, createRef } from 'react'
+import React, { useState, useRef } from 'react'
 import dollBackground from '../../assets/wow/paperdoll/char-background-transparent.png'
 import itemIconEmpty from '../../assets/wow/paperdoll/icon-border-large.png'
 import { Slot, Equipped } from '../../store/paperDoll/types'
 import { Injections } from '../../store/paperDoll/actions'
 import { ItemPicker } from '../itemPicker/'
 import { Tooltip } from '../itemPicker/tooltip'
+import { Item } from '../../lib/classicdb/item'
 
-// unused: just for docs so I remember how do do shit with SyntheticEvent
+// unused: just for docs so I remember how do do stuff with SyntheticEvent
 export type Handler = (slot: Slot, event: React.SyntheticEvent<{ fieldA: string }>) => void
 
 export interface Props {
@@ -25,11 +26,13 @@ const initialIconState: IconState = {
 }
 
 interface IconProps {
+    item?: Item
+    actions: Injections
     slot: Slot
     css: React.CSSProperties
 }
 
-const ItemIcon: React.FC<IconProps> = ({ slot, css }) => {
+const ItemIcon: React.FC<IconProps> = ({ item, slot, css, ...props }) => {
     const [state, setState] = useState(initialIconState)
     const deltaState = (deltas: Partial<IconState>) => () => setState({ ...state, ...deltas })
 
@@ -38,7 +41,7 @@ const ItemIcon: React.FC<IconProps> = ({ slot, css }) => {
         width: '12%',
         height: '11%',
         opacity: state.focused || state.hovered ? 1 : 0.5,
-        backgroundImage: `url(${itemIconEmpty})`,
+        backgroundImage: item ? item.thumbnail_href : `url(${itemIconEmpty})`,
         zIndex: 10,
     }, css)
 
@@ -51,8 +54,10 @@ const ItemIcon: React.FC<IconProps> = ({ slot, css }) => {
         </div>
     )
 
+    const inputRef = useRef<HTMLInputElement>(null)
     const picker = (
-        <ItemPicker slot={slot} />
+        <ItemPicker inputRef={inputRef} slot={slot} actions={props.actions} />
+
     )
 
     return (
@@ -74,6 +79,7 @@ const ItemIcon: React.FC<IconProps> = ({ slot, css }) => {
 }
 
 export const PaperDoll: React.FC<Props> = ({ actions, equipped }) => {
+    console.log(actions)
 
     /* 555 x 612 -- default image dims */
     const widthCoeff = 555 / 612
@@ -88,24 +94,75 @@ export const PaperDoll: React.FC<Props> = ({ actions, equipped }) => {
     return (
         <div className="paperDoll" style={containerStyles}>
 
-            <ItemIcon slot={Slot.Head} css={{ top: '4.3%', left: '3.7%' }} />
-            <ItemIcon slot={Slot.Gloves} css={{ top: '4.3%', left: '83.3%' }} />
-            <ItemIcon slot={Slot.Neck} css={{ top: '14.9%', left: '3.7%' }} />
-            <ItemIcon slot={Slot.Belt} css={{ top: '14.9%', left: '83.3%' }} />
-            <ItemIcon slot={Slot.Shoulders} css={{ top: '25.2%', left: '3.7%' }} />
-            <ItemIcon slot={Slot.Pants} css={{ top: '25.2%', left: '83.3%' }} />
-            <ItemIcon slot={Slot.Cloak} css={{ top: '35.3%', left: '3.7%' }} />
-            <ItemIcon slot={Slot.Boots} css={{ top: '35.3%', left: '83.3%' }} />
-            <ItemIcon slot={Slot.Chest} css={{ top: '46%', left: '3.7%' }} />
-            <ItemIcon slot={Slot.Ring1} css={{ top: '46%', left: '83.3%' }} />
-            <ItemIcon slot={Slot.Ring2} css={{ top: '56%', left: '83.3%' }} />
-            <ItemIcon slot={Slot.Trinket1} css={{ top: '66.4%', left: '83.3%' }} />
-            <ItemIcon slot={Slot.Bracers} css={{ top: '77.2%', left: '3.7%' }} />
-            <ItemIcon slot={Slot.Trinket2} css={{ top: '77.2%', left: '83.3%' }} />
+            <ItemIcon slot={Slot.Head}
+                item={equipped[Slot.Head]}
+                actions={actions}
+                css={{ top: '4.3%', left: '3.7%' }} />
+            <ItemIcon slot={Slot.Gloves}
+                item={equipped[Slot.Gloves]}
+                actions={actions}
+                css={{ top: '4.3%', left: '83.3%' }} />
+            <ItemIcon slot={Slot.Neck}
+                item={equipped[Slot.Neck]}
+                actions={actions}
+                css={{ top: '14.9%', left: '3.7%' }} />
+            <ItemIcon slot={Slot.Belt}
+                item={equipped[Slot.Belt]}
+                actions={actions}
+                css={{ top: '14.9%', left: '83.3%' }} />
+            <ItemIcon slot={Slot.Shoulders}
+                item={equipped[Slot.Shoulders]}
+                actions={actions}
+                css={{ top: '25.2%', left: '3.7%' }} />
+            <ItemIcon slot={Slot.Pants}
+                item={equipped[Slot.Pants]}
+                actions={actions}
+                css={{ top: '25.2%', left: '83.3%' }} />
+            <ItemIcon slot={Slot.Cloak}
+                item={equipped[Slot.Cloak]}
+                actions={actions}
+                css={{ top: '35.3%', left: '3.7%' }} />
+            <ItemIcon slot={Slot.Boots}
+                item={equipped[Slot.Boots]}
+                actions={actions}
+                css={{ top: '35.3%', left: '83.3%' }} />
+            <ItemIcon slot={Slot.Chest}
+                item={equipped[Slot.Chest]}
+                actions={actions}
+                css={{ top: '46%', left: '3.7%' }} />
+            <ItemIcon slot={Slot.Ring1}
+                item={equipped[Slot.Ring1]}
+                actions={actions}
+                css={{ top: '46%', left: '83.3%' }} />
+            <ItemIcon slot={Slot.Ring2}
+                item={equipped[Slot.Ring2]}
+                actions={actions}
+                css={{ top: '56%', left: '83.3%' }} />
+            <ItemIcon slot={Slot.Trinket1}
+                item={equipped[Slot.Trinket1]}
+                actions={actions}
+                css={{ top: '66.4%', left: '83.3%' }} />
+            <ItemIcon slot={Slot.Bracers}
+                item={equipped[Slot.Bracers]}
+                actions={actions}
+                css={{ top: '77.2%', left: '3.7%' }} />
+            <ItemIcon slot={Slot.Trinket2}
+                item={equipped[Slot.Trinket2]}
+                actions={actions}
+                css={{ top: '77.2%', left: '83.3%' }} />
 
-            <ItemIcon slot={Slot.Mainhand} css={{ top: '82.6%', left: '32%' }} />
-            <ItemIcon slot={Slot.Offhand} css={{ top: '82.6%', left: '44%' }} />
-            <ItemIcon slot={Slot.Ranged} css={{ top: '82.6%', left: '55.5%' }} />
+            <ItemIcon slot={Slot.Mainhand}
+                item={equipped[Slot.Mainhand]}
+                actions={actions}
+                css={{ top: '82.6%', left: '32%' }} />
+            <ItemIcon slot={Slot.Offhand}
+                item={equipped[Slot.Offhand]}
+                actions={actions}
+                css={{ top: '82.6%', left: '44%' }} />
+            <ItemIcon slot={Slot.Ranged}
+                item={equipped[Slot.Ranged]}
+                actions={actions}
+                css={{ top: '82.6%', left: '55.5%' }} />
 
         </div>
     )

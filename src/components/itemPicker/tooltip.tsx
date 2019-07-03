@@ -1,7 +1,5 @@
-import React, { useState } from 'react'
-import { Item } from '../../lib/classicdb/item'
+import React from 'react'
 import TooltipTrigger from 'react-popper-tooltip';
-import { TooltipArg, ChildrenArg } from 'react-popper-tooltip/dist/types'
 import './tooltip.css'
 
 export const Tooltip = ({

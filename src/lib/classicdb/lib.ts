@@ -3,7 +3,7 @@ import * as config from "./config"
 import {
   CharacterClass,
   ItemQuality
-} from "./types.js";
+} from "./types";
 
 /**
  * Returns the URL of an icon based on it's name in the JavaScript.

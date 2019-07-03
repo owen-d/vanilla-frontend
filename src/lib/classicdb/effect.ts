@@ -1,8 +1,5 @@
 import * as cheerio from "cheerio";
-import * as request from "request-promise";
-import * as config from "./config";
-import { html_tag_regex, misc_icon } from "./consts.js";
-import { fetch_thumbnail } from "./lib.js";
+import { html_tag_regex } from "./consts";
 
 export function parse_effects(table: Cheerio): string[] {
   const $ = cheerio.load(table.html() || "");
