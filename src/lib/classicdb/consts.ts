@@ -57,4 +57,4 @@ export const quality_colors_itemization: { [index: string]: number } = {
   ["Poor"]: 0x9D9D9D,
 };
 
-export const misc_icon = `${cnf.host}/images/icons/large/trade_engineering.jpg`;
+export const misc_icon = `${cnf.host}/images/icons/large/trade_engineering.png`;

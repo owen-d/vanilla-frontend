@@ -14,7 +14,7 @@ import {
  */
 export function get_large_icon_url(icon_name: string) {
   icon_name = icon_name.toLowerCase();
-  return `${config.host}/images/icons/large/${icon_name}.jpg`;
+  return `${config.host}/images/icons/large/${icon_name}.png`;
 }
 
 /**

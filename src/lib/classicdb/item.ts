@@ -258,4 +258,104 @@ export class Item {
     this.flavor_text = flavor_text;
   }
 
+  public toRepr(): JSONRepr {
+    return {
+      id: this.id,
+      name: this.name,
+      href: this.href,
+      thumbnail_href: this.thumbnail_href,
+      quality_color: this.quality_color,
+      unique: this.unique,
+      binds_on: this.binds_on,
+      class_restrictions: this.class_restrictions,
+      level_requirement: this.level_requirement,
+      durability: this.durability,
+      primary_stats: this.primary_stats,
+      effects: this.effects,
+      armor: this.armor,
+      equipment_slot: this.equipment_slot,
+      equipment_type: this.equipment_type,
+      damage_range: this.damage_range,
+      swing_speed: this.swing_speed,
+      dps: this.dps,
+      flavor_text: this.flavor_text,
+    }
+  }
+
+  public toJSON(): string {
+    return JSON.stringify(this.toRepr())
+  }
+
+  public static fromRepr(r: JSONRepr): Item {
+    const {
+      id,
+      name,
+      href,
+      thumbnail_href,
+      quality_color,
+      unique,
+      binds_on,
+      class_restrictions,
+      level_requirement,
+      durability,
+      primary_stats,
+      effects,
+      armor,
+      equipment_slot,
+      equipment_type,
+      damage_range,
+      swing_speed,
+      dps,
+      flavor_text,
+    } = r
+
+    return new Item(
+      id,
+      name,
+      href,
+      thumbnail_href,
+      quality_color,
+      unique,
+      binds_on,
+      class_restrictions,
+      level_requirement,
+      durability,
+      primary_stats,
+      effects,
+      armor,
+      equipment_slot,
+      equipment_type,
+      damage_range,
+      swing_speed,
+      dps,
+      flavor_text,
+    )
+  }
+
+  public static fromJSON(str: string): Item {
+    return this.fromRepr(JSON.parse(str))
+  }
+
+}
+
+export interface JSONRepr {
+  id: string
+  name: string
+  href: string
+  thumbnail_href: string
+  quality_color: string
+  unique: boolean
+  binds_on: ItemBinding
+  class_restrictions?: CharacterClass[]
+  level_requirement?: number
+  durability?: number
+  primary_stats?: string[]
+  effects?: string[]
+  armor?: number
+  equipment_slot?: string
+  equipment_type?: string
+  damage_range?: { low: number, high: number }
+  swing_speed?: number
+  dps?: number
+  flavor_text?: string
 }
