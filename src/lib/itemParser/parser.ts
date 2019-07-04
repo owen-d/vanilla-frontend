@@ -1,12 +1,12 @@
 import { AttrIdentifier } from '../vanillaApi/'
-import { Maybe } from '../util/maybe'
+import { School, schools } from './parserUtils'
 
 export interface HasParser {
   parse: (arg0: string) => ScaledAttr[]
 }
 
 export interface ScaledAttr {
-  attr: AttrIdentifier
+  attr: School
   scale: number
 }
 
@@ -54,7 +54,7 @@ function spellDamageAllSchools(eff: string): ScaledAttr[] {
   }
 
   const [_, n] = res
-  return spellSchools.map(school => ({ scale: parseInt(n), attr: school }))
+  return schools.map(school => ({ scale: parseInt(n), attr: school }))
 
 }
 
@@ -84,7 +84,7 @@ function spellCrit(eff: string): ScaledAttr[] {
   return [{ scale: parseInt(n), attr: AttrIdentifier.SpellCrit }]
 }
 
-function schoolToAttrId(x: string): Maybe<AttrIdentifier> {
+function schoolToAttrId(x: string): School | undefined {
   switch (x) {
     case AttrIdentifier.Arcane:
       return AttrIdentifier.Arcane
@@ -102,12 +102,3 @@ function schoolToAttrId(x: string): Maybe<AttrIdentifier> {
       return null
   }
 }
-
-const spellSchools = [
-  AttrIdentifier.Arcane,
-  AttrIdentifier.Fire,
-  AttrIdentifier.Frost,
-  AttrIdentifier.Holy,
-  AttrIdentifier.Nature,
-  AttrIdentifier.Shadow,
-]
