@@ -4,7 +4,7 @@ import * as config from './config'
 import {
   css_class_to_item_quality,
   css_class_to_player_class,
-  fetch_thumbnail
+  fetch_thumbnail_href
 } from "./lib";
 import { CharacterClass, ItemBinding } from "./types";
 import { html_lines, parse_effects } from "./effect";
@@ -27,7 +27,7 @@ export class Item {
     misc_table: Cheerio,
   ): Promise<Item> {
     const $ = cheerio.load(table.html() || "");
-    const thumbnail = await fetch_thumbnail(id);
+    const thumbnail = await fetch_thumbnail_href(id);
     const table_contents = table.find("tr td").first();
     const html = table.find("tr td").first()
     const htmlSafe = html.html() || ""
@@ -173,7 +173,7 @@ export class Item {
   public id: string;
   public name: string;
   public href: string;
-  public thumbnail: Buffer;
+  public thumbnail: string;
   public quality_color: string;
   public unique: boolean;
   public binds_on: ItemBinding;
@@ -200,7 +200,7 @@ export class Item {
    * @param name - In-game name.
    * @param href - Database link.
    * @param quality_color - Color of quality (purple for epic, blue for rare);
-   * @param thumbnail - Thumbnail buffer.
+   * @param thumbnail - Thumbnail href.
    * @param unique - Whether the item is unique.
    * @param binds_on - Type of binding (pickup, equip, no binding).
    * @param class_restrictions - List of classes, which can equip the item.
@@ -219,7 +219,7 @@ export class Item {
   public constructor(id: string,
     name: string,
     href: string,
-    thumbnail: Buffer,
+    thumbnail: string,
     quality_color: string,
     unique: boolean,
     binds_on: ItemBinding,
@@ -340,7 +340,7 @@ export interface JSONRepr {
   id: string
   name: string
   href: string
-  thumbnail: Buffer
+  thumbnail: string
   quality_color: string
   unique: boolean
   binds_on: ItemBinding
