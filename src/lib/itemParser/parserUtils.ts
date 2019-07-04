@@ -9,6 +9,7 @@ export const numberParser: P.Parser<number> =
 
 export type Sign = '+' | '-'
 
+
 export type School
   = AttrIdentifier.Arcane
   | AttrIdentifier.Fire
@@ -17,7 +18,7 @@ export type School
   | AttrIdentifier.Nature
   | AttrIdentifier.Shadow
 
-export const schools = [
+export const schools: School[] = [
   AttrIdentifier.Arcane,
   AttrIdentifier.Fire,
   AttrIdentifier.Frost,
