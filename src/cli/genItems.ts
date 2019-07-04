@@ -28,7 +28,9 @@ async function run(flags: { [name: string]: any }) {
   const iconDir = join(flags.dst, 'icon')
   const ndjsonFile = join(flags.dst, 'items.ndjson')
   await ensureDir(iconDir)
-  const jsonStream = createWriteStream(ndjsonFile)
+  const jsonStream = createWriteStream(ndjsonFile, {
+    flags: 'a+', // read + append
+  })
 
 
   for (let i = 0; i < maxItems + 1; i++) {
