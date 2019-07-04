@@ -103,7 +103,7 @@ export async function fetch_thumbnail_href(id: string | undefined,
   return get_large_icon_url(icon);
 }
 
-export async function fetch_thumbnail(id: string): Promise<string | undefined> {
+export async function fetch_thumbnail(id: string): Promise<Buffer | undefined> {
   const href = await fetch_thumbnail_href(id)
   if (!href) {
     return undefined
@@ -111,7 +111,7 @@ export async function fetch_thumbnail(id: string): Promise<string | undefined> {
   // this is intended to run in nodejs. perhaps that's why the types don't line up
   // in this project. Therefore we give it explicit any.
   const data: any = await request.get(href)
-  return Buffer.from(data).toString('base64')
+  return Buffer.from(data)
 }
 
 /**

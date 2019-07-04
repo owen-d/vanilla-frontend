@@ -25,10 +25,9 @@ export class Item {
     href: string,
     table: Cheerio,
     misc_table: Cheerio,
-    icon?: string,
   ): Promise<Item> {
     const $ = cheerio.load(table.html() || "");
-    const thumbnail = icon || await fetch_thumbnail(id);
+    const thumbnail = await fetch_thumbnail(id);
     const table_contents = table.find("tr td").first();
     const html = table.find("tr td").first()
     const htmlSafe = html.html() || ""
@@ -145,7 +144,6 @@ export class Item {
     id: string,
     href: string,
     html: string,
-    icon?: string
   ): Promise<Item> {
     const $ = cheerio.load(html);
     const tables = $("div.tooltip > table tbody tr td").children("table");
@@ -155,7 +153,7 @@ export class Item {
     const stat_table = tables.get(0);
     const misc_table = tables.get(1);
 
-    return Item.from_table(id, href, $(stat_table), $(misc_table), icon);
+    return Item.from_table(id, href, $(stat_table), $(misc_table));
   }
 
   /**
@@ -165,17 +163,17 @@ export class Item {
    * @param id - Database item id.
    * @returns - Generated item.
    */
-  public static async from_id(id: string | number, icon?: string): Promise<Item> {
+  public static async from_id(id: string | number): Promise<Item> {
     const url = `${config.host}/?item=${id}`;
     const html = await request.get({ uri: url });
-    return Item.from_tooltip(`${id}`, url, html, icon);
+    return Item.from_tooltip(`${id}`, url, html);
   }
 
   // Required properties.
   public id: string;
   public name: string;
   public href: string;
-  public thumbnail: string;
+  public thumbnail: Buffer;
   public quality_color: string;
   public unique: boolean;
   public binds_on: ItemBinding;
@@ -202,7 +200,7 @@ export class Item {
    * @param name - In-game name.
    * @param href - Database link.
    * @param quality_color - Color of quality (purple for epic, blue for rare);
-   * @param thumbnail - Thumbnail base64encoded.
+   * @param thumbnail - Thumbnail buffer.
    * @param unique - Whether the item is unique.
    * @param binds_on - Type of binding (pickup, equip, no binding).
    * @param class_restrictions - List of classes, which can equip the item.
@@ -221,7 +219,7 @@ export class Item {
   public constructor(id: string,
     name: string,
     href: string,
-    thumbnail: string,
+    thumbnail: Buffer,
     quality_color: string,
     unique: boolean,
     binds_on: ItemBinding,
@@ -342,7 +340,7 @@ export interface JSONRepr {
   id: string
   name: string
   href: string
-  thumbnail: string
+  thumbnail: Buffer
   quality_color: string
   unique: boolean
   binds_on: ItemBinding
