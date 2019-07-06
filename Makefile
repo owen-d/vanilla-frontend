@@ -1,4 +1,6 @@
+# path to https://github.com/owen-d/vanilla/blob/master/swagger.json
 SWAGGER_FILE ?= $(HOME)/projects/vanilla/swagger.json
+
 SCRATCH_DIR = scratch
 GEN_CLI_DIR = $(SCRATCH_DIR)/gen/cli
 GENERATED_CRAWLER = $(GEN_CLI_DIR)/genItems.js
@@ -29,6 +31,12 @@ gen-data: $(GENERATED_CRAWLER)
 .PHONY: parse-items
 parse-items: $(GENERATED_PARSER)
 	$(GENERATED_PARSER) --in $(CRAWLER_OUTPUT_DIR)/$(ITEMS_NDJSON) --dst $(CRAWLER_OUTPUT_DIR)/$(PARSED_NDJSON)
+
+# snapshot tarballs the assets dir
+.PHONY: snapshot
+snapshot:
+	tar -czvf $(SCRATCH_DIR)/snapshot.tar.gz --exclude '*.DS_Store' $(CRAWLER_OUTPUT_DIR)
+
 
 $(GENERATED_CRAWLER) $(GENERATED_PARSER): $(TS_CLI_FILES) $(TS_LIBS)
 	npx tsc --outDir $(SCRATCH_DIR)/gen src/cli/*.ts
