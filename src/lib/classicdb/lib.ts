@@ -98,7 +98,7 @@ export async function fetch_thumbnail_href(id: string | undefined,
   const split_js = split_dom[0].trim().split("Icon.create");
   const icon = split_js[split_js.length - 1].split("'")[1];
   if (!icon) {
-    return undefined
+    return Promise.resolve('')
   }
   return get_large_icon_url(icon);
 }

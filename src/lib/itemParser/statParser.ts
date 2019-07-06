@@ -1,36 +1,11 @@
 import {
-  Resist,
   spaceDelim,
   signParser,
-  Sign,
-  School,
   resistParser,
   numberParser
 } from './parserUtils'
+import { BaseAttr, baseAttrs, Stat, School, Sign, Resist, PrimaryStat } from '../../store/items/types'
 import * as P from 'parsimmon'
-
-export interface PrimaryStat {
-  amplitude: number
-  sign: Sign
-  stat: Stat
-}
-
-export type Stat = BaseAttr | Resist
-
-export type BaseAttr
-  = 'Strength'
-  | 'Stamina'
-  | 'Agility'
-  | 'Spirit'
-  | 'Intellect'
-
-const baseAttrs = [
-  'Strength',
-  'Stamina',
-  'Agility',
-  'Spirit',
-  'Intellect',
-]
 
 
 const baseAttrParser: P.Parser<BaseAttr> =
@@ -40,10 +15,10 @@ const baseAttrParser: P.Parser<BaseAttr> =
     )
   )
 
-const statParser: P.Parser<Stat> =
+export const statParser: P.Parser<Stat> =
   P.alt(baseAttrParser, resistParser)
 
-const primaryStatParser: P.Parser<PrimaryStat> =
+export const primaryStatParser: P.Parser<PrimaryStat> =
   P.seqObj(
     ['sign', signParser],
     ['amplitude', numberParser],

@@ -1,19 +1,14 @@
 import * as P from 'parsimmon'
 import {
-  School,
-  schools,
   schoolParser,
   numberParser,
 } from './parserUtils'
+import { ScaledAttr, School, schools } from '../../store/items/types'
 import { AttrIdentifier } from '../vanillaApi';
 
-// currently we only support parsing spell damage effects
-export interface ScaledAttr {
-  attr: School
-  scale: number
-}
 
-export function parse(eff: string): ScaledAttr[] {
+
+export function parseEffect(eff: string): ScaledAttr[] {
   const result = scaledAttrParser.parse(eff)
   if (result.status) {
     return result.value

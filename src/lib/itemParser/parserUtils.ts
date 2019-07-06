@@ -1,32 +1,18 @@
-import * as request from 'request-promise' // needed just to avoid some namespace issues in the generated vanillaApi client
-import { AttrIdentifier } from '../vanillaApi/'
 import * as P from 'parsimmon'
 import intersperse from 'ramda/src/intersperse'
+import { Sign, School, schools, Resist } from '../../store/items/types'
+
+
+export function parse<A>(parser: P.Parser<A>, str: string) {
+  const result = parser.parse(str)
+  if (result.status) {
+    return result.value
+  }
+  return undefined
+}
 
 export const numberParser: P.Parser<number> =
-  P.regexp(/[0–9]+/)
-    .map(s => Number(s))
-
-export type Sign = '+' | '-'
-
-
-export type School
-  = AttrIdentifier.Arcane
-  | AttrIdentifier.Fire
-  | AttrIdentifier.Frost
-  | AttrIdentifier.Holy
-  | AttrIdentifier.Nature
-  | AttrIdentifier.Shadow
-
-export const schools: School[] = [
-  AttrIdentifier.Arcane,
-  AttrIdentifier.Fire,
-  AttrIdentifier.Frost,
-  AttrIdentifier.Holy,
-  AttrIdentifier.Nature,
-  AttrIdentifier.Shadow,
-]
-
+  P.regexp(/[0-9]+/).map(Number)
 
 export const schoolParser: P.Parser<School> =
   P.alt(
@@ -34,8 +20,6 @@ export const schoolParser: P.Parser<School> =
       s => P.string(s) as P.Parser<School>
     )
   )
-
-export type Resist = School
 
 export const resistParser: P.Parser<Resist> =
   P.seq(
