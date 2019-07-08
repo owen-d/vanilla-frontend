@@ -5,8 +5,12 @@ SCRATCH_DIR = scratch
 GEN_CLI_DIR = $(SCRATCH_DIR)/gen/cli
 GENERATED_CRAWLER = $(GEN_CLI_DIR)/genItems.js
 GENERATED_PARSER = $(GEN_CLI_DIR)/refineItems.js
+GENERATED_INDEXER = $(GEN_CLI_DIR)/buildIdx.js
+CLIS = $(GENERATED_CRAWLER) $(GENERATED_PARSER) $(GENERATED_INDEXER)
 TS_LIBS = $(shell find src/lib -type f -name '*.ts')
 TS_CLI_FILES = $(shell find src/cli -type f -name '*.ts')
+ES_INDEX ?= items
+ES_HOST ?= http://localhost:9200
 
 CRAWLER_OUTPUT_DIR ?= $(SCRATCH_DIR)/assets
 ITEMS_NDJSON = items.ndjson
@@ -32,12 +36,17 @@ gen-data: $(GENERATED_CRAWLER)
 parse-items: $(GENERATED_PARSER)
 	$(GENERATED_PARSER) --in $(CRAWLER_OUTPUT_DIR)/$(ITEMS_NDJSON) --dst $(CRAWLER_OUTPUT_DIR)/$(PARSED_NDJSON)
 
+.PHONY: index
+index: $(GENERATED_INDEXER)
+	$(GENERATED_INDEXER) --src $(CRAWLER_OUTPUT_DIR)/$(PARSED_NDJSON) \
+		--index $(ES_INDEX) --url "$(ES_HOST)"
+
 # snapshot tarballs the assets dir
 .PHONY: snapshot
 snapshot:
 	tar -czvf $(SCRATCH_DIR)/snapshot.tar.gz --exclude '*.DS_Store' $(CRAWLER_OUTPUT_DIR)
 
 
-$(GENERATED_CRAWLER) $(GENERATED_PARSER): $(TS_CLI_FILES) $(TS_LIBS)
+$(CLIS): $(TS_CLI_FILES) $(TS_LIBS)
 	npx tsc --outDir $(SCRATCH_DIR)/gen src/cli/*.ts
 	chmod +x $@
