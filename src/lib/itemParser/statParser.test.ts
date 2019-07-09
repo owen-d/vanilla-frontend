@@ -1,8 +1,6 @@
 import { BaseAttr, baseAttrs, Stat, School, Sign, Resist, PrimaryStat } from '../../store/items/types'
 import { primaryStatParser, statParser } from './statParser'
 import { parse, signParser, numberParser } from './parserUtils'
-import * as P from 'parsimmon'
-
 
 test('signParser', () => {
   const inputs = ['+', '+-']

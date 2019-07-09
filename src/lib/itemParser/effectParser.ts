@@ -25,7 +25,7 @@ const allSchoolsDmgParser: P.Parser<ScaledAttr[]> =
       schools.map(s => ({ attr: s, scale: Number(n) }))
     )
 
-const singleSchoolDmgParser: P.Parser<ScaledAttr> =
+export const singleSchoolDmgParser: P.Parser<ScaledAttr> =
   P.seqObj(
     P.string('Increases damage done by'),
     P.whitespace,
@@ -33,7 +33,8 @@ const singleSchoolDmgParser: P.Parser<ScaledAttr> =
     P.whitespace,
     P.string('spells and effects by up to'),
     P.whitespace,
-    ['scale', numberParser]
+    ['scale', numberParser],
+    P.regexp(/\.?/),
   )
 
 const spellHitParser: P.Parser<ScaledAttr> =
