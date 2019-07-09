@@ -36,7 +36,7 @@ const isWep = (item: Item): {
 export const ItemTable: React.FC<Props> = ({ item }) => {
     const weaponAttrs = isWep(item)
     return (
-        <table className={item.dps ? 'weapon' : 'armor'}>
+        <table className={item.dps ? 'weapon' : 'armor'} id='tooltip'>
             <tbody>
                 <tr>
                     <td>
@@ -75,8 +75,8 @@ export const ItemTable: React.FC<Props> = ({ item }) => {
                             <table style={{ width: '100%' }}>
                                 <tbody>
                                     <tr>
-                                        <td>`${weaponAttrs.damage_range.low} - ${weaponAttrs.damage_range.high}`</td>
-                                        <th>`Speed ${weaponAttrs.swing_speed}`</th>
+                                        <td>{weaponAttrs.damage_range.low} - {weaponAttrs.damage_range.high}</td>
+                                        <th>Speed {weaponAttrs.swing_speed.toFixed(2)}</th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -84,7 +84,7 @@ export const ItemTable: React.FC<Props> = ({ item }) => {
                     </tr>,
                     <tr>
                         <td>
-                            <span>`(${weaponAttrs.dps} damage per second`)`</span>
+                            <span>({weaponAttrs.dps} damage per second)</span>
                         </td>
                     </tr>,
                 ] : (
@@ -93,35 +93,43 @@ export const ItemTable: React.FC<Props> = ({ item }) => {
                                 <table style={{ width: '100%' }}>
                                     <tbody>
                                         <tr>
-                                            <td>`${item.equipment_slot}`</td>
-                                            <th>`${item.equipment_type}`</th>
+                                            <td>{item.equipment_slot}</td>
+                                            <th>{item.equipment_type}</th>
                                         </tr>
                                     </tbody>
                                 </table>
                             </td>
                         </tr>
                     )}
-                <tr>
-                    <td>
-                        <span>{item.armor}</span>
-                    </td>
-                </tr>
-                {item.primary_stats && displayStats(item.primary_stats as PrimaryStat[])}
+                {item.armor ?
+                    (
+                        <tr>
+                            <td>
+                                <span>{item.armor} Armor</span>
+                            </td>
+                        </tr>
+                    ) : null
+                }
+                {item.primary_stats ? displayStats(item.primary_stats as PrimaryStat[]) : null}
                 {
-                    item.durability &&
-                    <tr>
-                        <td>
-                            <span>`Durability: ${item.durability}/${item.durability}`</span>
-                        </td>
-                    </tr>
+                    item.durability ?
+                        (
+                            <tr>
+                                <td>
+                                    <span>Durability: {item.durability}/{item.durability}</span>
+                                </td>
+                            </tr>
+                        ) : null
                 }
                 {
-                    item.class_restrictions && (item.class_restrictions as CharacterClass[]).length &&
-                    <tr>
-                        <td>
-                            <span>Classes: {(item.class_restrictions || []).join(' ')}</span>
-                        </td>
-                    </tr>
+                    (item.class_restrictions && (item.class_restrictions as CharacterClass[]).length) ?
+                        (
+                            <tr>
+                                <td>
+                                    <span>Classes: {(item.class_restrictions || []).join(' ')}</span>
+                                </td>
+                            </tr>
+                        ) : null
                 }
                 {
                     item.level_requirement ? (
@@ -132,7 +140,7 @@ export const ItemTable: React.FC<Props> = ({ item }) => {
                         </tr>
                     ) : undefined
                 }
-                {item.effects && displayEffects(item.effects as ScaledAttr[])}
+                {item.effects ? displayEffects(item.effects as ScaledAttr[]) : null}
             </tbody>
         </table>
     )
@@ -143,7 +151,7 @@ export const displayEffects = (effs: ScaledAttr[]) => {
     const isSchool = (eff: ScaledAttr) => (schools as AttrIdentifier[]).indexOf(eff.attr) !== -1
     const schoolEffs = effs.filter(isSchool)
     const commonDenom =
-        schoolEffs.reduce((acc: number, eff: ScaledAttr) => Math.min(acc, eff.scale), 0)
+        schoolEffs.map(a => a.scale).reduce((a, b) => Math.min(a, b), 0)
 
     const effectString = (eff: ScaledAttr) => {
         const percents = [AttrIdentifier.SpellCrit, AttrIdentifier.SpellHit]
@@ -172,6 +180,7 @@ export const displayEffects = (effs: ScaledAttr[]) => {
         ]
         const otherEffs = schoolEffs
             .map(eff => ({ ...eff, scale: eff.scale - commonDenom }))
+            .filter(eff => eff.scale > 0)
             .concat(effs.filter(negate(isSchool)))
             .map(effectString)
 
@@ -189,7 +198,13 @@ export const displayStats = (stats: PrimaryStat[]) => {
         } else {
             statStr = stat.stat
         }
-        return `${stat.sign}${stat.amplitude} ${statStr}`
+        return (
+            <tr>
+                <td>
+                    <span>{stat.sign}{stat.amplitude} {statStr}</span>
+                </td>
+            </tr>
+        )
     }
     return stats.map(showStat)
 }

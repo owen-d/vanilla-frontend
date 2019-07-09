@@ -5,6 +5,7 @@ import { Slot, Equipped } from '../../store/paperDoll/types'
 import { Injections } from '../../store/paperDoll/actions'
 import { ItemPicker } from '../itemPicker/'
 import { Tooltip } from '../tooltip/'
+import { ItemTable } from '../itemTooltip/'
 import { Item } from '../../store/items/types'
 import { thumbnailUrl } from '../../lib/util/thumbnail'
 
@@ -77,14 +78,20 @@ const ItemIcon: React.FC<IconProps> = ({ item, slot, css, ...props }) => {
             tooltipShown={state.showTooltip}
             followCursor={true}
         >
-            <Tooltip
-                placement="top"
-                trigger="hover"
-                tooltip="just hovering"
-                followCursor={true}
-            >
-                {data}
-            </Tooltip>
+            {item ?
+                (
+                    <Tooltip
+                        placement="top"
+                        trigger="hover"
+                        tooltip={<ItemTable item={item} />}
+                        followCursor={true}
+                    >
+                        {data}
+                    </Tooltip>
+                ) : (
+                    data
+                )
+            }
         </Tooltip >
     )
 }
