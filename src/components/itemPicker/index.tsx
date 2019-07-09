@@ -14,8 +14,8 @@ export interface Props {
 
 interface State {
     query: string
-    available: Item[] // TODO(add search)
-    selected: number // index in available
+    available: Item[]
+    selected: number
 }
 
 const initialState: State = {
@@ -26,17 +26,26 @@ const initialState: State = {
 
 const suggest = suggester(400, { leading: true, maxWait: 1200, trailing: true })
 
-export const ItemPicker: React.FC<Props> = ({ inputRef, slot, actions }) => {
-    // text box, list of selections.
+export const ItemPicker: React.FC<Props> = ({ inputRef, slot, actions, ...props }) => {
     const [state, setState] = useState(initialState)
+
+    const equipItem = (item: Item) => {
+        actions.equipItem({ slot, item })
+        setState({ ...state, query: '', selected: 0 })
+        if (inputRef.current) {
+            inputRef.current.value = ''
+        }
+    }
 
     const items = state.available.map(
         (x, i) => <li key={x.id}
             className={x.quality.toLowerCase()}
+            onMouseEnter={() => setState({ ...state, selected: i })}
+            onClick={() => equipItem(x)}
             style={{
                 display: 'flex',
                 justifyContent: 'space-between',
-                border: i === state.selected ? '1 px solid white' : 'none',
+                background: i === state.selected ? '#383838' : undefined,
             }}
         >
             <span>{x.name}</span>
@@ -46,29 +55,18 @@ export const ItemPicker: React.FC<Props> = ({ inputRef, slot, actions }) => {
 
 
     const handleKey = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            if (state.available.length > state.selected) {
-                const item = state.available[state.selected]
-
-                actions.equipItem({
-                    slot,
-                    item,
-                })
-            }
-
-            setState({ ...state, query: '', selected: 0 })
-            if (inputRef.current) {
-                inputRef.current.value = ''
-            }
+        if (e.key === 'Enter' && state.available.length > state.selected) {
+            const item = state.available[state.selected]
+            equipItem(item)
 
         } else if (e.key === 'ArrowUp' && state.selected > 0) {
             setState({ ...state, selected: state.selected - 1 })
         } else if (e.key === 'ArrowDown' && state.selected < (state.available.length - 1)) {
             setState({ ...state, selected: state.selected + 1 })
         }
+
     }
 
-    // should debounce this, but would have to wire it up with hooks I think.
     const handleChange = async (e: React.FormEvent<HTMLInputElement>) => {
         const input = e.currentTarget.value
         setState({ ...state, query: input })
@@ -92,7 +90,7 @@ export const ItemPicker: React.FC<Props> = ({ inputRef, slot, actions }) => {
             <input type="text"
                 ref={inputRef}
                 onChange={handleChange}
-                onKeyPress={handleKey}
+                onKeyDown={handleKey}
             />
             <ul style={{ padding: 0, marginTop: 0 }}>{items}</ul>
         </div >

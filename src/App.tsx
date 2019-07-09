@@ -21,6 +21,7 @@ const mapStateToProps = (state: AppState) => ({
     doll: state.doll,
 })
 
+// https://github.com/reduxjs/react-redux/issues/89#issuecomment-137510218
 function mapDispatchToProps(dispatch: any) {
     return {
         tickActions: bindActionCreators(tickA.injections, dispatch),

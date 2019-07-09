@@ -36,12 +36,13 @@ const ItemIcon: React.FC<IconProps> = ({ item, slot, css, ...props }) => {
     const [state, setState] = useState(initialIconState)
     const deltaState = (deltas: Partial<IconState>) => () => setState({ ...state, ...deltas })
 
-    const styles = Object.assign({
+    const noHoverOpacity = item ? 0.7 : 0.5
+    let styles = Object.assign({
         position: 'absolute',
         width: '12%',
         height: '11%',
-        opacity: state.hovered ? 1 : 0.5,
-        backgroundImage: item ? thumbnailUrl(item.id) : `url(${itemIconEmpty})`,
+        opacity: state.hovered ? 1 : noHoverOpacity,
+        backgroundImage: item ? `url(${thumbnailUrl(item.id)})` : `url(${itemIconEmpty})`,
         zIndex: 10,
     }, css)
 
@@ -64,7 +65,10 @@ const ItemIcon: React.FC<IconProps> = ({ item, slot, css, ...props }) => {
     }
 
     const picker = (
-        <ItemPicker inputRef={inputRef} slot={slot} actions={props.actions} />
+        <ItemPicker inputRef={inputRef}
+            slot={slot}
+            actions={props.actions}
+        />
     )
 
     return (
