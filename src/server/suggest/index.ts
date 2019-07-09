@@ -16,7 +16,7 @@ const search = (url: string, query: Query) => {
         prefix: query.query,
         completion: {
           field: 'name.completion',
-          size: 50,
+          size: 100,
         },
       },
     }
