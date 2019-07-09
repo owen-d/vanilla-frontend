@@ -8,7 +8,7 @@ import { AttrIdentifier } from '../../lib/vanillaApi/'
 
 // currently we only support parsing spell damage effects
 export interface ScaledAttr {
-  attr: School
+  attr: AttrIdentifier
   scale: number
 }
 
@@ -121,6 +121,12 @@ export const schools: School[] = [
   AttrIdentifier.Holy,
   AttrIdentifier.Nature,
   AttrIdentifier.Shadow,
+]
+
+export const attrIdentifiers: AttrIdentifier[] = [
+  ...schools,
+  AttrIdentifier.SpellHit,
+  AttrIdentifier.SpellCrit,
 ]
 
 export type Resist = School

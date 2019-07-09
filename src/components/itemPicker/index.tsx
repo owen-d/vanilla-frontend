@@ -4,7 +4,7 @@ import { Injections } from '../../store/paperDoll/actions'
 import { AowowSlot, Item } from '../../store/items/types'
 import { suggester } from './suggest'
 import { thumbnailUrl } from '../../lib/util/thumbnail'
-import './items.css'
+import '../itemTooltip/main.css'
 
 export interface Props {
     slot: Slot

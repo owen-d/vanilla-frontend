@@ -42,7 +42,7 @@ const spellHitParser: P.Parser<ScaledAttr> =
     1
   )
     .map(Number)
-    .map(n => ({ attr: AttrIdentifier.SpellHit as School, scale: n }))
+    .map(n => ({ attr: AttrIdentifier.SpellHit, scale: n }))
 
 const spellCritParser: P.Parser<ScaledAttr> =
   P.regexp(
@@ -50,7 +50,7 @@ const spellCritParser: P.Parser<ScaledAttr> =
     1
   )
     .map(Number)
-    .map(n => ({ attr: AttrIdentifier.SpellCrit as School, scale: n }))
+    .map(n => ({ attr: AttrIdentifier.SpellCrit, scale: n }))
 
 export const scaledAttrParser: P.Parser<ScaledAttr[]> =
   P.alt(
