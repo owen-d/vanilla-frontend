@@ -4,13 +4,13 @@ import itemIconEmpty from '../../assets/wow/paperdoll/icon-border-large.png'
 import { Slot, Equipped } from '../../store/paperDoll/types'
 import { Injections } from '../../store/paperDoll/actions'
 import { ItemPicker } from '../itemPicker/'
-import { Tooltip } from '../itemPicker/tooltip'
+import { Tooltip } from '../tooltip/'
 import { Item } from '../../store/items/types'
+import { thumbnailUrl } from '../../lib/util/thumbnail'
 
 // unused: just for docs so I remember how do do stuff with SyntheticEvent
 export type Handler = (slot: Slot, event: React.SyntheticEvent<{ fieldA: string }>) => void
 
-export const thumbnailUrl = (id: string) => `url(assets/icon/${id})`
 
 export interface Props {
     equipped: Equipped

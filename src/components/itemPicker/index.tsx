@@ -3,6 +3,7 @@ import { Slot } from '../../store/paperDoll/types'
 import { Injections } from '../../store/paperDoll/actions'
 import { AowowSlot, Item } from '../../store/items/types'
 import { suggester } from './suggest'
+import { thumbnailUrl } from '../../lib/util/thumbnail'
 import './items.css'
 
 export interface Props {
@@ -18,7 +19,7 @@ interface State {
 }
 
 const initialState: State = {
-    query: "",
+    query: '',
     available: [],
     selected: 0,
 }
@@ -30,15 +31,24 @@ export const ItemPicker: React.FC<Props> = ({ inputRef, slot, actions }) => {
     const [state, setState] = useState(initialState)
 
     const items = state.available.map(
-        x => <li key={x.id} className={x.quality.toLowerCase()}>{x.name}</li>
+        (x, i) => <li key={x.id}
+            className={x.quality.toLowerCase()}
+            style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                border: i === state.selected ? '1 px solid white' : 'none',
+            }}
+        >
+            <span>{x.name}</span>
+            <img src={thumbnailUrl(x.id)} style={{ height: '4vh' }} />
+        </li>
     )
 
 
     const handleKey = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-            if (state.selected && state.available.length > state.selected) {
+            if (state.available.length > state.selected) {
                 const item = state.available[state.selected]
-                setState({ ...state, query: '' })
 
                 actions.equipItem({
                     slot,
@@ -46,11 +56,15 @@ export const ItemPicker: React.FC<Props> = ({ inputRef, slot, actions }) => {
                 })
             }
 
+            setState({ ...state, query: '', selected: 0 })
             if (inputRef.current) {
                 inputRef.current.value = ''
             }
-        } else {
 
+        } else if (e.key === 'ArrowUp' && state.selected > 0) {
+            setState({ ...state, selected: state.selected - 1 })
+        } else if (e.key === 'ArrowDown' && state.selected < (state.available.length - 1)) {
+            setState({ ...state, selected: state.selected + 1 })
         }
     }
 

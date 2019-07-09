@@ -17,7 +17,6 @@ export function suggester(
     data: query,
   })
     .then((resp: { data: Item[] }) => {
-      console.log('hit', resp)
       cb(resp.data)
     })
 
