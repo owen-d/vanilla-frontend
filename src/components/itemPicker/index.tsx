@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Slot } from '../../store/paperDoll/types'
 import { Injections } from '../../store/paperDoll/actions'
 import { AowowSlot, Item } from '../../store/items/types'
@@ -9,37 +9,41 @@ import './items.css'
 export interface Props {
     slot: Slot
     actions: Injections
-    inputRef: React.RefObject<HTMLInputElement>
+    hideTooltip: () => void
 }
 
 interface State {
     query: string
     available: Item[]
     selected: number
+    hasInitiallyFocused: boolean
 }
 
 const initialState: State = {
     query: '',
     available: [],
     selected: 0,
+    hasInitiallyFocused: false
 }
 
 const suggest = suggester(400, { leading: true, maxWait: 1200, trailing: true })
 
-export const ItemPicker: React.FC<Props> = ({ inputRef, slot, actions, ...props }) => {
+export const ItemPicker: React.FC<Props> = ({ slot, actions, ...props }) => {
     const [state, setState] = useState(initialState)
 
     const equipItem = (item: Item) => {
         actions.equipItem({ slot, item })
         setState({ ...state, query: '', selected: 0 })
-        if (inputRef.current) {
-            inputRef.current.value = ''
-        }
+        props.hideTooltip()
     }
 
+
+    // must include tab index in order for relatedTarget to fire upon blur events
+    // https://stackoverflow.com/a/42764495
     const items = state.available.map(
         (x, i) => <li key={x.id}
             className={x.quality.toLowerCase()}
+            tabIndex={-1}
             onMouseEnter={() => setState({ ...state, selected: i })}
             onClick={() => equipItem(x)}
             style={{
@@ -80,15 +84,34 @@ export const ItemPicker: React.FC<Props> = ({ inputRef, slot, actions, ...props 
         )
     }
 
+
+    // autofocus the input when tooltip first loads
+    const ref = React.createRef<HTMLInputElement>()
+    useEffect(() => {
+        if (ref.current && !state.hasInitiallyFocused) {
+            ref.current.focus()
+            setState({ ...state, hasInitiallyFocused: true })
+        }
+    })
+
+    const onBlur = (event: React.FocusEvent<HTMLDivElement>) => {
+        // https://developer.mozilla.org/en-US/docs/Web/API/Event/Comparison_of_Event_Targets
+        if (!event.currentTarget.contains(event.relatedTarget as Node)) {
+            // focus is leaving the container
+            props.hideTooltip()
+        }
+    }
+
     return (
         <div
             style={{
                 display: 'flex'
             }}
             className={[slot, 'item-select'].join(' ')}
+            onBlur={onBlur}
         >
             <input type="text"
-                ref={inputRef}
+                ref={ref}
                 onChange={handleChange}
                 onKeyDown={handleKey}
             />

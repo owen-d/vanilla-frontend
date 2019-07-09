@@ -19,10 +19,12 @@ export interface Props {
 
 interface IconState {
     hovered: boolean
+    showTooltip: boolean
 }
 
 const initialIconState: IconState = {
     hovered: false,
+    showTooltip: false,
 }
 
 interface IconProps {
@@ -53,29 +55,26 @@ const ItemIcon: React.FC<IconProps> = ({ item, slot, css, ...props }) => {
             style={styles}
             onMouseEnter={deltaState({ hovered: true })}
             onMouseLeave={deltaState({ hovered: false })}
+            onClick={deltaState({ showTooltip: true })}
         >
         </div>
     )
 
-    const inputRef = useRef<HTMLInputElement>(null)
-    const focus = (shown: boolean) => {
-        if (shown && inputRef.current) {
-            inputRef.current.focus()
-        }
-    }
+    const hide = deltaState({ showTooltip: false })
 
     const picker = (
-        <ItemPicker inputRef={inputRef}
+        <ItemPicker
             slot={slot}
             actions={props.actions}
+            hideTooltip={hide}
         />
     )
 
     return (
         <Tooltip placement="top"
-            trigger="click"
+            trigger="manual"
             tooltip={picker}
-            onVisibilityChange={focus}
+            tooltipShown={state.showTooltip}
             followCursor={true}
         >
             <Tooltip
