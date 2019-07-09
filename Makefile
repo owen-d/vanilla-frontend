@@ -28,6 +28,11 @@ test:
 repl:
 	node --experimental-repl-await
 
+.PHONY: server
+server:
+	npx tsc --esModuleInterop --outDir $(SCRATCH_DIR)/gen src/server/*.ts && \
+		node $(SCRATCH_DIR)/gen/server/index.js
+
 .PHONY: gen-data
 gen-data: $(GENERATED_CRAWLER)
 	$(GENERATED_CRAWLER) -d $(CRAWLER_OUTPUT_DIR)
@@ -48,5 +53,4 @@ snapshot:
 
 
 $(CLIS): $(TS_CLI_FILES) $(TS_LIBS)
-	npx tsc --outDir $(SCRATCH_DIR)/gen src/cli/*.ts
-	chmod +x $@
+	npx tsc --outDir $(SCRATCH_DIR)/gen src/cli/*.ts && chmod +x  $(SCRATCH_DIR)/gen/cli/*.js
