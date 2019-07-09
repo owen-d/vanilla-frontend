@@ -1,4 +1,4 @@
-import { Item } from '../../lib/classicdb/item'
+import { Item } from '../../store/items/types'
 
 export enum Signal {
   Equip = 'EQUIP',

@@ -5,10 +5,12 @@ import { Slot, Equipped } from '../../store/paperDoll/types'
 import { Injections } from '../../store/paperDoll/actions'
 import { ItemPicker } from '../itemPicker/'
 import { Tooltip } from '../itemPicker/tooltip'
-import { Item } from '../../lib/classicdb/item'
+import { Item } from '../../store/items/types'
 
 // unused: just for docs so I remember how do do stuff with SyntheticEvent
 export type Handler = (slot: Slot, event: React.SyntheticEvent<{ fieldA: string }>) => void
+
+export const thumbnailUrl = (id: string) => `url(assets/icon/${id})`
 
 export interface Props {
     equipped: Equipped
@@ -16,12 +18,10 @@ export interface Props {
 }
 
 interface IconState {
-    focused: boolean
     hovered: boolean
 }
 
 const initialIconState: IconState = {
-    focused: false,
     hovered: false,
 }
 
@@ -40,8 +40,8 @@ const ItemIcon: React.FC<IconProps> = ({ item, slot, css, ...props }) => {
         position: 'absolute',
         width: '12%',
         height: '11%',
-        opacity: state.focused || state.hovered ? 1 : 0.5,
-        backgroundImage: item ? item.thumbnail_href : `url(${itemIconEmpty})`,
+        opacity: state.hovered ? 1 : 0.5,
+        backgroundImage: item ? thumbnailUrl(item.id) : `url(${itemIconEmpty})`,
         zIndex: 10,
     }, css)
 
@@ -50,20 +50,28 @@ const ItemIcon: React.FC<IconProps> = ({ item, slot, css, ...props }) => {
         <div className={slot.toLowerCase()}
             tabIndex={-1}
             style={styles}
+            onMouseEnter={deltaState({ hovered: true })}
+            onMouseLeave={deltaState({ hovered: false })}
         >
         </div>
     )
 
     const inputRef = useRef<HTMLInputElement>(null)
+    const focus = (shown: boolean) => {
+        if (shown && inputRef.current) {
+            inputRef.current.focus()
+        }
+    }
+
     const picker = (
         <ItemPicker inputRef={inputRef} slot={slot} actions={props.actions} />
-
     )
 
     return (
         <Tooltip placement="top"
             trigger="click"
             tooltip={picker}
+            onVisibilityChange={focus}
             followCursor={true}
         >
             <Tooltip

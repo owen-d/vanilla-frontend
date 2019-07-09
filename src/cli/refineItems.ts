@@ -31,12 +31,12 @@ async function run(flags: { [name: string]: any }) {
   await ensureDir(dirname(flags.dst))
   const outFile = createWriteStream(flags.dst)
 
-  const desired = item => item.equipment_slot
+  const desired = (item: Item) => !!item.equipment_slot
 
   const parser = ndjson.parse()
   parser.on('data', (item: Item) => {
     const parsed = parseItem(item)
-    if (desired(parsed)) {
+    if (parsed && desired(item)) {
       outFile.write(JSON.stringify(parsed))
       outFile.write('\n')
     }

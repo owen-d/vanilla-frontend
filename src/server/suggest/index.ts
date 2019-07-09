@@ -1,15 +1,11 @@
 import { curry } from 'ramda'
-import { Item, AowowSlot } from '../store/items/types'
+import { Item } from '../../store/items/types'
 import { readFile } from 'fs'
 import { promisify } from 'util';
 import * as request from 'request-promise'
 import express from 'express'
 import * as _ from 'lodash'
-
-export interface Query {
-  query: string
-  slots?: AowowSlot[]
-}
+import { Query } from './types'
 
 
 const search = (url: string, query: Query) => {
@@ -33,11 +29,12 @@ const search = (url: string, query: Query) => {
   })
     .then(body => {
       let results = _.get(body, ['suggest', 'itemSuggest', '0', 'options'] || [])
-        .map(x => x._source)
+        .map((x: any) => x._source)
 
       if (query.slots) {
         results = results.filter(
-          ({ equipment_slot }) => query.slots.indexOf(equipment_slot) !== -1
+          ({ equipment_slot }: Item) =>
+            equipment_slot && (query.slots || []).indexOf(equipment_slot) !== -1
         )
       }
 
@@ -47,7 +44,7 @@ const search = (url: string, query: Query) => {
 }
 
 export const searchMiddleware =
-  (esUrl: string) => (req: express.Request, res: express.Response, next) => {
+  (esUrl: string) => (req: express.Request, res: express.Response, next: any) => {
     const query: Query = req.body
     return search(esUrl, query)
       .then(esResults => {

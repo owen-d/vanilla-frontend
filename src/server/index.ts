@@ -1,14 +1,18 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import { config } from './config'
-import { searchMiddleware } from './autocomplete'
+import { searchMiddleware } from './suggest/'
 import { join } from 'path'
 
-function errorHandler(err, req, res, next) {
+function errorHandler(
+  err: { message: string, statusCode?: number },
+  req: express.Request,
+  res: express.Response, next: any
+) {
   if (res.headersSent) {
     return next(err)
   }
-  res.status(err.code || 500)
+  res.status(err.statusCode || 500)
   res.json({
     error: err.message || 'Internal Server Error',
   })
@@ -21,14 +25,9 @@ const main = async () => {
 
 
   app.use('/assets/icon', express.static(config.iconDir))
-  app.post('/api/autocomplete', searchMiddleware(`${config.esHost}/${config.esIndex}`))
+  // TODO: serve built assets in prod
 
-  if (config.env === 'development') {
-    // catch all for proxying to hot-reloading dev server
-    app.get('/', function(req, res) {
-      res.sendFile(join(__dirname, 'build', 'index.html'));
-    });
-  }
+  app.post('/api/autocomplete', searchMiddleware(`${config.esHost}/${config.esIndex}`))
 
   app.use(errorHandler)
 

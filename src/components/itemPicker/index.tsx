@@ -1,11 +1,9 @@
 import React, { useState, useRef } from 'react'
 import { Slot } from '../../store/paperDoll/types'
-import { suggest } from '../../lib/itemization/query'
-import { Item } from '../../lib/classicdb/item'
-import { Slot as SlotQuery, ItemSearchResult } from '../../lib/itemization/typings'
 import { Injections } from '../../store/paperDoll/actions'
+import { AowowSlot, Item } from '../../store/items/types'
+import { suggester } from './suggest'
 import './items.css'
-
 
 export interface Props {
     slot: Slot
@@ -15,56 +13,31 @@ export interface Props {
 
 interface State {
     query: string
-    available: ItemSearchResult[]
-    selected?: number // index in available
+    available: Item[] // TODO(add search)
+    selected: number // index in available
 }
 
 const initialState: State = {
     query: "",
-    available: [
-        {
-            ID: 0,
-            Icon: 'some-icon',
-            Current: {
-                Name: 'test-item-rare',
-                quality: 'rare',
-            },
-        },
-        {
-            ID: 1,
-            Icon: 'some-icon',
-            Current: {
-                Name: 'test-item-common',
-                quality: 'common',
-            },
-        },
-        {
-            ID: 2,
-            Icon: 'some-icon',
-            Current: {
-                Name: 'test-item-uncommon',
-                quality: 'uncommon',
-            },
-        }
-    ],
+    available: [],
+    selected: 0,
 }
 
-// https://itemization.info/tooltip/19946
+const suggest = suggester(400, { leading: true, maxWait: 1200, trailing: true })
 
 export const ItemPicker: React.FC<Props> = ({ inputRef, slot, actions }) => {
     // text box, list of selections.
     const [state, setState] = useState(initialState)
 
     const items = state.available.map(
-        x => <li key={x.ID} className={x.Current.quality.toLowerCase()}>{x.Current.Name}</li>
+        x => <li key={x.id} className={x.quality.toLowerCase()}>{x.name}</li>
     )
 
 
     const handleKey = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-            if (state.selected) {
-                const itemMeta = state.available[state.selected]
-                const item = await Item.from_id(itemMeta.ID, itemMeta.Icon)
+            if (state.selected && state.available.length > state.selected) {
+                const item = state.available[state.selected]
                 setState({ ...state, query: '' })
 
                 actions.equipItem({
@@ -76,17 +49,23 @@ export const ItemPicker: React.FC<Props> = ({ inputRef, slot, actions }) => {
             if (inputRef.current) {
                 inputRef.current.value = ''
             }
+        } else {
+
         }
     }
 
     // should debounce this, but would have to wire it up with hooks I think.
     const handleChange = async (e: React.FormEvent<HTMLInputElement>) => {
-        const query = e.currentTarget.value
-        /* const available = await suggest({
-         *     slots: toSlotsQuery(slot),
-         *     query,
-         * })
-         * setState({ ...state, available, query }) */
+        const input = e.currentTarget.value
+        setState({ ...state, query: input })
+        const query = {
+            query: input,
+            slots: toAowowSlot(slot),
+        }
+        suggest(
+            query,
+            (items: Item[]) => setState({ ...state, available: items })
+        )
     }
 
     return (
@@ -106,42 +85,41 @@ export const ItemPicker: React.FC<Props> = ({ inputRef, slot, actions }) => {
     )
 }
 
-
-function toSlotsQuery(slot: Slot): SlotQuery[] {
+function toAowowSlot(slot: Slot): AowowSlot[] {
     switch (slot) {
         case Slot.Head:
-            return [SlotQuery.Head]
+            return [AowowSlot.Head]
         case Slot.Gloves:
-            return [SlotQuery.Hands]
+            return [AowowSlot.Hands]
         case Slot.Neck:
-            return [SlotQuery.Neck]
+            return [AowowSlot.Neck]
         case Slot.Belt:
-            return [SlotQuery.Waist]
+            return [AowowSlot.Waist]
         case Slot.Shoulders:
-            return [SlotQuery.Shoulders]
+            return [AowowSlot.Shoulders]
         case Slot.Pants:
-            return [SlotQuery.Legs]
+            return [AowowSlot.Legs]
         case Slot.Cloak:
-            return [SlotQuery.Back]
+            return [AowowSlot.Back]
         case Slot.Boots:
-            return [SlotQuery.Feet]
+            return [AowowSlot.Feet]
         case Slot.Chest:
-            return [SlotQuery.Chest]
+            return [AowowSlot.Chest]
         case Slot.Ring1:
-            return [SlotQuery.Finger]
+            return [AowowSlot.Finger]
         case Slot.Ring2:
-            return [SlotQuery.Finger]
+            return [AowowSlot.Finger]
         case Slot.Trinket1:
-            return [SlotQuery.Trinket]
+            return [AowowSlot.Trinket]
         case Slot.Bracers:
-            return [SlotQuery.Wrists]
+            return [AowowSlot.Wrists]
         case Slot.Trinket2:
-            return [SlotQuery.Trinket]
+            return [AowowSlot.Trinket]
         case Slot.Mainhand:
-            return [SlotQuery.Onehand, SlotQuery.Twohand, SlotQuery.Mainhand]
+            return [AowowSlot.Onehand, AowowSlot.Twohand, AowowSlot.Mainhand]
         case Slot.Offhand:
-            return [SlotQuery.Shield, SlotQuery.Offhand, SlotQuery.HeldOffhand]
+            return [AowowSlot.Shield, AowowSlot.Offhand, AowowSlot.HeldOffhand]
         case Slot.Ranged:
-            return [SlotQuery.Ranged, SlotQuery.Relic]
+            return [AowowSlot.Ranged, AowowSlot.Relic]
     }
 }

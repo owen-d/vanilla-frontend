@@ -7,7 +7,7 @@ import { primaryStatParser } from './statParser'
 import { parseEffect } from './effectParser'
 import { slotParser } from './slotParser'
 import { parse } from './parserUtils'
-import { Item as ParsedItem, ItemQuality } from '../../store/items/types'
+import { Item as ParsedItem, ItemQuality, PrimaryStat } from '../../store/items/types'
 import { qualityParser } from './qualityParser'
 const flatten = require('lodash/flatten')
 
@@ -17,7 +17,7 @@ export function parseItem(item: Item): ParsedItem | undefined {
   const primaryStats = (item.primary_stats || []).map(
     s => parse(primaryStatParser, s)
   )
-    .filter(x => x)
+    .filter(x => x) as PrimaryStat[] // can't deduce that the filter removes undefined
 
   const effects = flatten(
     (item.effects || [])

@@ -1,15 +1,18 @@
 import React from 'react'
 import TooltipTrigger from 'react-popper-tooltip';
 import './tooltip.css'
+import { noop } from '../../lib/util/noop'
 
 export const Tooltip = ({
     children,
     tooltip,
     hideArrow,
+    onVisibilityChange,
     ...props
 }: any) => (
         <TooltipTrigger
             {...props}
+            onVisibilityChange={onVisibilityChange || noop}
             tooltip={({
                 arrowRef,
                 tooltipRef,

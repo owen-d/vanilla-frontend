@@ -15,7 +15,7 @@ import { mappings } from './mappings'
 import { index } from 'parsimmon';
 
 
-const cli = meow(`
+const cli: any = meow(`
 some thing
 `, {
     flags: {
@@ -33,16 +33,16 @@ some thing
   })
 
 
-const run = async flags => {
+const run = async (flags: any) => {
   const parser = ndjson.parse()
-  let records = []
+  let records: Item[] = []
   await create(`${flags.url}/${flags.index}`)
   console.log('created idx')
 
   createReadStream(flags.src)
     .pipe(parser)
 
-  parser.on('data', item => {
+  parser.on('data', (item: Item) => {
     records.push(item)
   })
 
@@ -52,9 +52,7 @@ const run = async flags => {
   })
 }
 
-// cat $(POSTS_DIR) / $$file | ./ utils / parse_records - p - i "$${idx}" | curl - XPOST $(JSON_HEADER)--data - binary @- "$(ES_URL)/_bulk"; \
-
-async function create(url) {
+async function create(url: string): Promise<any> {
   return request.put({
     url,
     json: true,
