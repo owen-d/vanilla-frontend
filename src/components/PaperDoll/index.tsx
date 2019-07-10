@@ -7,7 +7,6 @@ import { ItemPicker } from '../itemPicker/'
 import { ItemTable } from '../itemTooltip/'
 import { Item } from '../../store/items/types'
 import { thumbnailUrl } from '../../lib/util/thumbnail'
-import { Tooltip } from '../tooltip/'
 import Tippy, { TippyProps } from '@tippy.js/react'
 
 

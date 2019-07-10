@@ -40,7 +40,7 @@ export const ItemPicker: React.FC<Props> = ({ slot, actions, ...props }) => {
     // must include tab index in order for relatedTarget to fire upon blur events
     // https://stackoverflow.com/a/42764495
     const items = state.available.map(
-        (x, i) => <li key={x.id}
+        (x, i) => <li key={`${i}`}
             className={x.quality.toLowerCase()}
             tabIndex={-1}
             onMouseEnter={() => setState({ ...state, selected: i })}
@@ -95,12 +95,15 @@ export const ItemPicker: React.FC<Props> = ({ slot, actions, ...props }) => {
     return (
         <div
             style={{
-                display: 'flex'
+                display: 'flex',
             }}
             className={[slot, 'item-select'].join(' ')}
             onBlur={onBlur}
         >
             <input type="text"
+                style={{
+                    fontSize: '150%',
+                }}
                 ref={props.inputRef}
                 onChange={handleChange}
                 onKeyDown={handleKey}
