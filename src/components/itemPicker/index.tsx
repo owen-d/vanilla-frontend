@@ -10,20 +10,19 @@ export interface Props {
     slot: Slot
     actions: Injections
     hideTooltip: () => void
+    inputRef: React.Ref<HTMLInputElement>
 }
 
 interface State {
     query: string
     available: Item[]
     selected: number
-    hasInitiallyFocused: boolean
 }
 
 const initialState: State = {
     query: '',
     available: [],
     selected: 0,
-    hasInitiallyFocused: false
 }
 
 const suggest = suggester(400, { leading: true, maxWait: 1200, trailing: true })
@@ -85,15 +84,6 @@ export const ItemPicker: React.FC<Props> = ({ slot, actions, ...props }) => {
     }
 
 
-    // autofocus the input when tooltip first loads
-    const ref = React.createRef<HTMLInputElement>()
-    useEffect(() => {
-        if (ref.current && !state.hasInitiallyFocused) {
-            ref.current.focus()
-            setState({ ...state, hasInitiallyFocused: true })
-        }
-    })
-
     const onBlur = (event: React.FocusEvent<HTMLDivElement>) => {
         // https://developer.mozilla.org/en-US/docs/Web/API/Event/Comparison_of_Event_Targets
         if (!event.currentTarget.contains(event.relatedTarget as Node)) {
@@ -111,7 +101,7 @@ export const ItemPicker: React.FC<Props> = ({ slot, actions, ...props }) => {
             onBlur={onBlur}
         >
             <input type="text"
-                ref={ref}
+                ref={props.inputRef}
                 onChange={handleChange}
                 onKeyDown={handleKey}
             />

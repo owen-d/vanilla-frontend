@@ -4,10 +4,12 @@ import itemIconEmpty from '../../assets/wow/paperdoll/icon-border-large.png'
 import { Slot, Equipped } from '../../store/paperDoll/types'
 import { Injections } from '../../store/paperDoll/actions'
 import { ItemPicker } from '../itemPicker/'
-import { Tooltip } from '../tooltip/'
 import { ItemTable } from '../itemTooltip/'
 import { Item } from '../../store/items/types'
 import { thumbnailUrl } from '../../lib/util/thumbnail'
+import { Tooltip } from '../tooltip/'
+import Tippy, { TippyProps } from '@tippy.js/react'
+
 
 // unused: just for docs so I remember how do do stuff with SyntheticEvent
 export type Handler = (slot: Slot, event: React.SyntheticEvent<{ fieldA: string }>) => void
@@ -49,50 +51,57 @@ const ItemIcon: React.FC<IconProps> = ({ item, slot, css, ...props }) => {
         zIndex: 10,
     }, css)
 
-
-    const data = (
-        <div className={slot.toLowerCase()}
-            tabIndex={-1}
-            style={styles}
-            onMouseEnter={deltaState({ hovered: true })}
-            onMouseLeave={deltaState({ hovered: false })}
-            onClick={deltaState({ showTooltip: true })}
-        >
-        </div>
-    )
-
     const hide = deltaState({ showTooltip: false })
+
+    const ref = useRef<HTMLInputElement>(null)
+    const focusInput = () => {
+        if (ref.current) {
+            ref.current.focus()
+        }
+    }
 
     const picker = (
         <ItemPicker
+            inputRef={ref}
             slot={slot}
             actions={props.actions}
             hideTooltip={hide}
         />
     )
 
+    const defaultTippyOpts: Partial<TippyProps> = {
+        arrow: true,
+        aria: null,
+        boundary: 'viewport',
+        delay: [0, 0],
+        duration: [100, 100],
+        trigger: 'manual',
+        content: "I'm a tooltip!"
+    }
+
     return (
-        <Tooltip placement="top"
-            trigger="manual"
-            tooltip={picker}
-            tooltipShown={state.showTooltip}
-            followCursor={true}
+        <Tippy
+            {...defaultTippyOpts}
+            content={picker}
+            visible={state.showTooltip}
+            onShown={focusInput}
+            interactive={true}
+            sticky={true}
         >
-            {item ?
-                (
-                    <Tooltip
-                        placement="top"
-                        trigger="hover"
-                        tooltip={<ItemTable item={item} />}
-                        followCursor={true}
-                    >
-                        {data}
-                    </Tooltip>
-                ) : (
-                    data
-                )
-            }
-        </Tooltip >
+            <Tippy
+                {...defaultTippyOpts}
+                content={item ? <ItemTable item={item} /> : <span>null</span>}
+                visible={state.hovered}
+            >
+                <div className={slot.toLowerCase()}
+                    tabIndex={-1}
+                    style={styles}
+                    onMouseEnter={deltaState({ hovered: true })}
+                    onMouseLeave={deltaState({ hovered: false })}
+                    onClick={deltaState({ showTooltip: true })}
+                />
+            </Tippy>
+        </Tippy >
     )
 }
 
