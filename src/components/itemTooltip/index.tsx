@@ -151,7 +151,7 @@ export const displayEffects = (effs: ScaledAttr[]) => {
     const isSchool = (eff: ScaledAttr) => (schools as AttrIdentifier[]).indexOf(eff.attr) !== -1
     const schoolEffs = effs.filter(isSchool)
     const commonDenom =
-        schoolEffs.map(a => a.scale).reduce((a, b) => Math.min(a, b), 0)
+        schoolEffs.length ? schoolEffs.map(a => a.scale).reduce((a, b) => Math.min(a, b)) : 0
 
     const effectString = (eff: ScaledAttr) => {
         const percents = [AttrIdentifier.SpellCrit, AttrIdentifier.SpellHit]
