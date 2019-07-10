@@ -1,6 +1,15 @@
-import { Signal, Action, State } from './types'
+import { Signal, Action, State, Equipped } from './types'
+import { defaultSpec, defaultStats } from '../vanillaApi/types'
+import { Stats } from '../../lib/vanillaApi';
+import { calculateStats, baseDps } from './utils'
 
-const initialState = { equipped: {} }
+
+const initialState: State = {
+  equipped: {},
+  spec: defaultSpec,
+  stats: defaultStats,
+  dps: baseDps(defaultSpec),
+}
 
 export function reduce(
   state = initialState,
@@ -17,13 +26,22 @@ export function reduce(
       }
 
     case Signal.Equip:
+      const equipped = {
+        ...state.equipped,
+        [action.equipped.slot]: action.equipped.item,
+      }
       return {
         ...state,
-        equipped: {
-          ...state.equipped,
-          [action.equipped.slot]: action.equipped.item,
-        }
+        equipped,
+        stats: calculateStats(equipped),
+      }
+
+    case Signal.SetDPS:
+      return {
+        ...state,
+        dps: action.dps,
       }
   }
   return state
 }
+

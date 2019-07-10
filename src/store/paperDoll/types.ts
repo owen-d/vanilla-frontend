@@ -1,8 +1,10 @@
 import { Item } from '../../store/items/types'
+import { Stats, SpecIdentifier } from '../../lib/vanillaApi/api'
 
 export enum Signal {
   Equip = 'EQUIP',
   Unequip = 'UNEQUIP',
+  SetDPS = 'SETDPS',
 }
 
 export enum Slot {
@@ -25,6 +27,26 @@ export enum Slot {
   Ranged = 'Ranged',
 }
 
+export const slots: Slot[] = [
+  Slot.Head,
+  Slot.Gloves,
+  Slot.Neck,
+  Slot.Belt,
+  Slot.Shoulders,
+  Slot.Pants,
+  Slot.Cloak,
+  Slot.Boots,
+  Slot.Chest,
+  Slot.Ring1,
+  Slot.Ring2,
+  Slot.Trinket1,
+  Slot.Bracers,
+  Slot.Trinket2,
+  Slot.Mainhand,
+  Slot.Offhand,
+  Slot.Ranged,
+]
+
 export interface EquipAction {
   type: typeof Signal.Equip
   equipped: SlotEquipped
@@ -35,6 +57,11 @@ export interface UnequipAction {
   slot: Slot
 }
 
+export interface SetDPSAction {
+  type: typeof Signal.SetDPS,
+  dps: number,
+}
+
 export interface SlotEquipped {
   slot: Slot
   item: Item
@@ -42,8 +69,13 @@ export interface SlotEquipped {
 
 export type Equipped = Partial<Record<Slot, Item>>
 
+export type StateGetter = () => State
+
 export interface State {
   equipped: Equipped,
+  spec: SpecIdentifier,
+  stats: Stats,
+  dps: number,
 }
 
-export type Action = EquipAction | UnequipAction
+export type Action = EquipAction | UnequipAction | SetDPSAction

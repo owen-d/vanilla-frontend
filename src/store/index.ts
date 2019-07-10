@@ -1,6 +1,8 @@
 import * as tick from './tick/reducers'
 import * as doll from './paperDoll/reducers'
-import { combineReducers, createStore } from 'redux'
+import { combineReducers, createStore, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk';
+import { config } from './config/'
 
 const rootReducer = combineReducers({
   tick: tick.reduce,
@@ -9,6 +11,8 @@ const rootReducer = combineReducers({
 
 export type AppState = ReturnType<typeof rootReducer>
 
-export function configureStore() {
-  return createStore(rootReducer)
-}
+export const configureStore = () => createStore(
+  rootReducer,
+  applyMiddleware(thunk.withExtraArgument(config)),
+)
+

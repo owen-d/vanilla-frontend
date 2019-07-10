@@ -1,12 +1,24 @@
-import { Slot, Signal, SlotEquipped, Action } from './types'
+import { Slot, Signal, SlotEquipped, Action, State, StateGetter } from './types'
+import { ActionCreator, Dispatch } from 'redux'
+import { ThunkAction } from 'redux-thunk'
+import { Config } from '../config/'
+import { ReqFields } from '../../lib/vanillaApi';
+import { toReqFields } from './utils'
 
 
-export function equipItem(equipped: SlotEquipped): Action {
-  return {
-    type: Signal.Equip,
-    equipped,
+const equip = (equipped: SlotEquipped) => ({
+  type: (Signal.Equip as Signal.Equip), // :'(
+  equipped,
+})
+
+export const equipItem = (equipped: SlotEquipped) =>
+  (dispatch: Dispatch<Action>, getState: StateGetter, { vanillaApi }: Config) => {
+
+    dispatch(equip(equipped))
+    const state = getState()
+    return vanillaApi.dpsPost(toReqFields(state))
+      .then(resp => dispatch(setDPS(resp.data)))
   }
-}
 
 export function unequipItem(slot: Slot): Action {
   return {
@@ -15,12 +27,20 @@ export function unequipItem(slot: Slot): Action {
   }
 }
 
+export const setDPS = (dps: number): Action => ({
+  type: Signal.SetDPS,
+  dps,
+})
+
+
 export type Injections = {
   equipItem: typeof equipItem
   unequipItem: typeof unequipItem
+  setDPS: typeof setDPS
 }
 
 export const injections: Injections = {
   equipItem,
   unequipItem,
+  setDPS,
 }
