@@ -160,9 +160,9 @@ export const displayEffects = (effs: ScaledAttr[]) => {
             [AttrIdentifier.SpellCrit]: 'crit'
         }
         if (percents.indexOf(eff.attr) !== -1) {
-            return `Improves your chance to ${percentMap[eff.attr]} with spells by ${eff.scale}%.`
+            return `Equip: Improves your chance to ${percentMap[eff.attr]} with spells by ${eff.scale}%.`
         } else {
-            return `Increases damage done by ${eff.attr} spells and effects by up to ${eff.scale}.`
+            return `Equip: Increases damage done by ${eff.attr} spells and effects by up to ${eff.scale}.`
         }
     }
 

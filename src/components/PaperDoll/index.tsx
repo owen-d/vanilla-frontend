@@ -90,7 +90,7 @@ const ItemIcon: React.FC<IconProps> = ({ item, slot, css, ...props }) => {
             <Tippy
                 {...defaultTippyOpts}
                 content={item ? <ItemTable item={item} /> : <span>null</span>}
-                visible={state.hovered}
+                visible={item && state.hovered}
             >
                 <div className={slot.toLowerCase()}
                     tabIndex={-1}
