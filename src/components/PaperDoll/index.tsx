@@ -113,9 +113,21 @@ export const PaperDoll: React.FC<Props> = ({ actions, equipped, ...props }) => {
         width: (widthCoeff * 75) + 'vh',
         height: '75vh',
     }
+
+    const statDerivatives = props.partialDerivatives.map(x =>
+        <li key={x[0]}>{x[0]}: {x[1]}</li>
+    )
+
     return (
         <div className="paperDoll" style={containerStyles}>
             <span>dps: {props.dps}</span>
+
+            {props.partialDerivatives.length ? (
+                <div>
+                    <span>dps change by addition of the following:</span>
+                    <ul>{statDerivatives}</ul>
+                </div>
+            ) : null}
 
             <ItemIcon slot={Slot.Head}
                 item={equipped[Slot.Head]}
