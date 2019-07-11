@@ -5,7 +5,8 @@ import { promisify } from 'util';
 import * as request from 'request-promise'
 import express from 'express'
 import * as _ from 'lodash'
-import { Query } from './types'
+import { Query, isValid } from './types'
+import { RequestError } from '../utils/error'
 
 
 const search = (url: string, query: Query) => {
@@ -46,6 +47,12 @@ const search = (url: string, query: Query) => {
 export const searchMiddleware =
   (esUrl: string) => (req: express.Request, res: express.Response, next: any) => {
     const query: Query = req.body
+
+    if (!isValid(query)) {
+      const err = new RequestError('invalid query', 400)
+      return next(err)
+    }
+
     return search(esUrl, query)
       .then(esResults => {
         res.status(200).json(esResults)
