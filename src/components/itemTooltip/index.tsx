@@ -38,19 +38,19 @@ export const ItemTable: React.FC<Props> = ({ item }) => {
     return (
         <table className={item.dps ? 'weapon' : 'armor'} id='tooltip'>
             <tbody>
-                <tr>
+                <tr key="name">
                     <td>
                         <span className={classes([item.quality, 'name'])}>{item.name}</span>
                     </td>
                 </tr>
-                <tr>
+                <tr key="bindson">
                     <td>
                         <span>{item.binds_on}</span>
                     </td>
                 </tr>
                 {
                     item.unique ? (
-                        <tr>
+                        <tr key="unique">
                             <td>
                                 <span>{item.unique}</span>
                             </td>
@@ -58,7 +58,7 @@ export const ItemTable: React.FC<Props> = ({ item }) => {
                     ) : undefined
                 }
                 {weaponAttrs ? [
-                    <tr>
+                    <tr key="slot">
                         <td>
                             <table style={{ width: '100%' }}>
                                 <tbody>
@@ -70,7 +70,7 @@ export const ItemTable: React.FC<Props> = ({ item }) => {
                             </table>
                         </td>
                     </tr>,
-                    <tr>
+                    <tr key="range">
                         <td>
                             <table style={{ width: '100%' }}>
                                 <tbody>
@@ -82,13 +82,13 @@ export const ItemTable: React.FC<Props> = ({ item }) => {
                             </table>
                         </td>
                     </tr>,
-                    <tr>
+                    <tr key="dps">
                         <td>
                             <span>({weaponAttrs.dps} damage per second)</span>
                         </td>
                     </tr>,
                 ] : (
-                        <tr>
+                        <tr key="type">
                             <td>
                                 <table style={{ width: '100%' }}>
                                     <tbody>
@@ -103,7 +103,7 @@ export const ItemTable: React.FC<Props> = ({ item }) => {
                     )}
                 {item.armor ?
                     (
-                        <tr>
+                        <tr key="armor">
                             <td>
                                 <span>{item.armor} Armor</span>
                             </td>
@@ -114,7 +114,7 @@ export const ItemTable: React.FC<Props> = ({ item }) => {
                 {
                     item.durability ?
                         (
-                            <tr>
+                            <tr key="dura">
                                 <td>
                                     <span>Durability: {item.durability}/{item.durability}</span>
                                 </td>
@@ -124,7 +124,7 @@ export const ItemTable: React.FC<Props> = ({ item }) => {
                 {
                     (item.class_restrictions && (item.class_restrictions as CharacterClass[]).length) ?
                         (
-                            <tr>
+                            <tr key="class-restriction">
                                 <td>
                                     <span>Classes: {(item.class_restrictions || []).join(' ')}</span>
                                 </td>
@@ -133,7 +133,7 @@ export const ItemTable: React.FC<Props> = ({ item }) => {
                 }
                 {
                     item.level_requirement ? (
-                        <tr>
+                        <tr key="lvl">
                             <td>
                                 <span>Requires Level {item.level_requirement || ''}</span>
                             </td>
@@ -148,8 +148,8 @@ export const ItemTable: React.FC<Props> = ({ item }) => {
 
 
 export const displayEffects = (effs: ScaledAttr[]) => {
-    const showEffects = (strs: string[]) => strs.map(s => (
-        <tr>
+    const showEffects = (strs: string[]) => strs.map((s, i) => (
+        <tr key={`${i}`}>
             <td>
                 <span className="effect">{s}</span>
             </td>
@@ -195,7 +195,7 @@ export const displayEffects = (effs: ScaledAttr[]) => {
 }
 
 export const displayStats = (stats: PrimaryStat[]) => {
-    const showStat = (stat: PrimaryStat) => {
+    const showStat = (stat: PrimaryStat, idx: number) => {
         let statStr
         if ((schools as string[]).indexOf(stat.stat as string) !== -1) {
             statStr = `${stat.stat} Resistance`
@@ -203,7 +203,7 @@ export const displayStats = (stats: PrimaryStat[]) => {
             statStr = stat.stat
         }
         return (
-            <tr>
+            <tr key={`${idx}-${stat.stat}`}>
                 <td>
                     <span>{stat.sign}{stat.amplitude} {statStr}</span>
                 </td>
