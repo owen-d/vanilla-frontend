@@ -30,9 +30,9 @@ export function addItem(stats: Stats, item: Item): Stats {
         case AttrIdentifier.Shadow:
           return { ...acc, shadow: acc.shadow + eff.scale }
         case AttrIdentifier.SpellCrit:
-          return { ...acc, crit: acc.crit + eff.scale }
+          return { ...acc, crit: acc.crit + eff.scale / 100 } // hit/crit as percents
         case AttrIdentifier.SpellHit:
-          return { ...acc, hit: acc.hit + eff.scale }
+          return { ...acc, hit: acc.hit + eff.scale / 100 } // hit/crit as percents
       }
     }, stats)
 }

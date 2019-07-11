@@ -69,7 +69,7 @@ export interface SlotEquipped {
 
 export type Equipped = Partial<Record<Slot, Item>>
 
-export type StateGetter = () => State
+export type StateGetter = () => { doll: State }
 
 export interface State {
   equipped: Equipped,

@@ -5,9 +5,7 @@ import {
 import { DefaultApiFactory } from '../../lib/vanillaApi/api'
 
 const defaultApiConfiguration: ApiConfig = new ApiConfig()
-// {
-//   basePath: 'http://localhost:9000',
-// }
+
 const defaultApi = DefaultApiFactory(defaultApiConfiguration, 'http://localhost:9000')
 
 // storeconfig

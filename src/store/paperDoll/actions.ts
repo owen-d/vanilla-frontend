@@ -2,12 +2,11 @@ import { Slot, Signal, SlotEquipped, Action, State, StateGetter } from './types'
 import { ActionCreator, Dispatch } from 'redux'
 import { ThunkAction } from 'redux-thunk'
 import { Config } from '../config/'
-import { ReqFields } from '../../lib/vanillaApi';
 import { toReqFields } from './utils'
 
 
 const equip = (equipped: SlotEquipped) => ({
-  type: (Signal.Equip as Signal.Equip), // :'(
+  type: (Signal.Equip as Signal.Equip), // type assertion :'(
   equipped,
 })
 
@@ -15,7 +14,7 @@ export const equipItem = (equipped: SlotEquipped) =>
   (dispatch: Dispatch<Action>, getState: StateGetter, { vanillaApi }: Config) => {
 
     dispatch(equip(equipped))
-    const state = getState()
+    const { doll: state } = getState()
     return vanillaApi.dpsPost(toReqFields(state))
       .then(resp => dispatch(setDPS(resp.data)))
   }
