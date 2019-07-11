@@ -3,7 +3,9 @@ import { Slot } from '../../store/paperDoll/types'
 import { Injections } from '../../store/paperDoll/actions'
 import { AowowSlot, Item } from '../../store/items/types'
 import { suggester } from './suggest'
+import { ItemTable, defaultTippyOpts } from '../itemTooltip/'
 import { thumbnailUrl } from '../../lib/util/thumbnail'
+import Tippy from '@tippy.js/react'
 import '../itemTooltip/main.css'
 
 export interface Props {
@@ -17,12 +19,14 @@ interface State {
     query: string
     available: Item[]
     selected: number
+    hovered?: number
 }
 
 const initialState: State = {
     query: '',
     available: [],
     selected: 0,
+    hovered: undefined,
 }
 
 const suggest = suggester(400, { leading: true, maxWait: 1200, trailing: true })
@@ -32,7 +36,7 @@ export const ItemPicker: React.FC<Props> = ({ slot, actions, ...props }) => {
 
     const equipItem = (item: Item) => {
         actions.equipItem({ slot, item })
-        setState({ ...state, query: '', selected: 0 })
+        setState({ ...state, query: '', selected: 0, hovered: undefined })
         props.hideTooltip()
     }
 
@@ -40,20 +44,34 @@ export const ItemPicker: React.FC<Props> = ({ slot, actions, ...props }) => {
     // must include tab index in order for relatedTarget to fire upon blur events
     // https://stackoverflow.com/a/42764495
     const items = state.available.map(
-        (x, i) => <li key={`${i}`}
-            className={x.quality.toLowerCase()}
-            tabIndex={-1}
-            onMouseEnter={() => setState({ ...state, selected: i })}
-            onClick={() => equipItem(x)}
-            style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                background: i === state.selected ? '#383838' : undefined,
-            }}
-        >
-            <span>{x.name}</span>
-            <img src={thumbnailUrl(x.id)} style={{ height: '4vh' }} />
-        </li>
+        (x, i) => {
+            const isHovered = i === state.hovered
+
+            return (
+                <Tippy
+                    {...defaultTippyOpts}
+                    content={<ItemTable item={x} />}
+                    visible={isHovered}
+                >
+
+                    <li key={`${i}`}
+                        className={x.quality.toLowerCase()}
+                        tabIndex={-1}
+                        onMouseEnter={() => setState({ ...state, selected: i, hovered: i })}
+                        onMouseLeave={() => setState({ ...state, hovered: undefined })}
+                        onClick={() => equipItem(x)}
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            background: i === state.selected ? '#383838' : undefined,
+                        }}
+                    >
+                        <span>{x.name}</span>
+                        <img src={thumbnailUrl(x.id)} style={{ height: '4vh' }} />
+                    </li>
+                </Tippy>
+            )
+        }
     )
 
 

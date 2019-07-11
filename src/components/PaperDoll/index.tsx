@@ -4,10 +4,10 @@ import itemIconEmpty from '../../assets/wow/paperdoll/icon-border-large.png'
 import { Slot } from '../../store/paperDoll/types'
 import { Injections } from '../../store/paperDoll/actions'
 import { ItemPicker } from '../itemPicker/'
-import { ItemTable } from '../itemTooltip/'
+import { ItemTable, defaultTippyOpts } from '../itemTooltip/'
 import { Item } from '../../store/items/types'
 import { thumbnailUrl } from '../../lib/util/thumbnail'
-import Tippy, { TippyProps } from '@tippy.js/react'
+import Tippy from '@tippy.js/react'
 import { State as DollProps } from '../../store/paperDoll/types'
 
 
@@ -64,16 +64,6 @@ const ItemIcon: React.FC<IconProps> = ({ item, slot, css, ...props }) => {
             hideTooltip={hide}
         />
     )
-
-    const defaultTippyOpts: Partial<TippyProps> = {
-        arrow: true,
-        aria: null,
-        boundary: 'viewport',
-        delay: [0, 0],
-        duration: [100, 100],
-        trigger: 'manual',
-        content: "I'm a tooltip!"
-    }
 
     return (
         <Tippy

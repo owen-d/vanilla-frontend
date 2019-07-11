@@ -3,6 +3,7 @@ import { AttrIdentifier } from '../../lib/vanillaApi/'
 import { Item, ScaledAttr, schools, PrimaryStat, Sign } from '../../store/items/types'
 import React from 'react'
 import { CharacterClass } from '../../lib/classicdb/types';
+import { TippyProps } from '@tippy.js/react'
 const negate = require('lodash/negate')
 
 export interface Props {
@@ -10,6 +11,18 @@ export interface Props {
 }
 
 export const classes = (cs: string[]) => cs.map(c => c.toLowerCase()).join(' ')
+
+export const defaultTippyOpts: Partial<TippyProps> = {
+    arrow: true,
+    aria: null,
+    boundary: 'viewport',
+    delay: [0, 0],
+    duration: [100, 100],
+    trigger: 'manual',
+    content: "I'm a tooltip!"
+}
+
+
 
 const isWep = (item: Item): {
     damage_range: { low: number, high: number }
