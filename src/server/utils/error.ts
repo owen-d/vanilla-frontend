@@ -1,7 +1,9 @@
 export class RequestError extends Error {
-  statusCode: number
+  statusCode: number = 500
   constructor(msg?: string, code?: number) {
     super(msg)
-    this.statusCode = code
+    if (code) {
+      this.statusCode = code
+    }
   }
 }

@@ -47,6 +47,8 @@ export function baseDps(spec: SpecIdentifier): number {
       return 265.45804;
     case SpecIdentifier.FrostMage:
       return 245.98726;
+    case SpecIdentifier.ArcaneMage:
+      return 265.45804;
     case SpecIdentifier.ShadowPriest:
       return 266.09796;
     case SpecIdentifier.Warlock:

@@ -37,6 +37,25 @@ export enum AttrIdentifier {
 /**
  * 
  * @export
+ * @interface DpsResponse
+ */
+export interface DpsResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof DpsResponse
+     */
+    dps: number;
+    /**
+     * 
+     * @type {Array<Array<object>>}
+     * @memberof DpsResponse
+     */
+    partialDerivatives: Array<Array<object>>;
+}
+/**
+ * 
+ * @export
  * @interface ReqFields
  */
 export interface ReqFields {
@@ -61,6 +80,7 @@ export interface ReqFields {
 export enum SpecIdentifier {
     FireMage = 'FireMage',
     FrostMage = 'FrostMage',
+    ArcaneMage = 'ArcaneMage',
     Warlock = 'Warlock',
     BalanceDruid = 'BalanceDruid',
     ElementalShaman = 'ElementalShaman',
@@ -177,42 +197,6 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
                 options: localVarRequestOptions,
             };
         },
-        /**
-         * 
-         * @param {ReqFields} body 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        equivalencePost(body: ReqFields, options: any = {}): RequestArgs {
-            // verify required parameter 'body' is not null or undefined
-            if (body === null || body === undefined) {
-                throw new RequiredError('body','Required parameter body was null or undefined when calling equivalencePost.');
-            }
-            const localVarPath = `/equivalence`;
-            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-                localVarHeaderParameter['Content-Type'] = 'application/json;charset=utf-8';
-
-            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...options.headers};
-            const needsSerialization = (<any>"ReqFields" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
-
-            return {
-                url: globalImportUrl.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
     }
 };
 
@@ -228,21 +212,8 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dpsPost(body: ReqFields, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<number> {
+        dpsPost(body: ReqFields, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<DpsResponse> {
             const localVarAxiosArgs = DefaultApiAxiosParamCreator(configuration).dpsPost(body, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
-        },
-        /**
-         * 
-         * @param {ReqFields} body 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        equivalencePost(body: ReqFields, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Array<object>>> {
-            const localVarAxiosArgs = DefaultApiAxiosParamCreator(configuration).equivalencePost(body, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -266,15 +237,6 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         dpsPost(body: ReqFields, options?: any) {
             return DefaultApiFp(configuration).dpsPost(body, options)(axios, basePath);
         },
-        /**
-         * 
-         * @param {ReqFields} body 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        equivalencePost(body: ReqFields, options?: any) {
-            return DefaultApiFp(configuration).equivalencePost(body, options)(axios, basePath);
-        },
     };
 };
 
@@ -294,17 +256,6 @@ export class DefaultApi extends BaseAPI {
      */
     public dpsPost(body: ReqFields, options?: any) {
         return DefaultApiFp(this.configuration).dpsPost(body, options)(this.axios, this.basePath);
-    }
-
-    /**
-     * 
-     * @param {ReqFields} body 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public equivalencePost(body: ReqFields, options?: any) {
-        return DefaultApiFp(this.configuration).equivalencePost(body, options)(this.axios, this.basePath);
     }
 
 }

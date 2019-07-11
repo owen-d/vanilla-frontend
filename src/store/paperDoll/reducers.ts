@@ -9,6 +9,7 @@ const initialState: State = {
   spec: defaultSpec,
   stats: defaultStats,
   dps: baseDps(defaultSpec),
+  partialDerivatives: [],
 }
 
 export function reduce(
@@ -39,7 +40,7 @@ export function reduce(
     case Signal.SetDPS:
       return {
         ...state,
-        dps: action.dps,
+        ...action,
       }
   }
   return state

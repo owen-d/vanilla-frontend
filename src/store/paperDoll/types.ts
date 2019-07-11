@@ -1,5 +1,5 @@
 import { Item } from '../../store/items/types'
-import { Stats, SpecIdentifier } from '../../lib/vanillaApi/api'
+import { Stats, SpecIdentifier, AttrIdentifier } from '../../lib/vanillaApi/api'
 
 export enum Signal {
   Equip = 'EQUIP',
@@ -52,6 +52,10 @@ export interface EquipAction {
   equipped: SlotEquipped
 }
 
+// the axios swagger generator doesn't use tuples, but tries to use
+// (Array<Array<object>>). This is insufficient for our typings, so we augment it here.
+export type PartialDerivative = [AttrIdentifier, number]
+
 export interface UnequipAction {
   type: typeof Signal.Unequip
   slot: Slot
@@ -60,6 +64,7 @@ export interface UnequipAction {
 export interface SetDPSAction {
   type: typeof Signal.SetDPS,
   dps: number,
+  partialDerivatives: PartialDerivative[],
 }
 
 export interface SlotEquipped {
@@ -72,10 +77,11 @@ export type Equipped = Partial<Record<Slot, Item>>
 export type StateGetter = () => { doll: State }
 
 export interface State {
-  equipped: Equipped,
-  spec: SpecIdentifier,
-  stats: Stats,
-  dps: number,
+  equipped: Equipped
+  spec: SpecIdentifier
+  stats: Stats
+  dps: number
+  partialDerivatives: PartialDerivative[]
 }
 
 export type Action = EquipAction | UnequipAction | SetDPSAction

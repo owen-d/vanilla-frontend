@@ -1,8 +1,9 @@
-import { Slot, Signal, SlotEquipped, Action, State, StateGetter } from './types'
+import { Slot, Signal, SlotEquipped, Action, State, StateGetter, PartialDerivative } from './types'
 import { ActionCreator, Dispatch } from 'redux'
 import { ThunkAction } from 'redux-thunk'
 import { Config } from '../config/'
 import { toReqFields } from './utils'
+import { DpsResponse } from '../../lib/vanillaApi/api'
 
 
 const equip = (equipped: SlotEquipped) => ({
@@ -26,9 +27,10 @@ export function unequipItem(slot: Slot): Action {
   }
 }
 
-export const setDPS = (dps: number): Action => ({
+export const setDPS = ({ dps, partialDerivatives }: DpsResponse): Action => ({
   type: Signal.SetDPS,
   dps,
+  partialDerivatives: (partialDerivatives as unknown) as PartialDerivative[],
 })
 
 
