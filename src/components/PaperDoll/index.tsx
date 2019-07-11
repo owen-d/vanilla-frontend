@@ -9,6 +9,7 @@ import { Item } from '../../store/items/types'
 import { thumbnailUrl } from '../../lib/util/thumbnail'
 import Tippy from '@tippy.js/react'
 import { State as DollProps } from '../../store/paperDoll/types'
+import { StatList } from './statDerivatives'
 
 
 // unused: just for docs so I remember how do do stuff with SyntheticEvent
@@ -104,91 +105,82 @@ export const PaperDoll: React.FC<Props> = ({ actions, equipped, ...props }) => {
         height: '75vh',
     }
 
-    const statDerivatives = props.partialDerivatives.map(x =>
-        <li key={x[0]}>{x[0]}: {x[1]}</li>
-    )
-
     return (
-        <div className="paperDoll" style={containerStyles}>
-            <span>dps: {props.dps}</span>
+        <div>
+            <div className="paperDoll" style={containerStyles}>
 
-            {props.partialDerivatives.length ? (
-                <div>
-                    <span>dps change by addition of the following:</span>
-                    <ul>{statDerivatives}</ul>
-                </div>
-            ) : null}
+                <ItemIcon slot={Slot.Head}
+                    item={equipped[Slot.Head]}
+                    actions={actions}
+                    css={{ top: '4.3%', left: '3.7%' }} />
+                <ItemIcon slot={Slot.Gloves}
+                    item={equipped[Slot.Gloves]}
+                    actions={actions}
+                    css={{ top: '4.3%', left: '83.3%' }} />
+                <ItemIcon slot={Slot.Neck}
+                    item={equipped[Slot.Neck]}
+                    actions={actions}
+                    css={{ top: '14.9%', left: '3.7%' }} />
+                <ItemIcon slot={Slot.Belt}
+                    item={equipped[Slot.Belt]}
+                    actions={actions}
+                    css={{ top: '14.9%', left: '83.3%' }} />
+                <ItemIcon slot={Slot.Shoulders}
+                    item={equipped[Slot.Shoulders]}
+                    actions={actions}
+                    css={{ top: '25.2%', left: '3.7%' }} />
+                <ItemIcon slot={Slot.Pants}
+                    item={equipped[Slot.Pants]}
+                    actions={actions}
+                    css={{ top: '25.2%', left: '83.3%' }} />
+                <ItemIcon slot={Slot.Cloak}
+                    item={equipped[Slot.Cloak]}
+                    actions={actions}
+                    css={{ top: '35.3%', left: '3.7%' }} />
+                <ItemIcon slot={Slot.Boots}
+                    item={equipped[Slot.Boots]}
+                    actions={actions}
+                    css={{ top: '35.3%', left: '83.3%' }} />
+                <ItemIcon slot={Slot.Chest}
+                    item={equipped[Slot.Chest]}
+                    actions={actions}
+                    css={{ top: '46%', left: '3.7%' }} />
+                <ItemIcon slot={Slot.Ring1}
+                    item={equipped[Slot.Ring1]}
+                    actions={actions}
+                    css={{ top: '46%', left: '83.3%' }} />
+                <ItemIcon slot={Slot.Ring2}
+                    item={equipped[Slot.Ring2]}
+                    actions={actions}
+                    css={{ top: '56%', left: '83.3%' }} />
+                <ItemIcon slot={Slot.Trinket1}
+                    item={equipped[Slot.Trinket1]}
+                    actions={actions}
+                    css={{ top: '66.4%', left: '83.3%' }} />
+                <ItemIcon slot={Slot.Bracers}
+                    item={equipped[Slot.Bracers]}
+                    actions={actions}
+                    css={{ top: '77.2%', left: '3.7%' }} />
+                <ItemIcon slot={Slot.Trinket2}
+                    item={equipped[Slot.Trinket2]}
+                    actions={actions}
+                    css={{ top: '77.2%', left: '83.3%' }} />
 
-            <ItemIcon slot={Slot.Head}
-                item={equipped[Slot.Head]}
-                actions={actions}
-                css={{ top: '4.3%', left: '3.7%' }} />
-            <ItemIcon slot={Slot.Gloves}
-                item={equipped[Slot.Gloves]}
-                actions={actions}
-                css={{ top: '4.3%', left: '83.3%' }} />
-            <ItemIcon slot={Slot.Neck}
-                item={equipped[Slot.Neck]}
-                actions={actions}
-                css={{ top: '14.9%', left: '3.7%' }} />
-            <ItemIcon slot={Slot.Belt}
-                item={equipped[Slot.Belt]}
-                actions={actions}
-                css={{ top: '14.9%', left: '83.3%' }} />
-            <ItemIcon slot={Slot.Shoulders}
-                item={equipped[Slot.Shoulders]}
-                actions={actions}
-                css={{ top: '25.2%', left: '3.7%' }} />
-            <ItemIcon slot={Slot.Pants}
-                item={equipped[Slot.Pants]}
-                actions={actions}
-                css={{ top: '25.2%', left: '83.3%' }} />
-            <ItemIcon slot={Slot.Cloak}
-                item={equipped[Slot.Cloak]}
-                actions={actions}
-                css={{ top: '35.3%', left: '3.7%' }} />
-            <ItemIcon slot={Slot.Boots}
-                item={equipped[Slot.Boots]}
-                actions={actions}
-                css={{ top: '35.3%', left: '83.3%' }} />
-            <ItemIcon slot={Slot.Chest}
-                item={equipped[Slot.Chest]}
-                actions={actions}
-                css={{ top: '46%', left: '3.7%' }} />
-            <ItemIcon slot={Slot.Ring1}
-                item={equipped[Slot.Ring1]}
-                actions={actions}
-                css={{ top: '46%', left: '83.3%' }} />
-            <ItemIcon slot={Slot.Ring2}
-                item={equipped[Slot.Ring2]}
-                actions={actions}
-                css={{ top: '56%', left: '83.3%' }} />
-            <ItemIcon slot={Slot.Trinket1}
-                item={equipped[Slot.Trinket1]}
-                actions={actions}
-                css={{ top: '66.4%', left: '83.3%' }} />
-            <ItemIcon slot={Slot.Bracers}
-                item={equipped[Slot.Bracers]}
-                actions={actions}
-                css={{ top: '77.2%', left: '3.7%' }} />
-            <ItemIcon slot={Slot.Trinket2}
-                item={equipped[Slot.Trinket2]}
-                actions={actions}
-                css={{ top: '77.2%', left: '83.3%' }} />
+                <ItemIcon slot={Slot.Mainhand}
+                    item={equipped[Slot.Mainhand]}
+                    actions={actions}
+                    css={{ top: '82.6%', left: '32%' }} />
+                <ItemIcon slot={Slot.Offhand}
+                    item={equipped[Slot.Offhand]}
+                    actions={actions}
+                    css={{ top: '82.6%', left: '44%' }} />
+                <ItemIcon slot={Slot.Ranged}
+                    item={equipped[Slot.Ranged]}
+                    actions={actions}
+                    css={{ top: '82.6%', left: '55.5%' }} />
 
-            <ItemIcon slot={Slot.Mainhand}
-                item={equipped[Slot.Mainhand]}
-                actions={actions}
-                css={{ top: '82.6%', left: '32%' }} />
-            <ItemIcon slot={Slot.Offhand}
-                item={equipped[Slot.Offhand]}
-                actions={actions}
-                css={{ top: '82.6%', left: '44%' }} />
-            <ItemIcon slot={Slot.Ranged}
-                item={equipped[Slot.Ranged]}
-                actions={actions}
-                css={{ top: '82.6%', left: '55.5%' }} />
-
+            </div>
+            <StatList {...props} />
         </div>
     )
 }

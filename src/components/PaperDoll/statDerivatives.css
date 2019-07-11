@@ -1,0 +1,26 @@
+#statDerivatives {
+	  background-color: #080d21;
+	  text-align: left;
+	  padding: 5px;
+	  max-width: 303px;
+	  display: inline-block;
+	  vertical-align: top;
+	  font-size: 12px;
+}
+
+#statDerivatives table {
+	  font-family: Verdana, sans-serif;
+	  border: thin solid gray;
+	  border-spacing: 0;
+    width: 100%;
+	  border-collapse: collapse;
+}
+
+#statDerivatives td {
+	  color: white;
+}
+#statDerivatives th {
+	  color: white;
+	  font-weight: normal;
+	  text-align: right
+}
