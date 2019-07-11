@@ -1,23 +1,20 @@
 import React, { useState, useRef } from 'react'
 import dollBackground from '../../assets/wow/paperdoll/char-background-transparent.png'
 import itemIconEmpty from '../../assets/wow/paperdoll/icon-border-large.png'
-import { Slot, Equipped } from '../../store/paperDoll/types'
+import { Slot } from '../../store/paperDoll/types'
 import { Injections } from '../../store/paperDoll/actions'
 import { ItemPicker } from '../itemPicker/'
 import { ItemTable } from '../itemTooltip/'
 import { Item } from '../../store/items/types'
 import { thumbnailUrl } from '../../lib/util/thumbnail'
 import Tippy, { TippyProps } from '@tippy.js/react'
+import { State as DollProps } from '../../store/paperDoll/types'
 
 
 // unused: just for docs so I remember how do do stuff with SyntheticEvent
 export type Handler = (slot: Slot, event: React.SyntheticEvent<{ fieldA: string }>) => void
 
-
-export interface Props {
-    equipped: Equipped
-    actions: Injections
-}
+export type Props = { actions: Injections } & DollProps
 
 interface IconState {
     hovered: boolean
@@ -104,7 +101,7 @@ const ItemIcon: React.FC<IconProps> = ({ item, slot, css, ...props }) => {
     )
 }
 
-export const PaperDoll: React.FC<Props> = ({ actions, equipped }) => {
+export const PaperDoll: React.FC<Props> = ({ actions, equipped, ...props }) => {
 
     /* 555 x 612 -- default image dims */
     const widthCoeff = 555 / 612
@@ -118,6 +115,7 @@ export const PaperDoll: React.FC<Props> = ({ actions, equipped }) => {
     }
     return (
         <div className="paperDoll" style={containerStyles}>
+            <span>dps: {props.dps}</span>
 
             <ItemIcon slot={Slot.Head}
                 item={equipped[Slot.Head]}
