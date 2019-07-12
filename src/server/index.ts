@@ -24,13 +24,14 @@ const main = async () => {
   app.use(bodyParser.json())
 
 
-  app.use('/assets/icon', express.static(config.iconDir))
-  // TODO: serve built assets in prod
-
   app.post('/api/autocomplete', searchMiddleware(`${config.esHost}/${config.esIndex}`))
 
-  app.use(errorHandler)
 
+  // static routes
+  app.use(express.static('build'))
+  app.use('/assets/icon', express.static(config.iconDir))
+
+  app.use(errorHandler)
   app.listen(config.port)
   console.log(`listening on ${config.port}`)
 }

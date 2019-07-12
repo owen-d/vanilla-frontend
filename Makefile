@@ -1,7 +1,14 @@
 # path to https://github.com/owen-d/vanilla/blob/master/swagger.json
 SWAGGER_FILE ?= $(HOME)/projects/vanilla/swagger.json
 
+REPO = owend/vanilla-frontend
+TAG ?= 0.1.0
+IMAGE = $(REPO):$(TAG)
+
+TSC ?= npx tsc
+
 SCRATCH_DIR = scratch
+DIST_DIR = dist
 GEN_CLI_DIR = $(SCRATCH_DIR)/gen/cli
 GENERATED_CRAWLER = $(GEN_CLI_DIR)/genItems.js
 GENERATED_PARSER = $(GEN_CLI_DIR)/refineItems.js
@@ -16,9 +23,7 @@ CRAWLER_OUTPUT_DIR ?= $(SCRATCH_DIR)/assets
 ITEMS_NDJSON = items.ndjson
 PARSED_NDJSON = items.parsed.ndjson
 
-.PHONY: gen
-gen:
-	docker run --rm -it -v $(SWAGGER_FILE):/swagger.json -v $(PWD):/work openapitools/openapi-generator-cli generate -i /swagger.json -g typescript-axios -o /work/src/lib/vanillaApi
+TS_INDEX = $(DIST_DIR)/server/index.js
 
 .PHONY: test
 test:
@@ -29,9 +34,21 @@ repl:
 	node --experimental-repl-await
 
 .PHONY: server
-server:
-	npx tsc --esModuleInterop --outDir $(SCRATCH_DIR)/gen src/server/*.ts && \
-		node $(SCRATCH_DIR)/gen/server/index.js
+server: $(TS_INDEX)
+	node $<
+
+#####################
+# assorted codegen/indexing #
+#####################
+.PHONY: build-server
+build-server: $(TS_INDEX)
+
+$(TS_INDEX): $(TS_SRC) | $(ZIPCODES_MAP)
+	$(TSC) --module commonjs
+
+.PHONY: gen-api-client
+gen-api-client:
+	docker run --rm -it -v $(SWAGGER_FILE):/swagger.json -v $(PWD):/work openapitools/openapi-generator-cli generate -i /swagger.json -g typescript-axios -o /work/src/lib/vanillaApi
 
 .PHONY: gen-data
 gen-data: $(GENERATED_CRAWLER)
@@ -53,4 +70,13 @@ snapshot:
 
 
 $(CLIS): $(TS_CLI_FILES) $(TS_LIBS)
-	npx tsc --outDir $(SCRATCH_DIR)/gen src/cli/*.ts && chmod +x  $(SCRATCH_DIR)/gen/cli/*.js
+	$(TSC) --outDir $(SCRATCH_DIR)/gen src/cli/*.ts && chmod +x  $(SCRATCH_DIR)/gen/cli/*.js
+
+.PHONY: build-docker
+build-docker:
+	cp -R $(CRAWLER_OUTPUT_DIR)/icon ./icons
+	docker build -t $(IMAGE) .
+
+#####################
+# js stuff #
+#####################

@@ -7,7 +7,7 @@ export interface Config {
 }
 
 export const config: Config = {
-  iconDir: process.env.ASSET_DIR || 'scratch/assets/icon',
+  iconDir: process.env.ICON_DIR || 'icons',
   port: parseInt(process.env.PORT || '8080'),
   env: process.env.NODE_ENV || 'development',
   esHost: process.env.ES_HOST || 'http://localhost:9200',
