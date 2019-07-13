@@ -60,8 +60,8 @@ parse-items: $(GENERATED_PARSER)
 
 .PHONY: index
 index: $(GENERATED_INDEXER)
-	$(GENERATED_INDEXER) --src $(CRAWLER_OUTPUT_DIR)/$(PARSED_NDJSON) \
-		--index $(ES_INDEX) --url "$(ES_HOST)"
+	$(GENERATED_INDEXER) --src=$(CRAWLER_OUTPUT_DIR)/$(PARSED_NDJSON) \
+		--index=$(ES_INDEX) --url="$(ES_HOST)"
 
 # snapshot tarballs the assets dir
 .PHONY: snapshot

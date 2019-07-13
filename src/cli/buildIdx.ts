@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-const meow = require('meow')
 const ndjson = require('ndjson')
 import { promisify } from 'util'
 import { Item } from '../store/items/types'
@@ -15,22 +14,14 @@ import { mappings } from './mappings'
 import { index } from 'parsimmon';
 
 
-const cli: any = meow(`
-some thing
-`, {
-    flags: {
-      src: {
-        type: 'string',
-      },
-      index: {
-        type: 'string',
-      },
-      url: {
-        type: 'string',
-        alias: 'u',
-      }
-    }
-  })
+const flags: {
+  src: string,
+  index: string,
+  url: string,
+} = require('minimist')(process.argv.slice(1), {
+  string: ['src', 'index', 'url'],
+  alias: { url: 'u' },
+});
 
 
 const run = async (flags: any) => {
@@ -39,8 +30,13 @@ const run = async (flags: any) => {
   await create(`${flags.url}/${flags.index}`)
   console.log('created idx')
 
-  createReadStream(flags.src)
-    .pipe(parser)
+  if (flags.src === '-') {
+    createReadStream(null, { fd: 0 })
+      .pipe(parser)
+  } else {
+    createReadStream(flags.src)
+      .pipe(parser)
+  }
 
   parser.on('data', (item: Item) => {
     records.push(item)
@@ -98,7 +94,7 @@ const flush = (url: string, index: string, items: Item[]) => {
 
 
 
-const main = async () => await run(cli.flags)
+const main = async () => await run(flags)
 main()
 
 
