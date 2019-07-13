@@ -18,6 +18,7 @@ TS_LIBS = $(shell find src/lib -type f -name '*.ts')
 TS_CLI_FILES = $(shell find src/cli -type f -name '*.ts')
 ES_INDEX ?= items
 ES_HOST ?= http://localhost:9200
+PARSED_ITEMS_FILE ?= $(CRAWLER_OUTPUT_DIR)/$(PARSED_NDJSON)
 
 CRAWLER_OUTPUT_DIR ?= $(SCRATCH_DIR)/assets
 ITEMS_NDJSON = items.ndjson
@@ -60,7 +61,7 @@ parse-items: $(GENERATED_PARSER)
 
 .PHONY: index
 index: $(GENERATED_INDEXER)
-	$(GENERATED_INDEXER) --src=$(CRAWLER_OUTPUT_DIR)/$(PARSED_NDJSON) \
+	$(GENERATED_INDEXER) --src=$(PARSED_ITEMS_FILE) \
 		--index=$(ES_INDEX) --url="$(ES_HOST)"
 
 # snapshot tarballs the assets dir
@@ -68,6 +69,9 @@ index: $(GENERATED_INDEXER)
 snapshot:
 	tar -czvf $(SCRATCH_DIR)/snapshot.tar.gz --exclude '*.DS_Store' $(CRAWLER_OUTPUT_DIR)
 
+
+.PHONY: clis
+clis: $(CLIS)
 
 $(CLIS): $(TS_CLI_FILES) $(TS_LIBS)
 	$(TSC) --outDir $(SCRATCH_DIR)/gen src/cli/*.ts && chmod +x  $(SCRATCH_DIR)/gen/cli/*.js
