@@ -69,7 +69,6 @@ index: $(GENERATED_INDEXER)
 snapshot:
 	tar -czvf $(SCRATCH_DIR)/snapshot.tar.gz --exclude '*.DS_Store' $(CRAWLER_OUTPUT_DIR)
 
-
 .PHONY: clis
 clis: $(CLIS)
 
@@ -78,7 +77,6 @@ $(CLIS): $(TS_CLI_FILES) $(TS_LIBS)
 
 .PHONY: build-docker
 build-docker:
-	cp -R $(CRAWLER_OUTPUT_DIR)/icon ./icons
 	docker build -t $(IMAGE) .
 
 #####################
