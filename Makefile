@@ -16,6 +16,7 @@ GENERATED_INDEXER = $(GEN_CLI_DIR)/buildIdx.js
 CLIS = $(GENERATED_CRAWLER) $(GENERATED_PARSER) $(GENERATED_INDEXER)
 TS_LIBS = $(shell find src/lib -type f -name '*.ts')
 TS_CLI_FILES = $(shell find src/cli -type f -name '*.ts')
+TS_SRC = $(shell find src -type f -name '*.ts') $(shell find src -type f -name '*.tsx')
 ES_INDEX ?= items
 ES_HOST ?= http://localhost:9200
 PARSED_ITEMS_FILE ?= $(CRAWLER_OUTPUT_DIR)/$(PARSED_NDJSON)
@@ -44,8 +45,8 @@ server: $(TS_INDEX)
 .PHONY: build-server
 build-server: $(TS_INDEX)
 
-$(TS_INDEX): $(TS_SRC) | $(ZIPCODES_MAP)
-	$(TSC) --module commonjs
+$(TS_INDEX): $(TS_SRC)
+	 @$(TSC) --jsx react --module commonjs --esModuleInterop --outDir dist $(TS_SRC)
 
 .PHONY: gen-api-client
 gen-api-client:
@@ -79,6 +80,6 @@ $(CLIS): $(TS_CLI_FILES) $(TS_LIBS)
 build-docker:
 	docker build -t $(IMAGE) .
 
-#####################
-# js stuff #
-#####################
+.PHONY: deploy-docker
+deploy-docker: build-docker
+	docker push $(IMAGE)

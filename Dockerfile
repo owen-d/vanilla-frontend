@@ -1,6 +1,5 @@
 FROM node:10.15-slim
 
-ENV NODE_ENV=production
 EXPOSE 8080
 
 WORKDIR /src/app
@@ -23,6 +22,7 @@ COPY . .
 RUN npm run-script build && \
   npx tsc --module commonjs --esModuleInterop --outDir dist $(find src -name '*.ts')
 
+ENV NODE_ENV=production
 ENTRYPOINT ["/tini", "--"]
 CMD ["node", "dist/server/index.js"]
 

@@ -31,7 +31,7 @@ const run = async (flags: any) => {
   console.log('created idx')
 
   if (flags.src === '-') {
-    createReadStream(null, { fd: 0 })
+    createReadStream('', { fd: 0 })
       .pipe(parser)
   } else {
     createReadStream(flags.src)
