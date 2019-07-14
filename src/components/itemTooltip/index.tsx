@@ -1,6 +1,5 @@
-import * as request from 'request-promise'
 import { AttrIdentifier } from '../../lib/vanillaApi/'
-import { Item, ScaledAttr, schools, PrimaryStat, Sign } from '../../store/items/types'
+import { Item, ScaledAttr, schools, PrimaryStat } from '../../store/items/types'
 import React from 'react'
 import { CharacterClass } from '../../lib/classicdb/types';
 import { TippyProps } from '@tippy.js/react'
@@ -22,14 +21,11 @@ export const defaultTippyOpts: Partial<TippyProps> = {
     content: "I'm a tooltip!"
 }
 
-
-
 const isWep = (item: Item): {
     damage_range: { low: number, high: number }
     swing_speed: number
     dps: number
 } | undefined => {
-    let res = {}
     const anyUndefined =
         [item.damage_range, item.swing_speed, item.dps]
             .filter(x => x === undefined)

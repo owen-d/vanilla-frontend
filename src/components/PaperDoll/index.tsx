@@ -1,5 +1,5 @@
 import Grid from '@material-ui/core/Grid'
-import React, { useState, useRef } from 'react'
+import React from 'react'
 import dollBackground from '../../assets/wow/paperdoll/char-background-transparent.png'
 import { Injections } from '../../store/paperDoll/actions'
 import { ItemIcon } from './itemIcon'
@@ -34,7 +34,7 @@ export const PaperDoll: React.FC<Props> = ({ actions, equipped, ...props }) => {
                     position: 'relative'
                 }}
             >
-                <img src={dollBackground} style={{ width: '100%', height: 'auto' }} />
+                <img src={dollBackground} style={{ width: '100%', height: 'auto' }} alt="doll-background" />
 
                 <ItemIcon slot={Slot.Head}
                     item={equipped[Slot.Head]}

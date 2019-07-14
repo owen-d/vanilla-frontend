@@ -1,11 +1,7 @@
 import React from 'react'
-import { withStyles, WithStyles } from '@material-ui/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
-import createStyles from '@material-ui/core/styles/createStyles';
 import { Injections } from '../../store/paperDoll/actions'
-import Button from '@material-ui/core/Button';
 import { SpecIdentifier } from '../../lib/vanillaApi/api'
 import druidImage from '../../assets/wow/classes/druid.png'
 import hunterImage from '../../assets/wow/classes/hunter.png'
@@ -51,9 +47,10 @@ export const Spec: React.FC<Props> = ({ charClass, specs }) => {
         backgroundColor: '#ffffff',
         padding: '2px',
     }
+
     return (
         <GridList cellHeight={30} spacing={0} cols={3}>
-            <GridListTile key="character-class" cols={3} rows={3}>
+            <GridListTile key="character-class" cols={3} rows={3} >
                 <img
                     src={classImage(charClass)}
                     alt={charClass}

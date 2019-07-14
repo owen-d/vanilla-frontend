@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Slot } from '../../store/paperDoll/types'
 import { Injections } from '../../store/paperDoll/actions'
 import { AowowSlot, Item } from '../../store/items/types'
@@ -67,7 +67,11 @@ export const ItemPicker: React.FC<Props> = ({ slot, actions, ...props }) => {
                         }}
                     >
                         <span>{x.name}</span>
-                        <img src={thumbnailUrl(x.id)} style={{ height: '4vh' }} />
+                        <img
+                            src={thumbnailUrl(x.id)}
+                            style={{ height: '4vh' }}
+                            alt={`${x.name}-tooltip`}
+                        />
                     </li>
                 </Tippy>
             )

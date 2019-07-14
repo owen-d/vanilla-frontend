@@ -1,6 +1,5 @@
-import { Signal, Action, State, Equipped } from './types'
+import { Signal, Action, State } from './types'
 import { defaultSpec, defaultStats } from '../vanillaApi/types'
-import { Stats } from '../../lib/vanillaApi';
 import { calculateStats, baseDps } from './utils'
 
 

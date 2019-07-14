@@ -1,5 +1,4 @@
 import {
-  ConfigurationParameters as ApiConfigParams,
   Configuration as ApiConfig
 } from '../../lib/vanillaApi/configuration'
 import { DefaultApiFactory } from '../../lib/vanillaApi/api'

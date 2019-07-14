@@ -1,6 +1,5 @@
-import { Slot, Signal, SlotEquipped, Action, State, StateGetter, PartialDerivative } from './types'
-import { ActionCreator, Dispatch } from 'redux'
-import { ThunkAction } from 'redux-thunk'
+import { Slot, Signal, SlotEquipped, Action, StateGetter, PartialDerivative } from './types'
+import { Dispatch } from 'redux'
 import { Config } from '../config/'
 import { toReqFields } from './utils'
 import { DpsResponse } from '../../lib/vanillaApi/api'

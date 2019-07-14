@@ -1,9 +1,9 @@
 import React from 'react';
-import { Theme, createMuiTheme, WithStyles, MuiThemeProvider } from '@material-ui/core/styles';
+import { Theme, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import indigo from '@material-ui/core/colors/indigo';
+/* import indigo from '@material-ui/core/colors/indigo'; */
 /* import pink from '@material-ui/core/colors/pink'; */
-import brown from '@material-ui/core/colors/brown';
+/* import brown from '@material-ui/core/colors/brown'; */
 /* import teal from '@material-ui/core/colors/teal'; */
 import red from '@material-ui/core/colors/red';
 

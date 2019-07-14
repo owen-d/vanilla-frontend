@@ -1,4 +1,3 @@
-import * as request from 'request-promise' // needed just to avoid some namespace issues in the generated vanillaApi client
 import {
   CharacterClass,
   ItemBinding,
