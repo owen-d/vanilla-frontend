@@ -45,6 +45,7 @@ const ItemIcon: React.FC<IconProps> = ({ item, slot, css, ...props }) => {
         height: '11%',
         opacity: state.hovered ? 1 : noHoverOpacity,
         backgroundImage: item ? `url(${thumbnailUrl(item.id)})` : `url(${itemIconEmpty})`,
+        backgroundSize: 'cover',
         zIndex: 10,
     }, css)
 
