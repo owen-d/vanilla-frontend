@@ -1,5 +1,4 @@
 import React from 'react';
-import { PaperDoll } from './components/paperDoll'
 import { AppState } from './store'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -12,6 +11,7 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import Grid from '@material-ui/core/Grid';
 import { withStyles, WithStyles } from '@material-ui/styles';
 import { Theme } from '@material-ui/core/styles'
+import { Character } from './components/character/'
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -19,7 +19,6 @@ const styles = (theme: Theme) =>
             textAlign: 'center',
             paddingTop: theme.spacing() * 0.4,
             backgroundColor: '#282c34',
-            height: '100vh',
             fontSize: 'calc(10px + 2vmin)',
         },
     });
@@ -54,9 +53,8 @@ const App = withStyles(styles)(
                 container
                 direction="row"
                 justify="center"
-                alignItems="center"
             >
-                <PaperDoll {...props.doll} actions={props.dollActions} />
+                <Character {...props.doll} actions={props.dollActions} />
             </Grid>
         )
     }

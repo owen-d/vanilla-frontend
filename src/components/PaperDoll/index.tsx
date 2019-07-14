@@ -1,15 +1,11 @@
+import Grid from '@material-ui/core/Grid'
 import React, { useState, useRef } from 'react'
 import dollBackground from '../../assets/wow/paperdoll/char-background-transparent.png'
-import itemIconEmpty from '../../assets/wow/paperdoll/icon-border-large.png'
-import { Slot } from '../../store/paperDoll/types'
 import { Injections } from '../../store/paperDoll/actions'
-import { ItemPicker } from '../itemPicker/'
-import { ItemTable, defaultTippyOpts } from '../itemTooltip/'
-import { Item } from '../../store/items/types'
-import { thumbnailUrl } from '../../lib/util/thumbnail'
-import Tippy from '@tippy.js/react'
+import { ItemIcon } from './itemIcon'
+import { Panel } from '../specPanel/'
+import { Slot } from '../../store/paperDoll/types'
 import { State as DollProps } from '../../store/paperDoll/types'
-import { StatList } from './statDerivatives'
 
 
 // unused: just for docs so I remember how do do stuff with SyntheticEvent
@@ -17,98 +13,28 @@ export type Handler = (slot: Slot, event: React.SyntheticEvent<{ fieldA: string 
 
 export type Props = { actions: Injections } & DollProps
 
-interface IconState {
-    hovered: boolean
-    showTooltip: boolean
-}
-
-const initialIconState: IconState = {
-    hovered: false,
-    showTooltip: false,
-}
-
-interface IconProps {
-    item?: Item
-    actions: Injections
-    slot: Slot
-    css: React.CSSProperties
-}
-
-const ItemIcon: React.FC<IconProps> = ({ item, slot, css, ...props }) => {
-    const [state, setState] = useState(initialIconState)
-    const deltaState = (deltas: Partial<IconState>) => () => setState({ ...state, ...deltas })
-
-    const noHoverOpacity = item ? 0.7 : 0.5
-    let styles = Object.assign({
-        position: 'absolute',
-        width: '12%',
-        height: '11%',
-        opacity: state.hovered ? 1 : noHoverOpacity,
-        backgroundImage: item ? `url(${thumbnailUrl(item.id)})` : `url(${itemIconEmpty})`,
-        backgroundSize: 'cover',
-        zIndex: 10,
-    }, css)
-
-    const hide = deltaState({ showTooltip: false })
-
-    const ref = useRef<HTMLInputElement>(null)
-    const focusInput = () => {
-        if (ref.current) {
-            ref.current.focus()
-        }
-    }
-
-    const picker = (
-        <ItemPicker
-            inputRef={ref}
-            slot={slot}
-            actions={props.actions}
-            hideTooltip={hide}
-        />
-    )
-
-    return (
-        <Tippy
-            {...defaultTippyOpts}
-            content={picker}
-            visible={state.showTooltip}
-            onShown={focusInput}
-            interactive={true}
-            sticky={true}
-        >
-            <Tippy
-                {...defaultTippyOpts}
-                content={item ? <ItemTable item={item} /> : <span>null</span>}
-                visible={item && state.hovered}
-            >
-                <div className={slot.toLowerCase()}
-                    tabIndex={-1}
-                    style={styles}
-                    onMouseEnter={deltaState({ hovered: true })}
-                    onMouseLeave={deltaState({ hovered: false })}
-                    onClick={deltaState({ showTooltip: true })}
-                />
-            </Tippy>
-        </Tippy >
-    )
-}
 
 export const PaperDoll: React.FC<Props> = ({ actions, equipped, ...props }) => {
 
-    /* 555 x 612 -- default image dims */
-    const widthCoeff = 555 / 612
-    const containerStyles: React.CSSProperties = {
-        position: 'relative',
-        backgroundImage: `url(${dollBackground})`,
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
-        width: (widthCoeff * 75) + 'vh',
-        height: '75vh',
-    }
-
     return (
-        <div>
-            <div className="paperDoll" style={containerStyles}>
+        <Grid
+            container
+            className="paperDoll"
+        >
+
+            <Grid item xs={12}>
+
+                <Panel actions={actions} {...props} />
+            </Grid >
+
+            <Grid
+                item
+                xs={12}
+                style={{
+                    position: 'relative'
+                }}
+            >
+                <img src={dollBackground} style={{ width: '100%', height: 'auto' }} />
 
                 <ItemIcon slot={Slot.Head}
                     item={equipped[Slot.Head]}
@@ -179,10 +105,8 @@ export const PaperDoll: React.FC<Props> = ({ actions, equipped, ...props }) => {
                     item={equipped[Slot.Ranged]}
                     actions={actions}
                     css={{ top: '82.6%', left: '55.5%' }} />
+            </Grid>
 
-            </div>
-            <StatList {...props} />
-        </div>
+        </Grid>
     )
 }
-
