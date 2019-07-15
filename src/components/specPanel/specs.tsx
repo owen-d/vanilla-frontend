@@ -1,5 +1,6 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid';
+import { Icon } from './icon'
 import { Injections } from '../../store/paperDoll/actions'
 import { SpecIdentifier } from '../../lib/vanillaApi/api'
 import druidImage from '../../assets/wow/classes/druid.png'
@@ -42,32 +43,24 @@ interface State { }
 
 export const Spec: React.FC<Props> = ({ charClass, specs }) => {
 
-    const imageStyles: React.CSSProperties = {
-        borderRadius: '30%',
-        backgroundColor: '#ffffff',
-        padding: '1px',
-        maxHeight: '100%',
-        maxWidth: '100%',
-    }
-
     return (
         <Grid container justify="center">
-            <Grid item xs={12}>
-                <img
-                    src={classImage(charClass)}
+            <Grid item xs={12} key={charClass}>
+                <Icon
+                    selected={false}
                     alt={charClass}
-                    style={imageStyles}
+                    image={classImage(charClass)}
                 />
             </Grid>
 
-            <Grid container item xs={12}>
+            <Grid container item xs={12} key="specs" >
                 {
                     specs.map((s, i) => (
-                        <Grid item xs={4}>
-                            <img
-                                src={specImage(s)}
+                        <Grid item xs={4} key={i} >
+                            <Icon
+                                selected={false}
                                 alt={s}
-                                style={imageStyles}
+                                image={specImage(s)}
                             />
                         </Grid>
                     ))
