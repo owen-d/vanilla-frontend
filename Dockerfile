@@ -16,12 +16,7 @@ RUN npm i
 
 COPY . .
 
-# For some reason, tsc does not respect the tsconfig in docker.
-# Running `npx tsc` produces no output and exits with a 0 code.
-# Therefore we try and mimic the required configs even though it's susceptible to config drift
-RUN npm run-script build && \
-  make clis && \
-  npx tsc --module commonjs --esModuleInterop --outDir dist $(find src -name '*.ts')
+RUN npm run-script build && make clis
 
 ENV NODE_ENV=production
 ENTRYPOINT ["/tini", "--"]

@@ -8,11 +8,10 @@ IMAGE = $(REPO):$(TAG)
 TSC ?= npx tsc
 
 SCRATCH_DIR = scratch
-DIST_DIR = dist
-GEN_CLI_DIR = $(SCRATCH_DIR)/gen/cli
-GENERATED_CRAWLER = $(GEN_CLI_DIR)/genItems.js
-GENERATED_PARSER = $(GEN_CLI_DIR)/refineItems.js
-GENERATED_INDEXER = $(GEN_CLI_DIR)/buildIdx.js
+GEN_DIR = $(SCRATCH_DIR)/gen
+GENERATED_CRAWLER = $(GEN_DIR)/cli/genItems.js
+GENERATED_PARSER = $(GEN_DIR)/cli/refineItems.js
+GENERATED_INDEXER = $(GEN_DIR)/cli/buildIdx.js
 CLIS = $(GENERATED_CRAWLER) $(GENERATED_PARSER) $(GENERATED_INDEXER)
 TS_LIBS = $(shell find src/lib -type f -name '*.ts')
 TS_CLI_FILES = $(shell find src/cli -type f -name '*.ts')
@@ -25,7 +24,7 @@ CRAWLER_OUTPUT_DIR ?= $(SCRATCH_DIR)/assets
 ITEMS_NDJSON = items.ndjson
 PARSED_NDJSON = items.parsed.ndjson
 
-TS_INDEX = $(DIST_DIR)/server/index.js
+TS_INDEX = $(GEN_DIR)/server/index.js
 
 .PHONY: test
 test:
@@ -46,7 +45,6 @@ server: $(TS_INDEX)
 build-server: $(TS_INDEX)
 
 $(TS_INDEX): $(TS_SRC)
-	 $(TSC) --jsx react --target es6 --module commonjs --esModuleInterop --outDir dist $(TS_SRC)
 
 .PHONY: gen-api-client
 gen-api-client:
@@ -73,8 +71,9 @@ snapshot:
 .PHONY: clis
 clis: $(CLIS)
 
-$(CLIS): $(TS_CLI_FILES) $(TS_LIBS)
-	$(TSC) --outDir $(SCRATCH_DIR)/gen src/cli/*.ts && chmod +x  $(SCRATCH_DIR)/gen/cli/*.js
+$(CLIS) $(TS_INDEX): $(TS_SRC)
+	 $(TSC) --jsx react --target es6 --module commonjs --esModuleInterop \
+		--outDir $(GEN_DIR) $(TS_SRC) && chmod +x $(GEN_DIR)/cli/*.js
 
 .PHONY: build-docker
 build-docker:
