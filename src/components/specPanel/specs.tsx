@@ -1,6 +1,5 @@
 import React from 'react'
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
+import Grid from '@material-ui/core/Grid';
 import { Injections } from '../../store/paperDoll/actions'
 import { SpecIdentifier } from '../../lib/vanillaApi/api'
 import druidImage from '../../assets/wow/classes/druid.png'
@@ -42,33 +41,40 @@ export interface Props {
 interface State { }
 
 export const Spec: React.FC<Props> = ({ charClass, specs }) => {
+
     const imageStyles: React.CSSProperties = {
         borderRadius: '30%',
         backgroundColor: '#ffffff',
-        padding: '2px',
+        padding: '1px',
+        maxHeight: '100%',
+        maxWidth: '100%',
     }
 
     return (
-        <GridList cellHeight={30} spacing={0} cols={3}>
-            <GridListTile key="character-class" cols={3} rows={3} >
+        <Grid container justify="center">
+            <Grid item xs={12}>
                 <img
                     src={classImage(charClass)}
                     alt={charClass}
                     style={imageStyles}
                 />
-            </GridListTile>
-            {
-                specs.map((s, i) => (
-                    <GridListTile key={s} cols={1} rows={1} >
-                        <img
-                            src={specImage(s)}
-                            alt={s}
-                            style={imageStyles}
-                        />
-                    </GridListTile>
-                ))
-            }
-        </GridList >
+            </Grid>
+
+            <Grid container item xs={12}>
+                {
+                    specs.map((s, i) => (
+                        <Grid item xs={4}>
+                            <img
+                                src={specImage(s)}
+                                alt={s}
+                                style={imageStyles}
+                            />
+                        </Grid>
+                    ))
+                }
+            </Grid>
+        </Grid>
+
     )
 }
 
