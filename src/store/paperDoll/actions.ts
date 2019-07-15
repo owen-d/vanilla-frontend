@@ -1,4 +1,4 @@
-import { State, Slot, Signal, SlotEquipped, Action, StateGetter, PartialDerivative } from './types'
+import { Slot, Signal, SlotEquipped, Action, StateGetter, PartialDerivative } from './types'
 import { Dispatch } from 'redux'
 import { Config } from '../config/'
 import { toReqFields } from './utils'
