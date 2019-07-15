@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import { Icon } from './icon'
 import { Injections } from '../../store/paperDoll/actions'
 import { SpecIdentifier } from '../../lib/vanillaApi/api'
+import { noop } from '../../lib/util/noop'
 import druidImage from '../../assets/wow/classes/druid.png'
 import hunterImage from '../../assets/wow/classes/hunter.png'
 import mageImage from '../../assets/wow/classes/mage.png'
@@ -37,17 +38,19 @@ export interface Props {
     actions: Injections
     charClass: CharClass
     specs: SpecIdentifier[]
+    currentSpec: SpecIdentifier
 }
 
 interface State { }
 
-export const Spec: React.FC<Props> = ({ charClass, specs }) => {
+export const Spec: React.FC<Props> = ({ charClass, specs, ...props }) => {
 
     return (
         <Grid container justify="center">
             <Grid item xs={12} key={charClass}>
                 <Icon
                     selected={false}
+                    onMouseEnter={noop} /* override mouseover highlighting */
                     alt={charClass}
                     image={classImage(charClass)}
                 />
@@ -58,9 +61,10 @@ export const Spec: React.FC<Props> = ({ charClass, specs }) => {
                     specs.map((s, i) => (
                         <Grid item xs={4} key={i} >
                             <Icon
-                                selected={false}
+                                selected={props.currentSpec === s}
                                 alt={s}
                                 image={specImage(s)}
+                                onClick={() => props.actions.setSpec(s)}
                             />
                         </Grid>
                     ))

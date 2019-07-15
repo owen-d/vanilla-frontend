@@ -3,14 +3,14 @@ import Grid from '@material-ui/core/Grid';
 import { CharClass, Spec } from './specs'
 import { SpecIdentifier } from '../../lib/vanillaApi/api'
 import { Injections } from '../../store/paperDoll/actions'
+import { State as DollProps } from '../../store/paperDoll/types'
 
-export interface Props {
-    actions: Injections
-}
+
+export type Props = { actions: Injections } & Pick<DollProps, 'spec'>
 
 interface State { }
 
-export const Panel: React.FC<Props> = ({ actions }) => {
+export const Panel: React.FC<Props> = ({ actions, spec }) => {
     interface PartialSpecProps {
         charClass: CharClass
         active: boolean
@@ -23,7 +23,7 @@ export const Panel: React.FC<Props> = ({ actions }) => {
             item
             xs={2}
         >
-            <Spec {...props} actions={actions} />
+            <Spec {...props} actions={actions} currentSpec={spec} />
         </Grid>
     ) : null
 

@@ -4,7 +4,8 @@ import { Stats, SpecIdentifier, AttrIdentifier } from '../../lib/vanillaApi/api'
 export enum Signal {
   Equip = 'EQUIP',
   Unequip = 'UNEQUIP',
-  SetDPS = 'SETDPS',
+  SetDPS = 'SET_DPS',
+  SetSpec = "SET_SPEC"
 }
 
 export enum Slot {
@@ -72,6 +73,11 @@ export interface SlotEquipped {
   item: Item
 }
 
+export interface SetSpecAction {
+  type: Signal.SetSpec
+  spec: SpecIdentifier
+}
+
 export type Equipped = Partial<Record<Slot, Item>>
 
 export type StateGetter = () => { doll: State }
@@ -84,4 +90,4 @@ export interface State {
   partialDerivatives: PartialDerivative[]
 }
 
-export type Action = EquipAction | UnequipAction | SetDPSAction
+export type Action = EquipAction | UnequipAction | SetDPSAction | SetSpecAction

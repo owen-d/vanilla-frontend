@@ -1,8 +1,8 @@
-import { Slot, Signal, SlotEquipped, Action, StateGetter, PartialDerivative } from './types'
+import { State, Slot, Signal, SlotEquipped, Action, StateGetter, PartialDerivative } from './types'
 import { Dispatch } from 'redux'
 import { Config } from '../config/'
 import { toReqFields } from './utils'
-import { DpsResponse } from '../../lib/vanillaApi/api'
+import { DpsResponse, SpecIdentifier } from '../../lib/vanillaApi/api'
 
 
 const equip = (equipped: SlotEquipped) => ({
@@ -10,13 +10,18 @@ const equip = (equipped: SlotEquipped) => ({
   equipped,
 })
 
+const fetchPartials = (dispatch: Dispatch<Action>, getState: StateGetter, { vanillaApi }: Config) => {
+  const { doll: state } = getState()
+  return vanillaApi.dpsPost(toReqFields(state))
+    .then(resp => dispatch(setDPS(resp.data)))
+
+}
+
 export const equipItem = (equipped: SlotEquipped) =>
-  (dispatch: Dispatch<Action>, getState: StateGetter, { vanillaApi }: Config) => {
+  (dispatch: Dispatch<Action>, getState: StateGetter, config: Config) => {
 
     dispatch(equip(equipped))
-    const { doll: state } = getState()
-    return vanillaApi.dpsPost(toReqFields(state))
-      .then(resp => dispatch(setDPS(resp.data)))
+    return fetchPartials(dispatch, getState, config)
   }
 
 export function unequipItem(slot: Slot): Action {
@@ -32,15 +37,25 @@ export const setDPS = ({ dps, partialDerivatives }: DpsResponse): Action => ({
   partialDerivatives: (partialDerivatives as unknown) as PartialDerivative[],
 })
 
+export const setSpec = (spec: SpecIdentifier) =>
+  (dispatch: Dispatch<Action>, getState: StateGetter, config: Config) => {
+    dispatch({
+      type: Signal.SetSpec,
+      spec,
+    })
+    return fetchPartials(dispatch, getState, config)
+  }
 
 export type Injections = {
   equipItem: typeof equipItem
   unequipItem: typeof unequipItem
   setDPS: typeof setDPS
+  setSpec: typeof setSpec
 }
 
 export const injections: Injections = {
   equipItem,
   unequipItem,
   setDPS,
+  setSpec,
 }

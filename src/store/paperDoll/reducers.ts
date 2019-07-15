@@ -39,7 +39,14 @@ export function reduce(
     case Signal.SetDPS:
       return {
         ...state,
-        ...action,
+        dps: action.dps,
+        partialDerivatives: action.partialDerivatives,
+      }
+
+    case Signal.SetSpec:
+      return {
+        ...state,
+        spec: action.spec,
       }
   }
   return state
