@@ -1,12 +1,9 @@
-import {
-  Configuration as ApiConfig
-} from '../../lib/vanillaApi/configuration'
-import { DefaultApiFactory } from '../../lib/vanillaApi/api'
+import { DefaultApi } from '../../lib/vanillaApi/'
+import { Configuration } from '../../lib/vanillaApi/'
 
-const defaultApiConfiguration: ApiConfig = new ApiConfig()
 const host = process.env.NODE_ENV === 'production' ? 'https://api.classicdps.com' : 'http://localhost:9000'
 
-const defaultApi = DefaultApiFactory(defaultApiConfiguration, host)
+const defaultApi = new DefaultApi(new Configuration({ basePath: host }))
 
 // storeconfig
 export interface Config {

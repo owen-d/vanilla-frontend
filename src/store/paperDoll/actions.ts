@@ -2,7 +2,8 @@ import { Slot, Signal, SlotEquipped, Action, StateGetter, PartialDerivative } fr
 import { Dispatch } from 'redux'
 import { Config } from '../config/'
 import { toReqFields } from './utils'
-import { DpsResponse, SpecIdentifier } from '../../lib/vanillaApi/api'
+import { DpsResponse } from '../../lib/vanillaApi/models/DpsResponse'
+import { SpecIdentifier } from '../../lib/vanillaApi/models/SpecIdentifier'
 
 
 const equip = (equipped: SlotEquipped) => ({
@@ -12,8 +13,8 @@ const equip = (equipped: SlotEquipped) => ({
 
 const fetchPartials = (dispatch: Dispatch<Action>, getState: StateGetter, { vanillaApi }: Config) => {
   const { doll: state } = getState()
-  return vanillaApi.dpsPost(toReqFields(state))
-    .then(resp => dispatch(setDPS(resp.data)))
+  return vanillaApi.dpsPost({ body: toReqFields(state) })
+    .then(resp => dispatch(setDPS(resp)))
 
 }
 

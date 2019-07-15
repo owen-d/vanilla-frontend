@@ -2,7 +2,7 @@ import React from 'react'
 import Grid from '@material-ui/core/Grid';
 import { Icon } from './icon'
 import { Injections } from '../../store/paperDoll/actions'
-import { SpecIdentifier } from '../../lib/vanillaApi/api'
+import { SpecIdentifier } from '../../lib/vanillaApi/models/SpecIdentifier'
 import { noop } from '../../lib/util/noop'
 import druidImage from '../../assets/wow/classes/druid.png'
 import hunterImage from '../../assets/wow/classes/hunter.png'

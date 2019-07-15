@@ -46,11 +46,11 @@ server: $(TS_INDEX)
 build-server: $(TS_INDEX)
 
 $(TS_INDEX): $(TS_SRC)
-	 @$(TSC) --jsx react --module commonjs --esModuleInterop --outDir dist $(TS_SRC)
+	 $(TSC) --jsx react --target es6 --module commonjs --esModuleInterop --outDir dist $(TS_SRC)
 
 .PHONY: gen-api-client
 gen-api-client:
-	docker run --rm -it -v $(SWAGGER_FILE):/swagger.json -v $(PWD):/work openapitools/openapi-generator-cli generate -i /swagger.json -g typescript-axios -o /work/src/lib/vanillaApi
+	docker run --rm -it -v $(SWAGGER_FILE):/swagger.json -v $(PWD):/work openapitools/openapi-generator-cli generate -i /swagger.json -g typescript-fetch -o /work/src/lib/vanillaApi
 
 .PHONY: gen-data
 gen-data: $(GENERATED_CRAWLER)

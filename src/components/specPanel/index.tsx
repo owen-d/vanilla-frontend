@@ -1,7 +1,7 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid';
 import { CharClass, Spec } from './specs'
-import { SpecIdentifier } from '../../lib/vanillaApi/api'
+import { SpecIdentifier } from '../../lib/vanillaApi/models/SpecIdentifier'
 import { Injections } from '../../store/paperDoll/actions'
 import { State as DollProps } from '../../store/paperDoll/types'
 

@@ -1,4 +1,6 @@
-import { ReqFields, Stats, SpecIdentifier } from '../../lib/vanillaApi/api'
+import { ReqFields } from '../../lib/vanillaApi/models/ReqFields'
+import { Stats } from '../../lib/vanillaApi/models/Stats'
+import { SpecIdentifier } from '../../lib/vanillaApi/models/SpecIdentifier'
 
 export const defaultSpec = SpecIdentifier.Warlock
 export const defaultStats: Stats = {

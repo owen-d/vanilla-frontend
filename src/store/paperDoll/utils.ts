@@ -4,7 +4,7 @@ import { slots } from '../paperDoll/types'
 import { catMaybes } from '../../lib/util/maybe'
 import { defaultStats } from '../vanillaApi/types'
 import { Equipped, State } from './types'
-import { ReqFields } from '../../lib/vanillaApi';
+import { ReqFields } from '../../lib/vanillaApi/models/ReqFields';
 
 export const calculateStats = (equipped: Equipped) => {
   const stats = slots.map(slot => equipped[slot])

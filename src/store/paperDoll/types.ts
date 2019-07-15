@@ -1,5 +1,7 @@
 import { Item } from '../../store/items/types'
-import { Stats, SpecIdentifier, AttrIdentifier } from '../../lib/vanillaApi/api'
+import { Stats } from '../../lib/vanillaApi/models/Stats'
+import { SpecIdentifier } from '../../lib/vanillaApi/models/SpecIdentifier'
+import { AttrIdentifier } from '../../lib/vanillaApi/models/AttrIdentifier'
 
 export enum Signal {
   Equip = 'EQUIP',
