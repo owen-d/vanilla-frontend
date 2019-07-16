@@ -20,5 +20,5 @@ RUN npm run-script build && make clis
 
 ENV NODE_ENV=production
 ENTRYPOINT ["/tini", "--"]
-CMD ["node", "dist/server/index.js"]
+CMD ["node", "scratch/gen/server/index.js"]
 
