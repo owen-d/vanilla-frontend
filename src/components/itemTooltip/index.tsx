@@ -1,8 +1,10 @@
 import { AttrIdentifier } from '../../lib/vanillaApi/'
-import { Item, ScaledAttr, schools, PrimaryStat } from '../../store/items/types'
+import { Item, ScaledAttr, schools, PrimaryStat, School } from '../../store/items/types'
 import React from 'react'
 import { CharacterClass } from '../../lib/classicdb/types';
 import { TippyProps } from '@tippy.js/react'
+const update = require('lodash/update')
+const toPairs = require('lodash/toPairs')
 const negate = require('lodash/negate')
 
 export interface Props {
@@ -155,6 +157,21 @@ export const ItemTable: React.FC<Props> = ({ item }) => {
     )
 }
 
+const isSchool = (eff: ScaledAttr) => (schools as AttrIdentifier[]).indexOf(eff.attr) !== -1
+
+const dedupedSchools = (effs: ScaledAttr[]): ScaledAttr[] => {
+    const schoolAttrs = effs.filter(isSchool)
+    const deduped: Partial<Record<School, number>> = schoolAttrs.reduce(
+        (acc, attr) => update(
+            acc,
+            attr.attr,
+            (n: number | undefined) => n ? n + attr.scale : attr.scale,
+        ),
+        {}
+    )
+    return toPairs(deduped).map(([attr, scale]: [School, number]) => ({ attr, scale }))
+}
+
 
 export const displayEffects = (effs: ScaledAttr[]) => {
     const showEffects = (strs: string[]) => strs.map((s, i) => (
@@ -165,8 +182,7 @@ export const displayEffects = (effs: ScaledAttr[]) => {
         </tr>
     ))
 
-    const isSchool = (eff: ScaledAttr) => (schools as AttrIdentifier[]).indexOf(eff.attr) !== -1
-    const schoolEffs = effs.filter(isSchool)
+    const schoolEffs = dedupedSchools(effs)
     const commonDenom =
         // there can only be a +all spells if every school is present
         schoolEffs.length === schools.length ?
