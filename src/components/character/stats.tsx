@@ -13,7 +13,7 @@ import Grid from '@material-ui/core/Grid'
 export type Props = { actions: Injections } & Pick<DollProps, 'partialDerivatives'>
 
 export const StatList: React.FC<Props> = props => {
-    const cardStyles: React.CSSProperties = { marginTop: '40%' }
+    const cardStyles: React.CSSProperties = {}
 
     const derivs = props.partialDerivatives.map(([attrId, x], i) => {
         return (
@@ -37,7 +37,7 @@ export const StatList: React.FC<Props> = props => {
     return props.partialDerivatives.length ? (
         <Card raised style={cardStyles}>
             <CardContent>
-                <Typography gutterBottom variant="h5" >
+                <Typography gutterBottom variant="h6" >
                     Dps gained by adding one of the following:
                 </Typography>
                 <Divider />
@@ -46,7 +46,15 @@ export const StatList: React.FC<Props> = props => {
                 </List>
             </CardContent>
         </Card>
-    ) : null
+    ) : (
+            <Card raised style={cardStyles}>
+                <CardContent>
+                    <Typography gutterBottom variant="h5" >
+                        Click a spec icon to get started
+                </Typography>
+                </CardContent>
+            </Card>
+        )
 }
 
 const prettify = (attr: AttrIdentifier): String => {

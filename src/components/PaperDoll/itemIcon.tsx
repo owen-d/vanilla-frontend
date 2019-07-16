@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react'
 import Tippy from '@tippy.js/react'
-import itemIconEmpty from '../../assets/wow/paperdoll/icon-border-large.png'
 import { Injections } from '../../store/paperDoll/actions'
 import { Item } from '../../store/items/types'
 import { ItemPicker } from '../itemPicker/'
@@ -35,9 +34,10 @@ export const ItemIcon: React.FC<IconProps> = ({ item, slot, css, ...props }) => 
         position: 'absolute',
         width: '12%',
         height: '11%',
-        opacity: state.hovered ? 1 : noHoverOpacity,
-        backgroundImage: item ? `url(${thumbnailUrl(item.id)})` : `url(${itemIconEmpty})`,
+        borderRadius: '15%',
+        backgroundImage: item ? `url(${thumbnailUrl(item.id)})` : undefined,
         backgroundSize: 'cover',
+        border: state.hovered ? '1px solid white' : undefined,
         zIndex: 10,
     }, css)
 
