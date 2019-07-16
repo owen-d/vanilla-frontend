@@ -9,7 +9,7 @@ import Paper from '@material-ui/core/Paper'
 const faq: { q: string, a: string }[] = [
     {
         q: `Why aren't there any healers here?`,
-        a: `Healers are a little more complex than damage dealers in that they aren't about achieving maximum healing per second (hps) like damage dealers are with dps. Instead, things like fight longevity and subsequently the benefits of spirit, mp5, etc become a lot more valuable to them. Some fights also require intense throughput, but don't last as long. These considerations make it hard to create blanket statements on what is "best". I'd like to add support for them, possibly with sliders for fight longevity or similar, but I'm waiting to see how that idea develops. Please let me know if you have suggestions or want this feature.`
+        a: `Healers are a little more complex than damage dealers because they often aren't concerned with maximizing healing per second (hps) like damage dealers are with dps. Fight mechanics like incoming burst damage and encounter duration come into play, causing different stats to be more of less valuable for different fights. As an example, in longer fights the benefits of spirit, mp5, etc become a lot more valuable to them. Some fights also require intense throughput, but don't last as long. These considerations make it hard to create blanket statements as to what is "best". I'd like to add support for them, possibly with sliders for fight longevity, but I'm waiting to see how that idea develops. Please let me know if you have suggestions or want this feature.`
     }
 ]
 
