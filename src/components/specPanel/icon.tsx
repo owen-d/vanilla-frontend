@@ -27,8 +27,8 @@ export const Icon: React.FC<Props & DivProps> = props => {
         borderRadius: '30%',
         backgroundColor: state.highlighted || props.selected ? white : grey,
         padding: '1px',
-        maxHeight: '100%',
-        maxWidth: '100%',
+        height: '100%',
+        width: '100%',
     }
 
     return (
