@@ -7,10 +7,18 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 /* import teal from '@material-ui/core/colors/teal'; */
 import red from '@material-ui/core/colors/red';
 
+
+export const lightGrey = '#b0b0b0'
+export const grey = '#707070'
+export const white = '#ffffff'
+
 // All the following keys are optional.
 // We try our best to provide a great default value.
 export const theme = createMuiTheme({
     palette: {
+        background: {
+            paper: lightGrey,
+        },
         /* primary: brown, */
         /* secondary: indigo, */
         error: red,

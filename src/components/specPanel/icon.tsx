@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { grey, white } from '../mui/theme'
 
 export interface Props {
     image: string
@@ -15,9 +16,6 @@ interface State {
 const initialState: State = {
     highlighted: false
 }
-
-const grey = '#707070'
-const white = '#ffffff'
 
 export const Icon: React.FC<Props & DivProps> = props => {
     const [state, setState] = useState(initialState)

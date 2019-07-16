@@ -4,6 +4,7 @@ import { State as DollProps } from '../../store/paperDoll/types'
 import { PaperDoll } from '../paperDoll/'
 import { StatList } from './stats'
 import Grid from '@material-ui/core/Grid'
+import { FAQ } from '../faq/'
 
 
 export type Props = { actions: Injections } & DollProps
@@ -20,6 +21,9 @@ export const Character: React.FC<Props> = props => {
             </Grid>
             <Grid item xs={10} md={3} xl={2}>
                 <StatList {...props} />
+            </Grid>
+            <Grid item xs={10}>
+                <FAQ />
             </Grid>
         </Grid>
     )
