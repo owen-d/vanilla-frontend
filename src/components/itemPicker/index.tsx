@@ -49,12 +49,13 @@ export const ItemPicker: React.FC<Props> = ({ slot, actions, ...props }) => {
 
             return (
                 <Tippy
+                    key={`itempicker-${x.name}`}
                     {...defaultTippyOpts}
                     content={<ItemTable item={x} />}
                     visible={isHovered}
                 >
 
-                    <li key={`${i}`}
+                    <li key={`item-${x.name}`}
                         className={x.quality.toLowerCase()}
                         tabIndex={-1}
                         onMouseEnter={() => setState({ ...state, selected: i, hovered: i })}
@@ -94,14 +95,17 @@ export const ItemPicker: React.FC<Props> = ({ slot, actions, ...props }) => {
 
     const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const input = e.target.value
-        setState({ ...state, query: input })
+        const newState = { ...state, query: input }
+        setState(newState)
         const query = {
             query: input,
             slots: toAowowSlot(slot),
         }
         suggest(
             query,
-            (items: Item[]) => setState({ ...state, available: items })
+            (items: Item[]) => {
+                setState({ ...newState, selected: 0, available: items })
+            }
         )
     }
 
