@@ -92,8 +92,8 @@ export const ItemPicker: React.FC<Props> = ({ slot, actions, ...props }) => {
 
     }
 
-    const handleChange = async (e: React.FormEvent<HTMLInputElement>) => {
-        const input = e.currentTarget.value
+    const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const input = e.target.value
         setState({ ...state, query: input })
         const query = {
             query: input,
@@ -110,6 +110,7 @@ export const ItemPicker: React.FC<Props> = ({ slot, actions, ...props }) => {
         // https://developer.mozilla.org/en-US/docs/Web/API/Event/Comparison_of_Event_Targets
         if (!event.currentTarget.contains(event.relatedTarget as Node)) {
             // focus is leaving the container
+            setState({ ...state, query: '' })
             props.hideTooltip()
         }
     }
@@ -129,6 +130,7 @@ export const ItemPicker: React.FC<Props> = ({ slot, actions, ...props }) => {
                 ref={props.inputRef}
                 onChange={handleChange}
                 onKeyDown={handleKey}
+                value={state.query}
             />
             <ul style={{ padding: 0, marginTop: 0 }}>{items}</ul>
         </div >
