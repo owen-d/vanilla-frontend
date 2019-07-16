@@ -29,7 +29,6 @@ export const ItemIcon: React.FC<IconProps> = ({ item, slot, css, ...props }) => 
     const [state, setState] = useState(initialIconState)
     const deltaState = (deltas: Partial<IconState>) => () => setState({ ...state, ...deltas })
 
-    const noHoverOpacity = item ? 0.7 : 0.5
     let styles = Object.assign({
         position: 'absolute',
         width: '12%',

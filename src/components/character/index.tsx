@@ -13,12 +13,12 @@ interface State { }
 export const Character: React.FC<Props> = props => {
     return (
         <Grid container justify="center">
-            <Grid item xs={3}>
+            <Grid item xs={10} md={3} xl={2}>
             </Grid>
-            <Grid item xs={10} md={8} lg={5}>
+            <Grid item xs={10} md={8} lg={5} xl={3}>
                 <PaperDoll {...props} />
             </Grid>
-            <Grid item xs={10} md={3}>
+            <Grid item xs={10} md={3} xl={2}>
                 <StatList {...props} />
             </Grid>
         </Grid>
