@@ -10,7 +10,7 @@ import Divider from '@material-ui/core/Divider'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 
-export type Props = { actions: Injections } & Pick<DollProps, 'partialDerivatives'>
+export type Props = { actions: Injections } & Pick<DollProps, 'partialDerivatives' | 'dps' | 'spec'>
 
 export const StatList: React.FC<Props> = props => {
     const cardStyles: React.CSSProperties = {}
@@ -38,7 +38,11 @@ export const StatList: React.FC<Props> = props => {
         <Card raised style={cardStyles}>
             <CardContent>
                 <Typography gutterBottom variant="h6" >
-                    Dps gained by adding one of the following:
+                    {props.spec}: {props.dps} dps
+                </Typography>
+                <Divider />
+                <Typography gutterBottom variant="h6" >
+                    Dps gained by adding:
                 </Typography>
                 <Divider />
                 <List>
