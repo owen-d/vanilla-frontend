@@ -9,7 +9,8 @@ import { darkGrey, lightGrey } from '../mui/theme'
 const announcement = 'https://pikach.us/posts/2019-07-16-ElitistQuirks.html'
 const styles = (theme: Theme) => ({
     button: {
-        margin: theme.spacing(),
+        marginTop: theme.spacing() * 0.5,
+        marginBottom: theme.spacing() * 0.5,
     },
     bar: {
         backgroundColor: lightGrey,
@@ -24,8 +25,8 @@ export const TopBar = withStyles(styles)(
     ({ classes }: Props) => {
         return (
             <AppBar position="static" className={classes.bar}>
-                <Grid container justify="space-between" direction="row-reverse">
-                    <Grid item xs={2} md={1}>
+                <Grid container direction="row-reverse">
+                    <Grid item xs={2} md={1} style={{ overflowX: 'hidden' }}>
                         <Button
                             variant="contained"
                             href={announcement}
