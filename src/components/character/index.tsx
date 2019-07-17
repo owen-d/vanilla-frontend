@@ -4,6 +4,7 @@ import { State as DollProps } from '../../store/paperDoll/types'
 import { PaperDoll } from '../paperDoll/'
 import { StatList } from './stats'
 import Grid from '@material-ui/core/Grid'
+import { TopBar } from '../topBar/'
 import { FAQ } from '../faq/'
 
 
@@ -14,6 +15,9 @@ interface State { }
 export const Character: React.FC<Props> = props => {
     return (
         <Grid container justify="center">
+            <Grid item xs={12}>
+                <TopBar />
+            </Grid>
             <Grid item xs={10} md={3} xl={2}>
             </Grid>
             <Grid item xs={10} md={8} lg={5} xl={3}>

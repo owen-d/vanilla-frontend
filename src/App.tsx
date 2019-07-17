@@ -6,7 +6,7 @@ import { State as TickState } from './store/tick/types'
 import { State as DollState } from './store/paperDoll/types'
 import * as tickA from './store/tick/actions'
 import * as dollA from './store/paperDoll/actions'
-import { theme, withTheme } from './components/mui/theme'
+import { theme, withTheme, darkGrey } from './components/mui/theme'
 import createStyles from '@material-ui/core/styles/createStyles';
 import Grid from '@material-ui/core/Grid';
 import { withStyles, WithStyles } from '@material-ui/styles';
@@ -18,7 +18,7 @@ const styles = (theme: Theme) =>
         root: {
             textAlign: 'center',
             paddingTop: theme.spacing() * 0.4,
-            backgroundColor: '#282c34',
+            backgroundColor: darkGrey,
             fontSize: 'calc(10px + 2vmin)',
         },
     });

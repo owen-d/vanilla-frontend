@@ -10,6 +10,7 @@ import red from '@material-ui/core/colors/red';
 
 export const lightGrey = '#b0b0b0'
 export const grey = '#707070'
+export const darkGrey = '#282c34'
 export const white = '#ffffff'
 
 // All the following keys are optional.
