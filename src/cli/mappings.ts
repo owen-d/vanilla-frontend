@@ -5,8 +5,7 @@ export const mappings = {
       type: 'keyword',
       fields: {
         completion: {
-          type: 'completion',
-          preserve_separators: false,
+          type: 'search_as_you_type',
         },
       },
     },
