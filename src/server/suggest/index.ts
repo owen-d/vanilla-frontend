@@ -1,7 +1,3 @@
-import { curry } from 'ramda'
-import { Item } from '../../store/items/types'
-import { readFile } from 'fs'
-import { promisify } from 'util';
 import * as request from 'request-promise'
 import express from 'express'
 import * as _ from 'lodash'
@@ -27,10 +23,7 @@ const search = (url: string, query: Query) => {
                 },
                 filter: query.slots ? {
                     terms: {
-                        // TODO: find out why keywords are being normalized.
-                        // for some reason, equipment slots seem to be mapping into lowercase,
-                        // despite being of `keyword` types. It's hacky, but we handle it here.
-                        equipment_slot: query.slots.map(x => x.toLowerCase()),
+                        equipment_slot: query.slots,
                     },
                 } : undefined,
             }

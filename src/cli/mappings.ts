@@ -9,7 +9,7 @@ export const mappings = {
         },
       },
     },
-    equpment_slot: { type: 'keyword' },
+    equipment_slot: { type: 'keyword' },
   },
 
 }
