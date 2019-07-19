@@ -7,6 +7,11 @@ import { SpecIdentifier } from '../../lib/vanillaApi/models/SpecIdentifier'
 import { fromEquipped } from './itemSignatures'
 import qs from 'query-string'
 
+const withQs = (updates: object) => {
+  const parsed = qs.parse(window.location.search)
+  return Object.assign({}, parsed, updates)
+}
+
 
 const equip = (equipped: SlotEquipped) => ({
   type: (Signal.Equip as Signal.Equip), // type assertion :'(
@@ -27,10 +32,9 @@ export const equipItem = (equipped: SlotEquipped) =>
 
     // update querystring to reflect change
     const state = getState().doll
-    const newQs = qs.stringify({ gear: fromEquipped(state.equipped) })
     state.hist.push({
       pathname: '/',
-      search: newQs,
+      search: qs.stringify(withQs({ gear: fromEquipped(state.equipped) })),
     })
 
     return fetchPartials(dispatch, getState, config)
@@ -55,6 +59,14 @@ export const setSpec = (spec: SpecIdentifier) =>
       type: Signal.SetSpec,
       spec,
     })
+
+    // update querystring to reflect change
+    const state = getState().doll
+    state.hist.push({
+      pathname: '/',
+      search: qs.stringify(withQs({ spec })),
+    })
+
     return fetchPartials(dispatch, getState, config)
   }
 

@@ -9,6 +9,8 @@ import { FAQ } from '../faq/'
 import { decode } from '../../store/paperDoll/itemSignatures'
 import qs from 'query-string'
 import { lookupItem } from '../../lib/searchApi/lookup'
+import { SpecIdentifier } from '../../lib/vanillaApi';
+import { isSpec } from '../../store/specs/types';
 
 
 export type Props = { actions: Injections } & DollProps
@@ -16,23 +18,26 @@ export type Props = { actions: Injections } & DollProps
 interface State { }
 
 // loads gear from querystring
-const initialLoad = (equipItem: Injections['equipItem']) => {
+const initialLoad = (actions: Injections) => {
     const parsed = qs.parse(window.location.search)
-    if (!parsed.gear || Array.isArray(parsed.gear)) {
-        return
+    if (parsed.gear && !Array.isArray(parsed.gear)) {
+        const ids = decode(parsed.gear as string)
+        ids.filter(([_, id]) => id !== '0')
+            .forEach(([slot, id]) => {
+                lookupItem(id)
+                    .then(item => actions.equipItem({ slot, item }))
+            })
     }
-    const ids = decode(parsed.gear as string)
-    ids.filter(([_, id]) => id !== '0')
-        .forEach(([slot, id]) => {
-            lookupItem(id)
-                .then(item => equipItem({ slot, item }))
-        })
+
+    if (parsed.spec && !Array.isArray(parsed.spec) && isSpec(parsed.spec)) {
+        actions.setSpec(parsed.spec)
+    }
 
 }
 
 
 export const Character: React.FC<Props> = props => {
-    useEffect(() => initialLoad(props.actions.equipItem), [props.actions.equipItem])
+    useEffect(() => initialLoad(props.actions), [props.actions])
     return (
         <Grid container justify="center">
             <Grid item xs={12}>
