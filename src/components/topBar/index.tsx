@@ -4,7 +4,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Grid from '@material-ui/core/Grid'
 import { Theme } from '@material-ui/core/styles';
 import { withStyles, WithStyles } from '@material-ui/core/styles';
-import { darkGrey, lightGrey } from '../mui/theme'
+import { lightGrey } from '../mui/theme'
 
 const announcement = 'https://pikach.us/posts/2019-07-16-ElitistQuirks.html'
 const styles = (theme: Theme) => ({

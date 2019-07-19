@@ -15,7 +15,6 @@ export type Props = { actions: Injections } & DollProps
 
 
 export const PaperDoll: React.FC<Props> = ({ actions, equipped, ...props }) => {
-
     return (
         <Grid
             container

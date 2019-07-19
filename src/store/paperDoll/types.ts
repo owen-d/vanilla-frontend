@@ -2,6 +2,8 @@ import { Item } from '../../store/items/types'
 import { Stats } from '../../lib/vanillaApi/models/Stats'
 import { SpecIdentifier } from '../../lib/vanillaApi/models/SpecIdentifier'
 import { AttrIdentifier } from '../../lib/vanillaApi/models/AttrIdentifier'
+import { History } from 'history'
+
 
 export enum Signal {
   Equip = 'EQUIP',
@@ -90,6 +92,7 @@ export interface State {
   stats: Stats
   dps: number
   partialDerivatives: PartialDerivative[]
+  hist: History
 }
 
 export type Action = EquipAction | UnequipAction | SetDPSAction | SetSpecAction

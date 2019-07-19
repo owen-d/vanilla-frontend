@@ -4,6 +4,8 @@ import { Config } from '../config/'
 import { toReqFields } from './utils'
 import { DpsResponse } from '../../lib/vanillaApi/models/DpsResponse'
 import { SpecIdentifier } from '../../lib/vanillaApi/models/SpecIdentifier'
+import { fromEquipped } from './itemSignatures'
+import qs from 'query-string'
 
 
 const equip = (equipped: SlotEquipped) => ({
@@ -22,6 +24,15 @@ export const equipItem = (equipped: SlotEquipped) =>
   (dispatch: Dispatch<Action>, getState: StateGetter, config: Config) => {
 
     dispatch(equip(equipped))
+
+    // update querystring to reflect change
+    const state = getState().doll
+    const newQs = qs.stringify({ gear: fromEquipped(state.equipped) })
+    state.hist.push({
+      pathname: '/',
+      search: newQs,
+    })
+
     return fetchPartials(dispatch, getState, config)
   }
 

@@ -1,6 +1,7 @@
 import { Signal, Action, State } from './types'
 import { defaultSpec, defaultStats } from '../vanillaApi/types'
 import { calculateStats, baseDps } from './utils'
+import { createBrowserHistory } from 'history'
 
 
 const initialState: State = {
@@ -9,6 +10,7 @@ const initialState: State = {
   stats: defaultStats,
   dps: baseDps(defaultSpec),
   partialDerivatives: [],
+  hist: createBrowserHistory(),
 }
 
 export function reduce(
