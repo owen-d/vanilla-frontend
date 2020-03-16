@@ -12,7 +12,7 @@
     "express": "^4.17.1",
     "history": "^4.9.0",
     "lodash": "^4.17.14",
-    "minimist": "^1.2.0",
+    "minimist": "^1.2.2",
     "query-string": "^6.8.1",
     "ramda": "^0.26.1",
     "react": "^16.8.6",
